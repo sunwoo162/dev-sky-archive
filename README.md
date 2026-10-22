@@ -44,4 +44,8 @@ py -m http.server 4173
 node --test tests/*.mjs
 ```
 
+## 배포
+
+`main`에 반영되면 `.github/workflows/deploy-pages.yml`이 정적 사이트를 GitHub Pages로 배포합니다. PR과 `main` push에서는 `.github/workflows/ci.yml`이 테스트와 JavaScript 문법 검사를 실행합니다. 저장소 설정에서 Pages의 빌드 소스를 `GitHub Actions`로 선택한 뒤 사용할 수 있습니다.
+
 기여 규칙과 PR 작성 방식은 [`CONTRIBUTING.md`](./CONTRIBUTING.md)를 확인합니다.

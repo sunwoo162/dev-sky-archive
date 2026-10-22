@@ -1,0 +1,27 @@
+name: Verify archive
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run tests
+        run: node --test tests/*.mjs
+      - name: Check JavaScript syntax
+        run: |
+          node --check src/app.js
+          node --check src/content.js
+          node --check src/game-state.js
