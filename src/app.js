@@ -31,9 +31,17 @@ let state = createInitialState();
 let currentIsland = null;
 let repoInventory = [];
 let lastArchiveFocus = null;
+let lastProjectFocusProjectId = null;
+let lastProjectFocusSource = 'marker';
 let player = { x: 480, y: 350 };
 const pressedKeys = new Set();
 let lastFrame = performance.now();
+const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+let prefersReducedMotion = reducedMotionQuery.matches;
+
+reducedMotionQuery.addEventListener?.('change', (event) => {
+  prefersReducedMotion = event.matches;
+});
 
 const markerPositions = [
   { x: 286, y: 246, left: 30, top: 46 },
@@ -129,6 +137,38 @@ function closeArchiveIndex() {
   if (lastArchiveFocus instanceof HTMLElement) lastArchiveFocus.focus();
 }
 
+function trapArchiveFocus(event) {
+  const focusable = [...archiveModal.querySelectorAll('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')];
+  if (!focusable.length) {
+    event.preventDefault();
+    return;
+  }
+
+  const first = focusable[0];
+  const last = focusable.at(-1);
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
+
+function openProjectFromControl(projectId, source = 'marker') {
+  lastProjectFocusProjectId = projectId;
+  lastProjectFocusSource = source;
+  setScreen(openProject(state, projectId));
+  document.querySelector('#close-project')?.focus();
+}
+
+function closeProjectToIsland() {
+  setScreen(closeProject(state));
+  const projectFocusTarget = [...document.querySelectorAll('[data-project-id]')]
+    .find((element) => element.dataset.projectId === lastProjectFocusProjectId && element.dataset.projectSource === lastProjectFocusSource);
+  projectFocusTarget?.focus();
+}
+
 function renderSky() {
   islandList.innerHTML = islands.map((island) => `
     <button class="island-button" type="button" data-island-id="${island.id}"
@@ -170,19 +210,19 @@ function renderIsland() {
 
   projectMarkers.innerHTML = currentIsland.projects.map((project, index) => {
     const marker = getMarkerPosition(index);
-    return `<button class="project-marker" type="button" data-project-id="${project.id}" style="--marker-left:${marker.left}%;--marker-top:${marker.top}%;--marker-color:${project.color}" aria-label="${project.title} 전시 열기">
+    return `<button class="project-marker" type="button" data-project-id="${project.id}" data-project-source="marker" style="--marker-left:${marker.left}%;--marker-top:${marker.top}%;--marker-color:${project.color}" aria-label="${project.title} 전시 열기">
       <span class="marker-pulse" aria-hidden="true"></span><span class="marker-pin" aria-hidden="true">⌕</span><span class="marker-label">${project.title}</span>
     </button>`;
   }).join('');
 
   projectIndex.innerHTML = currentIsland.projects.map((project, index) => `
-    <button class="project-index-item" type="button" data-project-id="${project.id}">
+    <button class="project-index-item" type="button" data-project-id="${project.id}" data-project-source="index">
       <span class="index-number">0${index + 1}</span><span><strong>${project.title}</strong><small>${project.summary}</small></span><span class="index-arrow">↗</span>
     </button>
   `).join('');
 
   document.querySelectorAll('[data-project-id]').forEach((button) => {
-    button.addEventListener('click', () => setScreen(openProject(state, button.dataset.projectId)));
+    button.addEventListener('click', () => openProjectFromControl(button.dataset.projectId, button.dataset.projectSource));
   });
   updateInteraction();
 }
@@ -195,7 +235,7 @@ function visualMarkup(project) {
     return `<div class="preview-window washer-window"><div class="preview-nav"><span class="preview-logo">washer/</span><span class="preview-avatar">YU</span></div><div class="washer-body"><div><small>MON, 14 OCT</small><h4>오늘의 세탁실</h4></div><div class="machine-stack"><div class="machine-row"><span class="machine-icon">○</span><span><b>세탁기 03</b><small>사용 가능 · 18분</small></span><em>예약</em></div><div class="machine-row active"><span class="machine-icon">◌</span><span><b>세탁기 07</b><small>사용 중 · 24분 남음</small></span><em>대기</em></div><div class="machine-row"><span class="machine-icon">○</span><span><b>건조기 02</b><small>사용 가능 · 42분</small></span><em>예약</em></div></div></div></div>`;
   }
   if (project.visual === 'repo') {
-    return `<div class="preview-window repo-window"><div class="preview-nav"><span class="preview-logo">repodock / sprint 08</span><span class="repo-live">● LIVE</span></div><div class="kanban"><div><small>BACKLOG</small><b>API error state</b><b>empty screen copy</b></div><div><small>IN PROGRESS</small><b class="selected">PR #142 · board query</b><b>mobile nav</b></div><div><small>DONE</small><b>filter chips</b><b>loading skeleton</b></div></div><div class="repo-flow"><span>REPO</span><i></i><span>STATE</span><i></i><span>BOARD</span></div></div>`;
+    return `<div class="preview-window repo-window"><div class="preview-nav"><span class="preview-logo">repo / workflow</span><span class="repo-live">● SCHEMATIC</span></div><div class="kanban"><div><small>BACKLOG</small><b>error state</b><b>empty screen</b></div><div><small>IN PROGRESS</small><b class="selected">review item</b><b>mobile navigation</b></div><div><small>DONE</small><b>filter chips</b><b>loading state</b></div></div><div class="repo-flow"><span>REPO</span><i></i><span>STATE</span><i></i><span>VIEW</span></div></div>`;
   }
   if (project.visual === 'motion') {
     return `<div class="preview-window motion-window"><div class="preview-nav"><span class="preview-logo">motion / 003</span><span class="motion-spark">✦</span></div><div class="motion-stage"><div class="motion-card"><span>state change</span><strong>saved!</strong><i></i></div><div class="motion-track"><span></span><span></span><span></span><span></span><span></span></div></div><div class="motion-caption">feedback should feel like a reply</div></div>`;
@@ -233,7 +273,7 @@ function renderProject() {
       </div>
     </div>
   `;
-  document.querySelector('#inline-back').addEventListener('click', () => setScreen(closeProject(state)));
+      document.querySelector('#inline-back').addEventListener('click', closeProjectToIsland);
 }
 
 function drawRoundedRect(x, y, width, height, radius, fill, stroke) {
@@ -297,7 +337,7 @@ function drawMap() {
 
   const near = getNearestProject();
   if (near) {
-    context.globalAlpha = 0.35 + Math.sin(performance.now() / 240) * 0.12;
+        context.globalAlpha = prefersReducedMotion ? 0.35 : 0.35 + Math.sin(performance.now() / 240) * 0.12;
     context.strokeStyle = islandColor; context.lineWidth = 4; context.beginPath(); context.arc(near.marker.x, near.marker.y, 50, 0, Math.PI * 2); context.stroke(); context.globalAlpha = 1;
   }
 
@@ -351,8 +391,8 @@ function animate(timestamp) {
 
 document.querySelector('#back-to-sky').addEventListener('click', () => setScreen(exitToSky(state)));
 document.querySelector('#brand-button').addEventListener('click', () => setScreen(exitToSky(state)));
-document.querySelector('#back-to-island').addEventListener('click', () => setScreen(closeProject(state)));
-document.querySelector('#close-project').addEventListener('click', () => setScreen(closeProject(state)));
+document.querySelector('#back-to-island').addEventListener('click', closeProjectToIsland);
+document.querySelector('#close-project').addEventListener('click', closeProjectToIsland);
 archiveIndexTrigger.addEventListener('click', openArchiveIndex);
 archiveIndexClose.addEventListener('click', closeArchiveIndex);
 archiveModal.addEventListener('click', (event) => {
@@ -361,17 +401,24 @@ archiveModal.addEventListener('click', (event) => {
 
 window.addEventListener('keydown', (event) => {
   const key = event.key.toLowerCase();
-  if (['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright', ' '].includes(key)) event.preventDefault();
+  const target = event.target instanceof HTMLElement ? event.target : null;
+  const isInteractiveTarget = Boolean(target?.closest('button, a, input, select, textarea, [role="button"]'));
+  if (key === ' ' && isInteractiveTarget) return;
+  if (['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'].includes(key) || (key === ' ' && !isInteractiveTarget)) event.preventDefault();
   if (!archiveModal.classList.contains('is-hidden') && key === 'escape') {
     closeArchiveIndex();
     return;
   }
+  if (!archiveModal.classList.contains('is-hidden') && key === 'tab') {
+    trapArchiveFocus(event);
+    return;
+  }
   if (state.screen === 'island' && key === 'e') {
     const nearest = getNearestProject();
-    if (nearest) setScreen(openProject(state, nearest.project.id));
+    if (nearest) openProjectFromControl(nearest.project.id);
   }
   if (key === 'escape') {
-    if (state.screen === 'project') setScreen(closeProject(state));
+    if (state.screen === 'project') closeProjectToIsland();
     else if (state.screen === 'island') setScreen(exitToSky(state));
   }
   pressedKeys.add(key);

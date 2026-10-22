@@ -9,6 +9,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const readJson = (fileName) => JSON.parse(readFileSync(join(here, '..', 'data', fileName), 'utf8'));
 const records = readJson('project-records.json');
 const inventory = readJson('repo-inventory.json');
+const appSource = readFileSync(join(here, '..', 'src', 'app.js'), 'utf8');
 
 test('the current portfolio game is represented as a first-class project record', () => {
   const project = records.projects.find((item) => item.id === 'dev-sky-archive');
@@ -84,4 +85,20 @@ test('every playable exhibit exposes repository and role certainty metadata', ()
     assert.ok(project.repoUrl || project.id === 'dev-sky-archive', `${project.id} needs a GitHub URL or local-only exception`);
     assert.ok(project.detailSource, `${project.id} needs a source label`);
   }
+});
+
+test('playable exhibit metadata stays aligned with the records source of truth', () => {
+  const projects = new Map(islands.flatMap((island) => island.projects).map((project) => [project.id, project]));
+
+  for (const record of records.projects) {
+    const project = projects.get(record.id);
+    assert.ok(project, `${record.id} needs a playable exhibit`);
+    assert.equal(project.status, record.status, `${record.id} status drifted from project-records.json`);
+    assert.equal(project.roleStatus, record.role.status, `${record.id} role certainty drifted from project-records.json`);
+  }
+});
+
+test('exhibit preview copy does not present unsourced repository facts as live data', () => {
+  assert.doesNotMatch(appSource, /repodock \/ sprint 08|PR #142/);
+  assert.match(appSource, /SCHEMATIC/);
 });

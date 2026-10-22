@@ -1,9 +1,34 @@
+// Keep this synchronous projection aligned with data/project-records.json so the
+// buildless browser entrypoint can render before its async inventory fetch resolves.
+const recordMetadata = Object.freeze({
+  'dev-sky-archive': { status: 'prototype', roleStatus: 'self-recorded' },
+  'washer-client-v2': { status: 'active-repo', roleStatus: 'needs-confirmation' },
+  'bloom-bouquet': { status: 'production-oriented', roleStatus: 'needs-confirmation' },
+  'repo-dock': { status: 'released', roleStatus: 'needs-confirmation' },
+  'structure-board-lab': { status: 'demo', roleStatus: 'needs-confirmation' },
+  'focus-time': { status: 'deployed-extension', roleStatus: 'needs-confirmation' },
+  webbridge: { status: 'prototype', roleStatus: 'needs-confirmation' },
+  'oss-product-builder': { status: 'open-source', roleStatus: 'needs-confirmation' },
+  gleave: { status: 'active-platform', roleStatus: 'needs-confirmation' },
+  'personalized-llm': { status: 'foundation', roleStatus: 'needs-confirmation' },
+  'code-review-100': { status: 'learning-platform', roleStatus: 'needs-confirmation' },
+  harufit: { status: 'desktop-app', roleStatus: 'needs-confirmation' },
+  'npc-platform': { status: 'self-hosted-platform', roleStatus: 'needs-confirmation' },
+  claimlatch: { status: 'open-source-library', roleStatus: 'needs-confirmation' },
+  til: { status: 'learning-log', roleStatus: 'self-recorded' },
+  'restart-til': { status: 'learning-log', roleStatus: 'self-recorded' },
+  'coding-test': { status: 'auto-collected', roleStatus: 'needs-confirmation' },
+  'programmers-discord-bot': { status: 'automation', roleStatus: 'needs-confirmation' },
+  mindtrace: { status: 'work-in-progress', roleStatus: 'needs-confirmation' },
+  'asmr-playground': { status: 'deployed-web', roleStatus: 'needs-confirmation' },
+});
+
 const project = (config) => ({
-  linkLabel: 'GitHub 열기',
-  repoUrl: config.repo?.startsWith('sunwoo162/') ? `https://github.com/${config.repo}` : null,
-  status: config.status ?? (config.id === 'dev-sky-archive' ? 'prototype' : 'catalogued'),
-  roleStatus: config.roleStatus ?? (config.role?.includes('확인 필요') ? 'needs-confirmation' : 'self-recorded'),
   ...config,
+  linkLabel: config.linkLabel ?? 'GitHub 열기',
+  repoUrl: config.repo?.startsWith('sunwoo162/') ? `https://github.com/${config.repo}` : null,
+  status: recordMetadata[config.id]?.status ?? config.status ?? 'catalogued',
+  roleStatus: recordMetadata[config.id]?.roleStatus ?? config.roleStatus ?? 'needs-confirmation',
 });
 
 export const islands = [
