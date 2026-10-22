@@ -211,6 +211,7 @@ function renderProject() {
   const projectAction = project.repoUrl
     ? `<a class="primary-action" href="${project.repoUrl}" target="_blank" rel="noreferrer">${project.linkLabel} <span>↗</span></a>`
     : `<button type="button" class="primary-action" disabled>${project.linkLabel} <span>↗</span></button>`;
+  const roleStatusLabel = project.roleStatus === 'needs-confirmation' ? 'NEEDS CONFIRMATION' : 'SELF-RECORDED';
   document.querySelector('#project-toolbar-meta').textContent = `${island.shortTitle} / PROJECT EXHIBIT`;
   document.querySelector('#project-exhibit').innerHTML = `
     <div class="exhibit-grid" style="--project-color:${project.color}">
@@ -219,6 +220,7 @@ function renderProject() {
         <h1 id="project-title">${project.title}</h1>
         <p class="exhibit-summary">${project.summary}</p>
         <div class="project-tags">${project.stack.map((tag) => `<span>${tag}</span>`).join('')}</div>
+        <div class="exhibit-meta"><span><b>REPOSITORY</b>${project.repo}</span><span><b>STATUS</b>${project.status}</span><span><b>ROLE CONFIDENCE</b>${roleStatusLabel}</span></div>
         <div class="exhibit-actions">${projectAction}<button type="button" class="text-action" id="inline-back">전시로 돌아가기</button></div>
       </div>
       <div class="exhibit-visual-wrap"><div class="visual-kicker"><span>INTERACTIVE CASE VIEW</span><span>01 / 04</span></div>${visualMarkup(project)}<div class="visual-shadow"></div></div>

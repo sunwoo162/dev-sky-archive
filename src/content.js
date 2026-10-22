@@ -1,6 +1,8 @@
 const project = (config) => ({
   linkLabel: 'GitHub 열기',
   repoUrl: config.repo?.startsWith('sunwoo162/') ? `https://github.com/${config.repo}` : null,
+  status: config.status ?? (config.id === 'dev-sky-archive' ? 'prototype' : 'catalogued'),
+  roleStatus: config.roleStatus ?? (config.role?.includes('확인 필요') ? 'needs-confirmation' : 'self-recorded'),
   ...config,
 });
 

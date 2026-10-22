@@ -73,3 +73,15 @@ test('the playable exhibit catalog exposes development logs for every project', 
     assert.ok(project.repo || project.id === 'dev-sky-archive', `${project.id} needs a repository link or local record`);
   }
 });
+
+test('every playable exhibit exposes repository and role certainty metadata', () => {
+  const projects = islands.flatMap((island) => island.projects);
+
+  for (const project of projects) {
+    assert.ok(project.repo, `${project.id} needs a repository reference`);
+    assert.ok(project.status, `${project.id} needs a status`);
+    assert.ok(['self-recorded', 'needs-confirmation'].includes(project.roleStatus), `${project.id} needs role certainty metadata`);
+    assert.ok(project.repoUrl || project.id === 'dev-sky-archive', `${project.id} needs a GitHub URL or local-only exception`);
+    assert.ok(project.detailSource, `${project.id} needs a source label`);
+  }
+});
