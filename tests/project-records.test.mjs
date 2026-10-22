@@ -87,6 +87,28 @@ test('every playable exhibit exposes repository and role certainty metadata', ()
   }
 });
 
+test('every playable exhibit exposes temporary portfolio material slots', () => {
+  const projects = islands.flatMap((island) => island.projects);
+
+  for (const project of projects) {
+    assert.ok(Array.isArray(project.materials) && project.materials.length >= 4, `${project.id} needs portfolio material slots`);
+    assert.deepEqual(
+      new Set(project.materials.map((material) => material.kind)),
+      new Set(['SCREEN', 'SYSTEM', 'ROLE', 'EVIDENCE', 'PORTFOLIO', 'SELFINTRO', 'PROJECT', 'OTHER']),
+      `${project.id} needs every replacement material category`,
+    );
+    for (const material of project.materials) {
+      assert.ok(material.kind, `${project.id} material needs a kind`);
+      assert.ok(material.title, `${project.id} material needs a title`);
+      assert.ok(material.description, `${project.id} material needs a description`);
+      assert.equal(material.status, 'temporary', `${project.id} material should remain temporary until replaced`);
+    }
+  }
+
+  assert.match(appSource, /exhibit-materials/);
+  assert.match(appSource, /REPLACE WITH REAL MATERIAL/);
+});
+
 test('playable exhibit metadata stays aligned with the records source of truth', () => {
   const projects = new Map(islands.flatMap((island) => island.projects).map((project) => [project.id, project]));
 

@@ -23,8 +23,76 @@ const recordMetadata = Object.freeze({
   'asmr-playground': { status: 'deployed-web', roleStatus: 'needs-confirmation' },
 });
 
+const temporaryMaterials = (config) => config.materials ?? [
+  {
+    kind: 'SCREEN',
+    label: 'SCREENSHOT SLOT',
+    title: `${config.title} 실제 화면`,
+    description: '실제 서비스 화면 캡처나 짧은 GIF를 넣을 자리입니다.',
+    format: 'PNG / GIF / FIGMA',
+    status: 'temporary',
+  },
+  {
+    kind: 'SYSTEM',
+    label: 'SYSTEM MAP SLOT',
+    title: '시스템 구조와 데이터 흐름',
+    description: '컴포넌트, API, 상태 흐름을 보여주는 구조도를 넣을 자리입니다.',
+    format: 'DIAGRAM / FLOW',
+    status: 'temporary',
+  },
+  {
+    kind: 'ROLE',
+    label: 'ROLE PROOF SLOT',
+    title: '내 역할을 보여주는 자료',
+    description: '담당 화면, PR, 커밋, 협업 기록 등 역할 근거를 넣을 자리입니다.',
+    format: 'PR / COMMIT / NOTE',
+    status: 'temporary',
+  },
+  {
+    kind: 'EVIDENCE',
+    label: 'EVIDENCE SLOT',
+    title: 'README와 배포 결과',
+    description: '실제 링크, 회고, 성능 지표, 배포 화면을 연결할 자리입니다.',
+    format: 'LINK / METRIC / DEMO',
+    status: 'temporary',
+  },
+  {
+    kind: 'PORTFOLIO',
+    label: 'PORTFOLIO SLOT',
+    title: '프로젝트 포트폴리오 본문',
+    description: '문제, 해결 과정, 결과를 정리한 최종 포트폴리오 페이지를 넣을 자리입니다.',
+    format: 'CASE STUDY / PDF / LINK',
+    status: 'temporary',
+  },
+  {
+    kind: 'SELFINTRO',
+    label: 'SELF-INTRO SLOT',
+    title: '자기소개서와 지원 문장',
+    description: '이 프로젝트에서 보여준 강점과 배운 점을 지원 문장으로 정리할 자리입니다.',
+    format: 'DOC / HWP / NOTION',
+    status: 'temporary',
+  },
+  {
+    kind: 'PROJECT',
+    label: 'PROJECT NOTE SLOT',
+    title: '프로젝트 설명 원고',
+    description: '면접이나 발표에서 읽을 수 있는 프로젝트 설명과 1분 요약을 넣을 자리입니다.',
+    format: 'SCRIPT / SLIDES / DEMO',
+    status: 'temporary',
+  },
+  {
+    kind: 'OTHER',
+    label: 'OTHER MATERIAL SLOT',
+    title: '기타 자료와 링크',
+    description: '이력서, 발표 자료, 회고, 인증서 등 나머지 자료를 연결할 자리입니다.',
+    format: 'PDF / LINK / ETC',
+    status: 'temporary',
+  },
+];
+
 const project = (config) => ({
   ...config,
+  materials: temporaryMaterials(config),
   linkLabel: config.linkLabel ?? 'GitHub 열기',
   repoUrl: config.repo?.startsWith('sunwoo162/') ? `https://github.com/${config.repo}` : null,
   status: recordMetadata[config.id]?.status ?? config.status ?? 'catalogued',

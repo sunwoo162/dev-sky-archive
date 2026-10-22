@@ -20,6 +20,8 @@ test('sky landing screen keeps Korean title lines intact and exposes clear map c
   assert.match(css, /\.sky-map-label[^}]*color:\s*rgba\(40,64,82/);
   assert.match(css, /\.archive-index-trigger:focus-visible/);
   assert.match(css, /\.island-button:focus-visible/);
+  assert.match(css, /\.app-shell\s*\{[^}]*overflow-x:\s*hidden/);
+  assert.doesNotMatch(css, /\.app-shell\s*\{[^}]*overflow:\s*hidden/);
 });
 
 test('static release workflows verify the app and deploy the archive to Pages', async () => {

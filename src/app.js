@@ -246,6 +246,18 @@ function visualMarkup(project) {
   return `<div class="preview-window generic-window"><div class="preview-nav"><span class="preview-logo">project / preview</span></div><div class="generic-lines"><i></i><i></i><i></i></div></div>`;
 }
 
+function renderMaterials(project) {
+  return project.materials.map((material, index) => `
+    <article class="material-card material-${material.kind.toLowerCase()}">
+      <div class="material-art" aria-hidden="true"><span>${material.kind} / ${String(index + 1).padStart(2, '0')}</span><i></i><b>REPLACE WITH REAL MATERIAL</b></div>
+      <div class="material-card-head"><span>${material.label}</span><em>TEMP</em></div>
+      <h3>${material.title}</h3>
+      <p>${material.description}</p>
+      <small>${material.format}</small>
+    </article>
+  `).join('');
+}
+
 function renderProject() {
   const { project, island } = findProject(state.projectId);
   const projectAction = project.repoUrl
@@ -272,6 +284,14 @@ function renderProject() {
         <div class="dossier-block dossier-note"><span>WHY</span><p>${project.detail}</p></div>
       </div>
     </div>
+    <section class="exhibit-materials" aria-labelledby="materials-title">
+      <div class="materials-heading">
+        <div><span class="materials-kicker">PORTFOLIO MATERIALS / TEMPORARY ARCHIVE</span><h2 id="materials-title">자료 보관함</h2></div>
+        <span class="materials-status">${project.materials.length} SLOTS READY / REPLACE LATER</span>
+      </div>
+      <p class="materials-intro">포트폴리오, 자기소개서, 프로젝트 설명, 기타 증빙 자료가 들어갈 자리를 먼저 만들어뒀습니다. 지금은 화면 구조를 확인하기 위한 임시 카드입니다.</p>
+      <div class="materials-grid">${renderMaterials(project)}</div>
+    </section>
   `;
       document.querySelector('#inline-back').addEventListener('click', closeProjectToIsland);
 }

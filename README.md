@@ -17,6 +17,7 @@ py -m http.server 4173
 - WASD/방향키 이동
 - 프로젝트 표지판 클릭 또는 가까이에서 `E` 입력
 - 프로젝트 전시 화면에서 역할, 기술 스택, 데이터 흐름, 개발 타임라인, 근거 확인
+- 프로젝트마다 화면 캡처·시스템 구조·역할 증빙·README/배포·포트폴리오·자기소개서·프로젝트 설명·기타 자료를 넣을 8개 임시 슬롯
 - 외부 이미지 없이 CSS·Canvas·DOM으로 제작한 비주얼
 - GitHub 레포 35개 인벤토리와 주요 프로젝트 20개 전시 데이터 포함
 - `ARCHIVE INDEX`에서 GitHub 레포 35개를 카테고리별로 한 번에 확인
@@ -37,6 +38,8 @@ py -m http.server 4173
 - `tests/project-records.test.mjs`: 데이터 필드·레포 인벤토리·UI 카탈로그 일치 테스트
 - `tests/accessibility.test.mjs`: live region·reduced motion 접근성 테스트
 - `tests/release-files.test.mjs`: 릴리즈 문서와 ignore 규칙 테스트
+
+전시의 `자료 보관함`에 있는 `TEMP` 카드는 실제 자료를 넣기 전의 자리 표시자입니다. 각 카드의 화면 캡처, 문서, 링크, PDF, 발표 자료 영역을 실제 파일이나 URL로 교체하면 됩니다.
 
 ## 테스트
 
