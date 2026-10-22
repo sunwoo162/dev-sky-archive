@@ -1,0 +1,356 @@
+{
+  "schemaVersion": 1,
+  "owner": "sunwoo162",
+  "generatedAt": "2026-10-22",
+  "purpose": "게임 안에서 프로젝트를 설명하는 전시 데이터",
+  "fieldNotes": {
+    "role.status": "레포만으로 확정할 수 없는 실제 담당 범위는 needs-confirmation으로 남긴다.",
+    "developmentTimeline": "README, manifest, 폴더 구조, 최근 커밋에서 확인한 개발 단계를 기록한다.",
+    "evidence": "화면에 노출해도 되는 근거의 위치와 관찰 내용을 기록한다. 비밀값은 저장하지 않는다."
+  },
+  "projects": [
+    {
+      "id": "dev-sky-archive",
+      "title": "Dev Sky Archive",
+      "repo": null,
+      "category": "personal",
+      "status": "prototype",
+      "summary": "프로젝트를 3D 하늘섬에서 선택하고 2D 탑다운 월드에서 탐방하는 포트폴리오 게임.",
+      "stack": ["HTML", "CSS", "JavaScript", "Canvas", "Node test runner", "Python HTTP server"],
+      "role": {
+        "status": "self-recorded",
+        "summary": "컨셉 정의, 정보 구조, 인터랙션 설계, 프론트엔드 프로토타입 구현"
+      },
+      "developmentTimeline": [
+        {"phase": "problem", "title": "내가 어떤 프로젝트를 했는지 모른다", "detail": "레포·포트폴리오·TIL을 한눈에 찾을 수 있는 시각적 아카이브가 필요하다고 정의했다.", "source": "conversation"},
+        {"phase": "world-model", "title": "건물에서 하늘섬 구조로 전환", "detail": "3D 하늘맵은 카테고리를 선택하는 지도, 2D 화면은 실제 프로젝트를 탐방하는 공간으로 분리했다.", "source": "conversation"},
+        {"phase": "playable-prototype", "title": "클릭 → 2D 맵 → 전시 화면", "detail": "섬 클릭, Canvas 탑다운 맵, WASD/방향키 이동, E키·표지판 클릭, 프로젝트 전시 전환을 구현했다.", "source": "src/app.js, src/game-state.js"},
+        {"phase": "data-model", "title": "레포 근거를 프로젝트 데이터로 정규화", "detail": "기술 스택, 기능, 개발 과정, 커밋 근거, 역할 확인 상태를 데이터 필드로 분리했다.", "source": "data/project-records.json"}
+      ],
+      "evidence": ["index.html", "src/app.js", "src/content.js", "src/game-state.js", "tests/game-state.test.mjs", "tests/project-records.test.mjs"],
+      "links": {"local": "outputs/dev-sky-archive/index.html"}
+    },
+    {
+      "id": "washer-client-v2",
+      "title": "Washer Client v2",
+      "repo": "sunwoo162/Washer-Client-v2",
+      "category": "team",
+      "status": "active-repo",
+      "summary": "세탁기 관리 시스템의 클라이언트 애플리케이션.",
+      "stack": ["Next.js 16", "React 19", "TypeScript", "Tailwind CSS 4", "TanStack Query", "React Hook Form", "Zod", "Radix UI", "Axios", "Biome"],
+      "role": {"status": "needs-confirmation", "summary": "클라이언트 구조와 프론트엔드 리팩터링 기여 범위를 사용자 확인 필요"},
+      "developmentTimeline": [
+        {"phase": "foundation", "title": "Next.js App Router와 FSD 구조", "detail": "app, entities, shared, views, widgets로 화면과 도메인 책임을 분리했다.", "source": "README.md"},
+        {"phase": "data-flow", "title": "서버 상태와 캐싱 정책 도입", "detail": "TanStack Query QueryClient를 고정하고 staleTime/gcTime 정책을 정리했다.", "source": "recent commits: b7c8f65, a34dbe9"},
+        {"phase": "validation", "title": "API 응답 스키마 검증", "detail": "예약·사용자·기계·리포트 응답에 Zod 검증을 추가하고 nullable 필드를 정리했다.", "source": "recent commits: 3bde17f, 1028930, 48df8bc"},
+        {"phase": "reliability", "title": "에러 처리와 인증 세션 정리", "detail": "공통 API 에러 분류와 인증 세션 정리 로직을 분리했다.", "source": "recent commits: 0f27155, bdecbcc, da902d6"}
+      ],
+      "evidence": ["README.md", "package.json", "src/app", "src/entities", "src/shared", "src/views", "src/widgets", "recent commits"],
+      "links": {"github": "https://github.com/sunwoo162/Washer-Client-v2"}
+    },
+    {
+      "id": "bloom-bouquet",
+      "title": "BloomBouquet",
+      "repo": "sunwoo162/Playground",
+      "category": "team",
+      "status": "production-oriented",
+      "summary": "팀 프로젝트를 버전별로 제출하고, 여러 전문 평가자가 근거 기반 리포트를 남기는 프로젝트 평가 플랫폼.",
+      "stack": ["React", "Vite", "TypeScript", "Node.js", "Express", "Spring Boot", "MySQL", "pnpm", "OAuth 2.0 PKCE"],
+      "role": {"status": "needs-confirmation", "summary": "BloomBouquet 전체에서 담당한 화면·런타임·백엔드 범위를 사용자 확인 필요"},
+      "developmentTimeline": [
+        {"phase": "product-definition", "title": "프로젝트 → 제출 → 평가 → 집계 흐름 정의", "detail": "프로젝트 버전과 독립 평가를 연결하는 제품 흐름을 README에 명시했다.", "source": "README.md"},
+        {"phase": "platform-split", "title": "웹·백엔드·런타임 분리", "detail": "bloom-web, backend, server, bloom-runtime, bloom-worker로 실행 경계를 나눴다.", "source": "README.md"},
+        {"phase": "verification", "title": "정책·하네스·워커 검증 루프 추가", "detail": "git metadata recovery, no-op write, read/write loop 등 실패 케이스를 테스트로 고정했다.", "source": "recent commits: 424a709, 105c62a, 6a5e33c"},
+        {"phase": "deployment", "title": "운영 웹과 배포 흐름 정리", "detail": "Vite 빌드, Node 서버, GitHub Actions 배포 경로를 문서화했다.", "source": "README.md, package.json"}
+      ],
+      "evidence": ["README.md", "package.json", "bloom-web", "backend", "server", "bloom-runtime", "bloom-worker", "recent commits"],
+      "links": {"github": "https://github.com/sunwoo162/Playground", "production": "https://bloombouquet.https.gsmsv.site/"}
+    },
+    {
+      "id": "repo-dock",
+      "title": "RepoDock",
+      "repo": "sunwoo162/RD",
+      "category": "personal",
+      "status": "released",
+      "summary": "로컬 저장소를 관리하고 동기화하는 Windows 데스크톱 도구.",
+      "stack": ["Rust", "Cargo", "Windows x64", "Git runtime", "Windows installer"],
+      "role": {"status": "needs-confirmation", "summary": "제품 설계·Rust 코어·Windows 배포 중 실제 담당 범위 확인 필요"},
+      "developmentTimeline": [
+        {"phase": "safe-sync-core", "title": "안전한 저장소 동기화 코어", "detail": "branch 선택, Git runtime, config 수정, sync 실패를 다루는 코어를 먼저 만들었다.", "source": "recent commits: feat: safe-sync core"},
+        {"phase": "desktop-ui", "title": "매니저 UI와 트레이 포터블 실행", "detail": "Windows tray, manager UI, action validation과 benchmark를 붙였다.", "source": "recent commits: feat: manager UI and benchmarks, feat: windows tray portable"},
+        {"phase": "release", "title": "정식 릴리스와 설치 파일", "detail": "v1.0.0 portable, v1.1.0 설치형·ZIP 다운로드를 제공했다.", "source": "README.md, recent commits: release v1.0.0, versioned download links"}
+      ],
+      "evidence": ["README.md", "Cargo.toml", "apps", "crates", "installer", "recent commits"],
+      "links": {"github": "https://github.com/sunwoo162/RD", "releases": "https://github.com/sunwoo162/RD/releases"}
+    },
+    {
+      "id": "structure-board-lab",
+      "title": "구조판 LAB",
+      "repo": "sunwoo162/fire-evac-ai-hackathon",
+      "category": "team",
+      "status": "demo",
+      "summary": "아파트 화재 상황을 가상 공간에서 실험하고 관찰하는 독립 실행형 3D 시뮬레이션.",
+      "stack": ["HTML", "CSS", "JavaScript", "코드 기반 3D 렌더링", "브라우저 시뮬레이션 엔진"],
+      "role": {"status": "needs-confirmation", "summary": "해커톤 당시 하드웨어·시뮬레이션·프론트엔드 중 담당 범위 확인 필요"},
+      "developmentTimeline": [
+        {"phase": "hackathon", "title": "구조판 LAB 설치 없는 실시간 데모", "detail": "기존 하드웨어 직접 연결 범위와 분리된 독립 실행형 시뮬레이션으로 정리했다.", "source": "README.md"},
+        {"phase": "simulation", "title": "단지·동·층·세대 관찰", "detail": "8개 동 아파트 단지, 층 단면, 가상 센서, 연기 확산, 경로 안내를 코드 기반으로 구성했다.", "source": "README.md"},
+        {"phase": "scope-control", "title": "실물 IoT와 연구 모델의 한계 명시", "detail": "Arduino·ESP32·USB·MQTT·실제 신고 기능을 제외하고 합성 연구 모델임을 문서화했다.", "source": "README.md, recent commits"}
+      ],
+      "evidence": ["README.md", "simulation/index.html", "docs", "tests", "recent commits"],
+      "links": {"github": "https://github.com/sunwoo162/fire-evac-ai-hackathon"}
+    },
+    {
+      "id": "focus-time",
+      "title": "FocusTime",
+      "repo": "sunwoo162/FocusTime",
+      "category": "personal",
+      "status": "deployed-extension",
+      "summary": "웹사이트 사용 시간 추적, 일일 한도 설정, 방해 사이트 차단을 제공하는 Chrome 확장.",
+      "stack": ["Chrome Extension Manifest V3", "JavaScript", "PowerShell", "GitHub Pages", "GitHub Actions"],
+      "role": {"status": "needs-confirmation", "summary": "확장 기능·로컬 트래커·랜딩 페이지 기여 범위 확인 필요"},
+      "developmentTimeline": [
+        {"phase": "extension", "title": "사이트 추적과 차단", "detail": "service worker, popup, dashboard, storage와 alarms 권한으로 사용량과 제한을 관리한다.", "source": "README.md, manifest.json"},
+        {"phase": "local-tracker", "title": "Windows 앱 사용량 수집", "detail": "PowerShell tracker와 bat launcher를 추가해 브라우저 밖 앱 사용량을 연결했다.", "source": "README.md"},
+        {"phase": "release", "title": "랜딩 페이지와 릴리스 자동화", "detail": "설치 단계 모션, phone frame preview, GitHub Pages와 release workflow를 추가했다.", "source": "recent commits"}
+      ],
+      "evidence": ["README.md", "manifest.json", "background.js", "dashboard.*", "popup.*", "FocusTimeTracker.ps1", "recent commits"],
+      "links": {"github": "https://github.com/sunwoo162/FocusTime"}
+    },
+    {
+      "id": "webbridge",
+      "title": "WebBridge",
+      "repo": "sunwoo162/webbridge",
+      "category": "personal",
+      "status": "prototype",
+      "summary": "API가 없는 웹 서비스를 규칙 기반으로 연결하는 Chrome 확장.",
+      "stack": ["Chrome Extension Manifest V3", "JavaScript", "DOM automation", "Webhooks", "Browser storage"],
+      "role": {"status": "needs-confirmation", "summary": "규칙 엔진·DOM 추출·옵션 UI의 실제 담당 범위 확인 필요"},
+      "developmentTimeline": [
+        {"phase": "rule-engine", "title": "추출 → 변환 → 전송 흐름", "detail": "웹페이지 데이터를 추출하고 변환한 뒤 웹훅이나 다른 폼으로 보내는 규칙 모델을 정의했다.", "source": "README.md"},
+        {"phase": "browser-ui", "title": "팝업·옵션·가이드 화면", "detail": "현재 탭 실행, 규칙 생성·수정·복제·삭제, 예제 생성기를 분리했다.", "source": "README.md, root tree"},
+        {"phase": "safety", "title": "자동화 경계 문서화", "detail": "비밀번호 입력, 로그인·캡차 우회 금지와 민감값 전송 주의사항을 명시했다.", "source": "README.md"}
+      ],
+      "evidence": ["README.md", "manifest.json", "background.js", "content.js", "popup", "options", "examples"],
+      "links": {"github": "https://github.com/sunwoo162/webbridge"}
+    },
+    {
+      "id": "oss-product-builder",
+      "title": "OSS Product Builder",
+      "repo": "sunwoo162/EEEE",
+      "category": "personal",
+      "status": "open-source",
+      "summary": "제품 요청을 OSS 비교, 명시적 승인, 기록된 workspace 실행으로 연결하는 로컬 우선 FastAPI 워크벤치.",
+      "stack": ["Python 3.12", "FastAPI", "Pydantic Settings", "SQLite", "pytest", "Docker", "Optional PySide6", "Optional OpenHands"],
+      "role": {"status": "needs-confirmation", "summary": "제품·API·안전 정책·UI 중 실제 담당 범위 확인 필요"},
+      "developmentTimeline": [
+        {"phase": "request-to-run", "title": "요청 → 조사 → 승인 → 실행 흐름", "detail": "승인 전 실행을 HTTP 409로 막고, workspace와 실행 이벤트를 저장하는 경계를 만들었다.", "source": "README.md"},
+        {"phase": "evidence-ui", "title": "연구·근거·실행 상태를 UI에 노출", "detail": "후보, evidence, run history, artifacts와 상태 변화를 브라우저에서 확인하게 했다.", "source": "recent commits: show recorded test commands, expose async statuses"},
+        {"phase": "release-safety", "title": "로컬 실행과 배포 안전성 강화", "detail": "정적 안전 리뷰, 중복 요청 방지, cross-process 실행 fence와 release artifact 검사를 추가했다.", "source": "README.md, recent commits"}
+      ],
+      "evidence": ["README.md", "pyproject.toml", "app", "tests", "docs", "scripts", "recent commits"],
+      "links": {"github": "https://github.com/sunwoo162/EEEE"}
+    },
+    {
+      "id": "gleave",
+      "title": "Gleave",
+      "repo": "sunwoo162/gleave",
+      "category": "personal",
+      "status": "active-platform",
+      "summary": "EEEE, ISEOL, ClaimLatch를 묶은 local-first 개인 assistant·project runtime 플랫폼.",
+      "stack": ["Python", "TypeScript", "SQLite", "ISEOL", "ClaimLatch", "Notion/GitHub/Calendar adapters", "Desktop/Web runtime"],
+      "role": {"status": "needs-confirmation", "summary": "플랫폼 아키텍처와 각 런타임 모듈의 담당 범위 확인 필요"},
+      "developmentTimeline": [
+        {"phase": "platform-boundary", "title": "EEE · ISEOL · ClaimLatch 역할 분리", "detail": "context/capability 선택, 프로젝트 실행, evidence-backed verification을 서로 다른 경계로 정의했다.", "source": "README.md"},
+        {"phase": "local-runtime", "title": "프로젝트 런타임과 영속 상태", "detail": "workspace, connector, QA baseline, project memory를 하나의 projectId 아래 연결했다.", "source": "README.md"},
+        {"phase": "isolation-hardening", "title": "사용자 범위와 재시작 복구", "detail": "대화·선호·리뷰 evidence·백그라운드 작업을 사용자별로 분리하고 재시작 시 작업을 복구했다.", "source": "recent commits"}
+      ],
+      "evidence": ["README.md", "repository-manifest.json", "apps", "packages", "integrations", "docs", "recent commits"],
+      "links": {"github": "https://github.com/sunwoo162/gleave"}
+    },
+    {
+      "id": "personalized-llm",
+      "title": "EEEE Personal LLM",
+      "repo": "sunwoo162/eeee-personal-llm",
+      "category": "personal",
+      "status": "foundation",
+      "summary": "승인된 profile과 memory만 사용해 답장 초안을 만들고 외부 행동은 typed proposal로 제한하는 로컬 우선 개인화 LLM 서비스.",
+      "stack": ["Python 3.12", "FastAPI", "Pydantic", "SQLite", "Ollama", "Transformers", "PEFT/LoRA", "pytest"],
+      "role": {"status": "needs-confirmation", "summary": "개인화 LLM contract·학습·평가 중 실제 담당 범위 확인 필요"},
+      "developmentTimeline": [
+        {"phase": "contract", "title": "profile·memory·draft contract", "detail": "사용자·관계·프로젝트·세션 범위 저장소와 승인·revoke·provenance audit 경계를 만들었다.", "source": "README.md"},
+        {"phase": "safety", "title": "privacy와 action safety 평가", "detail": "민감값 정제와 외부 행동 차단을 평가 harness로 검증했다.", "source": "README.md"},
+        {"phase": "model-evaluation", "title": "Ollama baseline과 style gate", "detail": "의도·privacy·action·latency·style을 report hash와 함께 기록하는 평가 CLI를 추가했다.", "source": "README.md, recent commits"},
+        {"phase": "adapter", "title": "Transformers/PEFT adapter registry", "detail": "평가 gate를 통과한 adapter만 승격하고 rollback 메타데이터를 보존하는 registry를 추가했다.", "source": "recent commits"}
+      ],
+      "evidence": ["README.md", "pyproject.toml", "src", "evaluation", "tests", "scripts", "recent commits"],
+      "links": {"github": "https://github.com/sunwoo162/eeee-personal-llm"}
+    },
+    {
+      "id": "code-review-100",
+      "title": "CodeReview 100",
+      "repo": "sunwoo162/CodeReview-100",
+      "category": "personal",
+      "status": "learning-platform",
+      "summary": "100일 코드 리뷰 학습 과정과 TIL 진행 상태를 관리하는 웹 플랫폼.",
+      "stack": ["Next.js 16", "React 19", "TypeScript", "Prisma", "PostgreSQL", "Zod", "Vitest", "Playwright", "Tailwind CSS"],
+      "role": {"status": "needs-confirmation", "summary": "학습 서비스 도메인·인증·DB·E2E 중 실제 담당 범위 확인 필요"},
+      "developmentTimeline": [
+        {"phase": "curriculum", "title": "100일 리뷰 커리큘럼 구성", "detail": "학습 일차, 진행 시작, 완료 상태와 TIL publication을 제품 흐름으로 만들었다.", "source": "recent commits"},
+        {"phase": "persistence", "title": "PostgreSQL과 Prisma 마이그레이션", "detail": "배포 가능한 DB migration과 health check를 추가했다.", "source": "recent commits"},
+        {"phase": "quality", "title": "인증 경계와 브라우저 E2E", "detail": "owner session boundary, stale TIL SHA 복구, Playwright 인증 흐름을 테스트했다.", "source": "recent commits, package.json"}
+      ],
+      "evidence": ["package.json", "prisma", "src", "tests", "e2e", "playwright.config.ts", "recent commits"],
+      "links": {"github": "https://github.com/sunwoo162/CodeReview-100"}
+    },
+    {
+      "id": "harufit",
+      "title": "하루핏",
+      "repo": "sunwoo162/100day",
+      "category": "personal",
+      "status": "desktop-app",
+      "summary": "100일 동안 노트북·휴대폰·GitHub 활동 데이터를 모아 확인하는 개인 라이프로그 대시보드.",
+      "stack": ["React", "Vite", "Node.js", "SQLite", "Electron", "TypeScript", "Docker", "pnpm"],
+      "role": {"status": "needs-confirmation", "summary": "데스크톱 앱·API·트래커·차트 중 실제 담당 범위 확인 필요"},
+      "developmentTimeline": [
+        {"phase": "dashboard", "title": "활동 데이터 대시보드", "detail": "앱 사용량, 일일 목표, analytics time chart를 화면에 정리했다.", "source": "README.md, recent commits"},
+        {"phase": "local-api", "title": "Node API와 SQLite 연결", "detail": "프론트엔드와 서버를 나누고 node:sqlite 기반 로컬 DB를 자동 생성한다.", "source": "README.md, package.json"},
+        {"phase": "desktop", "title": "Electron 패키징과 배포", "detail": "Windows installer, desktop protocol, GitHub callback과 Docker 실행 경로를 추가했다.", "source": "README.md, package.json, recent commits"}
+      ],
+      "evidence": ["README.md", "package.json", "src", "server", "electron", "scripts", "recent commits"],
+      "links": {"github": "https://github.com/sunwoo162/100day"}
+    },
+    {
+      "id": "npc-platform",
+      "title": "NPC",
+      "repo": "sunwoo162/iseol-bot",
+      "category": "personal",
+      "status": "self-hosted-platform",
+      "summary": "개인 작업공간, 프로젝트 실행 기록, 학습·협업·포트폴리오 흐름을 연결하는 self-hosted 플랫폼.",
+      "stack": ["Node.js", "TypeScript", "Discord.js", "tsx", "GitHub/Notion/Figma/Vercel adapters", "Web UI"],
+      "role": {"status": "needs-confirmation", "summary": "웹 제품·Discord 자동화·runtime의 실제 담당 범위 확인 필요"},
+      "developmentTimeline": [
+        {"phase": "product", "title": "개인 세계와 프로젝트 작업실 연결", "detail": "학습·팀·커뮤니티·포트폴리오를 하나의 사용자 경험으로 묶었다.", "source": "README.md"},
+        {"phase": "automation", "title": "Discord와 개발 도구 연결", "detail": "프로젝트 구조 생성, GitHub/Notion/Figma 연결, 일정·스크럼 자동화를 제공한다.", "source": "README.md"},
+        {"phase": "safety", "title": "self-hosted와 선택적 integration", "detail": "외부 서비스와 자격증명은 명시적으로 활성화한 경우만 사용하도록 경계를 문서화했다.", "source": "README.md"}
+      ],
+      "evidence": ["README.md", "package.json", "src", "user-ui", "web", "tests", "docs"],
+      "links": {"github": "https://github.com/sunwoo162/iseol-bot"}
+    },
+    {
+      "id": "claimlatch",
+      "title": "ClaimLatch",
+      "repo": "sunwoo162/claimlatch",
+      "category": "personal",
+      "status": "open-source-library",
+      "summary": "LLM 답변을 근거 기반으로 검증하고 PASS/BLOCK하는 evidence-backed release gate.",
+      "stack": ["TypeScript", "Node.js 20", "PDF.js", "CLI", "Node test runner"],
+      "role": {"status": "needs-confirmation", "summary": "claim extraction·evidence provider·verification policy 중 담당 범위 확인 필요"},
+      "developmentTimeline": [
+        {"phase": "pipeline", "title": "초안 → claim → evidence → verdict", "detail": "SUPPORTED, CONTRADICTED, UNSUPPORTED, UNVERIFIABLE 상태를 결정론적으로 만든다.", "source": "README.md"},
+        {"phase": "release-gate", "title": "PASS/BLOCK 정책과 receipt", "detail": "coverage를 accuracy로 오해하지 않도록 분리하고 release 검증 명령을 추가했다.", "source": "README.md, package.json"},
+        {"phase": "provider-hardening", "title": "모델 provider fail-closed 처리", "detail": "외부 provider 모델 retrieval 실패를 명시적으로 차단하는 변경을 반복했다.", "source": "recent commits"}
+      ],
+      "evidence": ["README.md", "package.json", "src", "tests", "benchmarks", "docs", "recent commits"],
+      "links": {"github": "https://github.com/sunwoo162/claimlatch"}
+    },
+    {
+      "id": "til",
+      "title": "TIL",
+      "repo": "sunwoo162/TIL",
+      "category": "til",
+      "status": "learning-log",
+      "summary": "React Native, 네트워크, Git, FSD 등 배운 내용을 쌓아두는 Today I Learned 저장소.",
+      "stack": ["Markdown", "Git", "React Native notes", "Network notes"],
+      "role": {"status": "self-recorded", "summary": "학습 기록 작성과 구조화"},
+      "developmentTimeline": [
+        {"phase": "foundation", "title": "기초 개념 정리", "detail": "운영체제·HTTP·HTML·Git 등 초기 노트를 추가하고 정리했다.", "source": "commit history"},
+        {"phase": "frontend", "title": "React Native와 FSD 학습", "detail": "React Native, FSD/FDA, 네트워크 IO 관련 기록을 추가했다.", "source": "README.md, recent commits"},
+        {"phase": "maintenance", "title": "Git과 노트 구조 재정리", "detail": "Git.md, Network.md와 기존 문서를 계속 갱신했다.", "source": "recent commits"}
+      ],
+      "evidence": ["README.md", "LearnReactNative.md", "Network.md", "TIL/", "recent commits"],
+      "links": {"github": "https://github.com/sunwoo162/TIL"}
+    },
+    {
+      "id": "restart-til",
+      "title": "Restart TIL",
+      "repo": "sunwoo162/Restart-TIL",
+      "category": "til",
+      "status": "learning-log",
+      "summary": "매일 공부한 내용을 내 방식으로 다시 정리하는 학습 저장소.",
+      "stack": ["Markdown", "Cornell notes", "Frontend notes", "HTTP notes", "PL notes"],
+      "role": {"status": "self-recorded", "summary": "학습 기록 작성과 재정리"},
+      "developmentTimeline": [
+        {"phase": "rule", "title": "나만의 기록 규칙 정의", "detail": "완벽히 이해한 내용을 내 방식으로 정리하고 하루 1개 이상 기록한다는 규칙을 세웠다.", "source": "README.md"},
+        {"phase": "frontend", "title": "프론트엔드 개념을 Cornell note로 재작성", "detail": "프레임워크·라이브러리·TanStack Query·useQuery를 질문과 답 구조로 남겼다.", "source": "recent commits"},
+        {"phase": "project-learning", "title": "미니뱅크 도메인 모델 학습", "detail": "account/customer domain model과 웹 개발 프로젝트 기록을 추가했다.", "source": "recent commits"}
+      ],
+      "evidence": ["README.md", "Frontend/", "HTTP/", "Today I Learn/", "recent commits"],
+      "links": {"github": "https://github.com/sunwoo162/Restart-TIL"}
+    },
+    {
+      "id": "coding-test",
+      "title": "Coding Test",
+      "repo": "sunwoo162/Coding-Test",
+      "category": "til",
+      "status": "auto-collected",
+      "summary": "BaekjoonHub가 백준·프로그래머스 풀이를 자동 push하는 알고리즘 기록 저장소.",
+      "stack": ["BaekjoonHub", "GitHub Actions", "Baekjoon", "Programmers"],
+      "role": {"status": "needs-confirmation", "summary": "문제 풀이와 자동화 workflow 중 실제 관리 범위 확인 필요"},
+      "developmentTimeline": [
+        {"phase": "auto-collection", "title": "문제 풀이 자동 기록", "detail": "문제별 풀이와 실행 시간·메모리 정보가 커밋으로 남는다.", "source": "README.md, commit messages"},
+        {"phase": "playground-link", "title": "코테 일지 연결 준비", "detail": "commitSha와 repo 정보를 Playground 링크에 포함하는 변경을 추가했다.", "source": "recent commits"}
+      ],
+      "evidence": ["README.md", "백준/", "프로그래머스/", "scripts/", "recent commits"],
+      "links": {"github": "https://github.com/sunwoo162/Coding-Test"}
+    },
+    {
+      "id": "programmers-discord-bot",
+      "title": "프로그래머스 Discord 알림 봇",
+      "repo": "sunwoo162/codingtestbot",
+      "category": "personal",
+      "status": "automation",
+      "summary": "프로그래머스 문제 풀이 커밋을 감지해 Discord로 알림하고 하루 목표를 체크하는 봇.",
+      "stack": ["Node.js", "GitHub Actions", "Discord Webhook", "JavaScript"],
+      "role": {"status": "needs-confirmation", "summary": "커밋 파싱·스트릭·workflow 중 실제 담당 범위 확인 필요"},
+      "developmentTimeline": [
+        {"phase": "notification", "title": "커밋 메시지 파싱과 Discord 알림", "detail": "여러 커밋 메시지 형식을 문제명과 레벨로 파싱해 webhook으로 전송한다.", "source": "README.md"},
+        {"phase": "goal", "title": "KST 기준 하루 2문제 목표", "detail": "KST 06:30 기준 목표 달성·초과 메시지와 문제 링크·스트릭을 추가했다.", "source": "recent commits"}
+      ],
+      "evidence": ["README.md", "package.json", ".github/workflows", "scripts", "recent commits"],
+      "links": {"github": "https://github.com/sunwoo162/codingtestbot"}
+    },
+    {
+      "id": "mindtrace",
+      "title": "MindTrace",
+      "repo": "sunwoo162/ain",
+      "category": "lab",
+      "status": "work-in-progress",
+      "summary": "관찰 가능한 AI 활동을 그래프로 탐색하는 local-first 오픈소스 프로젝트.",
+      "stack": ["Local-first graph explorer", "AI activity events", "Evidence summaries"],
+      "role": {"status": "needs-confirmation", "summary": "첫 feature PR 이후 실제 구현 범위 확인 필요"},
+      "developmentTimeline": [
+        {"phase": "concept", "title": "관찰 가능한 AI 이벤트 그래프 정의", "detail": "prompt, model call, retrieval, tool event, evidence summary, answer를 시각화 대상으로 정했다.", "source": "README.md"},
+        {"phase": "scope", "title": "private reasoning 비노출 원칙", "detail": "관찰된 문서 접근만으로 모델이 사용했다는 결론을 내리지 않도록 범위를 제한했다.", "source": "README.md"}
+      ],
+      "evidence": ["README.md", "feature PR 안내"],
+      "links": {"github": "https://github.com/sunwoo162/ain"}
+    },
+    {
+      "id": "asmr-playground",
+      "title": "ASMR Playground",
+      "repo": "sunwoo162/ADHD",
+      "category": "personal",
+      "status": "deployed-web",
+      "summary": "촉각적인 오브젝트와 소리 피드백을 실험하는 작은 웹 인터랙션.",
+      "stack": ["HTML", "CSS", "JavaScript", "Audio interaction", "GitHub Pages"],
+      "role": {"status": "needs-confirmation", "summary": "인터랙션·사운드·배포 범위 확인 필요"},
+      "developmentTimeline": [
+        {"phase": "playground", "title": "ASMR 상호작용 프로토타입", "detail": "방을 촉각적 오브젝트로 바꾸고 사운드 피드백을 강하게 조정했다.", "source": "recent commits"},
+        {"phase": "deploy", "title": "GitHub Pages 배포", "detail": "사이트 배포 workflow와 landing entry를 추가했다.", "source": "recent commits"}
+      ],
+      "evidence": ["index.html", "app.js", "styles.css", "recent commits"],
+      "links": {"github": "https://github.com/sunwoo162/ADHD"}
+    }
+  ]
+}

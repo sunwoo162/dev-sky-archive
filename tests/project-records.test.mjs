@@ -1,0 +1,75 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import test from 'node:test';
+import { islands } from '../src/content.js';
+
+const here = dirname(fileURLToPath(import.meta.url));
+const readJson = (fileName) => JSON.parse(readFileSync(join(here, '..', 'data', fileName), 'utf8'));
+const records = readJson('project-records.json');
+const inventory = readJson('repo-inventory.json');
+
+test('the current portfolio game is represented as a first-class project record', () => {
+  const project = records.projects.find((item) => item.id === 'dev-sky-archive');
+
+  assert.ok(project);
+  assert.equal(project.title, 'Dev Sky Archive');
+  assert.equal(project.category, 'personal');
+  assert.ok(project.stack.includes('Canvas'));
+  assert.ok(project.developmentTimeline.length >= 3);
+});
+
+test('every curated project has the fields needed by the game exhibit', () => {
+  for (const project of records.projects) {
+    assert.ok(project.id);
+    assert.ok(project.title);
+    assert.ok(project.summary);
+    assert.ok(Array.isArray(project.stack));
+    assert.ok(Array.isArray(project.developmentTimeline));
+    assert.ok(project.role.status);
+    assert.ok(project.evidence.length > 0);
+  }
+});
+
+test('the repository inventory keeps every discovered repository name', () => {
+  assert.equal(inventory.owner, 'sunwoo162');
+  assert.ok(inventory.repositories.length >= 35);
+  for (const name of ['Washer-Client-v2', 'Playground', 'TIL', 'RD', 'gleave', 'claimlatch']) {
+    assert.ok(inventory.repositories.some((repo) => repo.name === name));
+  }
+});
+
+test('the repository inventory is ready for a complete archive index', () => {
+  const classifications = new Set(inventory.repositories.map((repo) => repo.classification));
+  const html = readFileSync(join(here, '..', 'index.html'), 'utf8');
+
+  assert.deepEqual([...classifications].sort(), [
+    'candidate-project',
+    'dependency-or-study',
+    'empty-or-placeholder',
+    'learning-log',
+    'profile-tooling',
+    'sandbox',
+    'tooling',
+  ]);
+  for (const repo of inventory.repositories) {
+    assert.ok(repo.name);
+    assert.ok(repo.note, `${repo.name} needs an inventory note`);
+  }
+  assert.match(html, /id="archive-index-trigger"/);
+});
+
+test('the playable exhibit catalog exposes development logs for every project', () => {
+  const projects = islands.flatMap((island) => island.projects);
+
+  assert.ok(projects.length >= 10);
+  assert.deepEqual(
+    projects.map((project) => project.id).sort(),
+    records.projects.map((project) => project.id).sort(),
+  );
+  for (const project of projects) {
+    assert.ok(Array.isArray(project.timeline) && project.timeline.length >= 2, `${project.id} needs a timeline`);
+    assert.ok(project.repo || project.id === 'dev-sky-archive', `${project.id} needs a repository link or local record`);
+  }
+});

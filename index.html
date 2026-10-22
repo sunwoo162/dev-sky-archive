@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#101728" />
+    <meta name="description" content="프로젝트를 탐방하는 3D 하늘섬 포트폴리오 게임" />
+    <title>Dev Sky Archive — Portfolio World</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <button class="brand-button" id="brand-button" type="button" aria-label="하늘섬 맵으로 돌아가기">
+          <span class="brand-mark" aria-hidden="true">✦</span>
+          <span>
+            <strong>DEV SKY ARCHIVE</strong>
+            <small>MY PROJECT WORLD / 2026</small>
+          </span>
+        </button>
+        <div class="topbar-status">
+          <span class="status-dot"></span>
+          <span id="topbar-mode">SKY MAP</span>
+          <span class="topbar-divider"></span>
+          <span>PORTFOLIO TOUR</span>
+        </div>
+      </header>
+
+      <main>
+        <section class="screen sky-screen" id="sky-screen" aria-labelledby="sky-title">
+          <div class="sky-intro">
+            <p class="eyebrow">WELCOME TO MY WORK ARCHIPELAGO</p>
+            <h1 id="sky-title">내가 만든 것들이<br /><em>하늘에 떠 있어요.</em></h1>
+            <p class="intro-copy">섬을 클릭하면 그 안의 2D 프로젝트 월드로 들어갑니다.<br />직접 돌아다니며 내가 무엇을 만들었는지 찾아보세요.</p>
+            <div class="intro-hint"><span class="mouse-icon">⌁</span> CLICK AN ISLAND TO ENTER</div>
+          </div>
+
+          <div class="sky-map-wrap">
+            <div class="sky-map-label label-top"><span>ARCHIVE SKY / 01</span><span>4 ISLANDS ONLINE</span></div>
+            <div class="sky-stage" id="sky-stage" aria-label="프로젝트 하늘섬 선택 지도">
+              <div class="cloud cloud-a" aria-hidden="true"></div>
+              <div class="cloud cloud-b" aria-hidden="true"></div>
+              <div class="cloud cloud-c" aria-hidden="true"></div>
+              <div class="route route-one" aria-hidden="true"></div>
+              <div class="route route-two" aria-hidden="true"></div>
+              <div class="route route-three" aria-hidden="true"></div>
+              <div class="map-center-marker" aria-hidden="true"><span>YOU ARE HERE</span><i></i></div>
+              <div id="island-list"></div>
+            </div>
+            <div class="sky-map-label label-bottom"><span>CLICK TO DESCEND</span><span>NO DATA LOST IN CLOUDS</span></div>
+          </div>
+
+          <div class="sky-footer">
+            <div><span class="footer-kicker">CURRENT OBJECTIVE</span><strong>프로젝트들을 직접 발견하기</strong></div>
+            <div class="sky-footer-tools">
+              <div class="sky-legend"><span><i class="legend-dot legend-personal"></i> WORKS</span><span><i class="legend-dot legend-team"></i> COLLAB</span><span><i class="legend-dot legend-lab"></i> LAB / TIL</span></div>
+              <button class="archive-index-trigger" id="archive-index-trigger" type="button" aria-haspopup="dialog" aria-controls="archive-index-modal">ARCHIVE INDEX <span>35 REPOS ↗</span></button>
+            </div>
+          </div>
+        </section>
+
+        <div class="archive-modal is-hidden" id="archive-index-modal" role="dialog" aria-modal="true" aria-labelledby="archive-index-title" aria-hidden="true">
+          <div class="archive-modal-panel">
+            <div class="archive-modal-head">
+              <div><p class="eyebrow">REPOSITORY INVENTORY / READ-ONLY</p><h2 id="archive-index-title">ARCHIVE INDEX</h2></div>
+              <button class="archive-modal-close" id="archive-index-close" type="button" aria-label="아카이브 인덱스 닫기">ESC <span>×</span></button>
+            </div>
+            <p class="archive-modal-intro">전시로 큐레이션한 프로젝트뿐 아니라, 학습 기록·도구·실험 레포까지 전체 목록을 확인할 수 있어요.</p>
+            <div class="archive-index-meta" id="archive-index-meta">INVENTORY LOADING…</div>
+            <div class="archive-index-list" id="archive-index-list" aria-live="polite"></div>
+          </div>
+        </div>
+
+        <section class="screen island-screen is-hidden" id="island-screen" aria-labelledby="island-title">
+          <div class="island-toolbar">
+            <button class="back-button" id="back-to-sky" type="button"><span>←</span> SKY MAP</button>
+            <div class="island-heading"><p class="eyebrow" id="island-eyebrow">02 / TEAM PROJECTS</p><h1 id="island-title">TEAM PROJECTS</h1></div>
+            <div class="island-help"><span class="keycap">WASD</span><span>MOVE</span><span class="keycap">E</span><span>OPEN</span></div>
+          </div>
+          <div class="island-content">
+            <div class="game-frame">
+              <div class="game-frame-top"><span id="island-subtitle">역할과 협업으로 완성한 것들</span><span class="mini-coords" id="mini-coords">X 48 / Y 32</span></div>
+              <div class="game-viewport" id="game-viewport">
+                <canvas id="game-canvas" width="960" height="540" aria-label="2D 탑다운 프로젝트 탐방 맵"></canvas>
+                <div class="project-markers" id="project-markers"></div>
+                <div class="interaction-toast" id="interaction-toast"><span class="toast-key">E</span><span id="interaction-text">프로젝트를 열어보기</span></div>
+                <div class="player-bubble" aria-hidden="true"><span></span></div>
+              </div>
+              <div class="game-frame-bottom"><span>TOP-DOWN ARCHIVE WORLD</span><span id="island-count">2 PROJECT EXHIBITS</span></div>
+            </div>
+            <aside class="island-side-panel">
+              <div class="side-panel-label">ISLAND INDEX</div>
+              <p id="island-description">팀 안에서 맡은 역할과 실제 기여를 한눈에 보여주는 섬.</p>
+              <div class="project-index" id="project-index"></div>
+              <div class="side-note"><span class="note-icon">✦</span><p>프로젝트 표지판에 가까이 가거나 아래 목록을 클릭하면 전시 화면이 열립니다.</p></div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="screen project-screen is-hidden" id="project-screen" aria-labelledby="project-title">
+          <div class="project-toolbar">
+            <button class="back-button" id="back-to-island" type="button"><span>←</span> BACK TO ISLAND</button>
+            <span class="project-toolbar-meta" id="project-toolbar-meta">PROJECT EXHIBIT / 01</span>
+            <button class="close-project" id="close-project" type="button" aria-label="전시 닫기">ESC <span>×</span></button>
+          </div>
+          <div class="project-exhibit" id="project-exhibit"></div>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>
