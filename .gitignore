@@ -1,0 +1,5 @@
+.superpowers/
+.pytest_cache/
+node_modules/
+*.log
+.DS_Store

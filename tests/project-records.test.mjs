@@ -9,6 +9,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const readJson = (fileName) => JSON.parse(readFileSync(join(here, '..', 'data', fileName), 'utf8'));
 const records = readJson('project-records.json');
 const inventory = readJson('repo-inventory.json');
+const appSource = readFileSync(join(here, '..', 'src', 'app.js'), 'utf8');
 
 test('the current portfolio game is represented as a first-class project record', () => {
   const project = records.projects.find((item) => item.id === 'dev-sky-archive');
@@ -72,4 +73,54 @@ test('the playable exhibit catalog exposes development logs for every project', 
     assert.ok(Array.isArray(project.timeline) && project.timeline.length >= 2, `${project.id} needs a timeline`);
     assert.ok(project.repo || project.id === 'dev-sky-archive', `${project.id} needs a repository link or local record`);
   }
+});
+
+test('every playable exhibit exposes repository and role certainty metadata', () => {
+  const projects = islands.flatMap((island) => island.projects);
+
+  for (const project of projects) {
+    assert.ok(project.repo, `${project.id} needs a repository reference`);
+    assert.ok(project.status, `${project.id} needs a status`);
+    assert.ok(['self-recorded', 'needs-confirmation'].includes(project.roleStatus), `${project.id} needs role certainty metadata`);
+    assert.ok(project.repoUrl || project.id === 'dev-sky-archive', `${project.id} needs a GitHub URL or local-only exception`);
+    assert.ok(project.detailSource, `${project.id} needs a source label`);
+  }
+});
+
+test('every playable exhibit exposes temporary portfolio material slots', () => {
+  const projects = islands.flatMap((island) => island.projects);
+
+  for (const project of projects) {
+    assert.ok(Array.isArray(project.materials) && project.materials.length >= 4, `${project.id} needs portfolio material slots`);
+    assert.deepEqual(
+      new Set(project.materials.map((material) => material.kind)),
+      new Set(['SCREEN', 'SYSTEM', 'ROLE', 'EVIDENCE', 'PORTFOLIO', 'SELFINTRO', 'PROJECT', 'OTHER']),
+      `${project.id} needs every replacement material category`,
+    );
+    for (const material of project.materials) {
+      assert.ok(material.kind, `${project.id} material needs a kind`);
+      assert.ok(material.title, `${project.id} material needs a title`);
+      assert.ok(material.description, `${project.id} material needs a description`);
+      assert.equal(material.status, 'temporary', `${project.id} material should remain temporary until replaced`);
+    }
+  }
+
+  assert.match(appSource, /exhibit-materials/);
+  assert.match(appSource, /REPLACE WITH REAL MATERIAL/);
+});
+
+test('playable exhibit metadata stays aligned with the records source of truth', () => {
+  const projects = new Map(islands.flatMap((island) => island.projects).map((project) => [project.id, project]));
+
+  for (const record of records.projects) {
+    const project = projects.get(record.id);
+    assert.ok(project, `${record.id} needs a playable exhibit`);
+    assert.equal(project.status, record.status, `${record.id} status drifted from project-records.json`);
+    assert.equal(project.roleStatus, record.role.status, `${record.id} role certainty drifted from project-records.json`);
+  }
+});
+
+test('exhibit preview copy does not present unsourced repository facts as live data', () => {
+  assert.doesNotMatch(appSource, /repodock \/ sprint 08|PR #142/);
+  assert.match(appSource, /SCHEMATIC/);
 });
