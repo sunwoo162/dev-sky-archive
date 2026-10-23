@@ -278,7 +278,7 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 .sky-stage.has-3d .island-flag, .sky-stage.has-3d .island-icon, .sky-stage.has-3d .island-subtitle { display: none; }
 .sky-stage.has-3d .island-card { position: absolute; left: 50%; top: 50%; min-width: 0; padding: 7px 11px 6px; color: #fff8e8; background: rgba(39,54,74,.95); border: 2px solid var(--island-color); border-radius: 2px; box-shadow: 4px 4px 0 rgba(31,44,61,.22); transform: translate(-50%, -50%); }
 .sky-stage.has-3d .island-card::after { position: absolute; left: 50%; bottom: -7px; width: 10px; height: 10px; content: ''; background: rgba(39,54,74,.95); border-right: 2px solid var(--island-color); border-bottom: 2px solid var(--island-color); transform: translateX(-50%) rotate(45deg); }
-.sky-stage.has-3d .island-name { margin: 0; color: #fff8e8; font: 800 10px ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .14em; white-space: nowrap; }
+.sky-stage.has-3d .island-name { margin: 0; color: #fff8e8; font: 800 12px ui-monospace, "Malgun Gothic", sans-serif; letter-spacing: .03em; white-space: nowrap; }
 .sky-stage.has-3d .profile-island-button { z-index: 5; }
 .sky-stage.has-3d .profile-island-button .island-card { color: #3e3045; background: #f7c66b; border-color: #4b415f; box-shadow: 4px 4px 0 rgba(75,65,95,.22); }
 .sky-stage.has-3d .profile-island-button .island-card::after { background: #f7c66b; border-color: #4b415f; }

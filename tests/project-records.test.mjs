@@ -24,7 +24,7 @@ test('the current portfolio game is represented as a first-class project record'
 
 test('the playable world uses the five portfolio category hubs', () => {
   assert.deepEqual(islands.map((island) => island.id), ['profile', 'personal', 'team', 'external', 'study']);
-  assert.deepEqual(islands.map((island) => island.shortTitle), ['PROFILE', 'PERSONAL', 'TEAM', 'EXTERNAL', 'STUDY']);
+  assert.deepEqual(islands.map((island) => island.shortTitle), ['프로필', '개인', '팀', '대외활동', '스터디']);
   assert.equal(islands.find((island) => island.id === 'profile').projects[0].id, 'profile-core');
 });
 
@@ -124,7 +124,7 @@ test('every playable exhibit exposes temporary portfolio material slots', () => 
   }
 
   assert.match(appSource, /exhibit-materials/);
-  assert.match(appSource, /REPLACE WITH REAL MATERIAL/);
+  assert.match(appSource, /실제 자료로 교체/);
 });
 
 test('playable exhibit metadata stays aligned with the records source of truth', () => {

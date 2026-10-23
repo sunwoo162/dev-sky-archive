@@ -12,9 +12,11 @@ py -m http.server 4173
 
 ## 현재 구현
 
-- Three.js `PerspectiveCamera` 기반의 전방 관찰 시점 3D 하늘섬 선택 맵
-- `PROFILE` 중앙 코어 섬에서 PERSONAL·TEAM·EXTERNAL·STUDY 작업 섬으로 이어지는 연결 경로
-- 작업 분류 기준: PERSONAL PROJECTS·PROFILE·TEAM PROJECTS·EXTERNAL ACTIVITIES·STUDY ARCHIVE
+- Three.js `PerspectiveCamera` 기반의 낮은 전방 관찰 시점 3D 하늘섬 선택 맵
+- `프로필` 중앙 허브에서 개인 프로젝트·팀 프로젝트·대외활동·스터디 섬으로 이어지는 연결 경로
+- 작업 분류 기준: 프로필·개인 프로젝트·팀 프로젝트·대외활동·스터디
+- 카테고리마다 실루엣이 다른 건물: 프로필 코어·개인 아카이브·팀 쌍동 본부·대외활동 게이트·스터디 책탑
+- 섬별 고도를 크게 벌리고, 앞뒤 배치와 원근으로 실제 월드에서 바라보는 깊이를 표현
 - 잔디·흙·돌 블록을 한 칸씩 조립하는 모듈형 타일 지형
 - 카테고리별 건물·나무·램프·구름을 코드 파츠로 합성하는 월드 에셋 구조
 - WebGL/CDN 로드가 실패해도 DOM 버튼으로 계속 탐방할 수 있는 fallback

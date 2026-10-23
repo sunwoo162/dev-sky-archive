@@ -33,6 +33,10 @@ Replace the current CSS-only geometric decoration with a small, original pixel a
 
 Use a restrained 16-bit-inspired pixel language: hard edges, limited palettes, one-pixel highlights, readable silhouettes, and no gradients inside world sprites. The sky hub may keep a soft atmospheric background, but islands and the playable map should use the same pixel palette so the two screens belong to one world.
 
+## Sky hub composition revision
+
+The five hubs are not interchangeable decorative islands. Their silhouettes communicate the archive taxonomy before a user opens a project: the profile hub is a circular core, personal projects use a warm archive tower, team projects use paired collaboration towers, external activities use a gateway, and study uses a book tower. The camera is a low front-observation perspective rather than a flat overhead diagram; elevation values are intentionally separated so the world has clear foreground, middle-ground, and background tiers. World labels use Korean because they are navigation, not internal code names.
+
 ## Interaction and rendering
 
 The sky map renders a 3D-feeling composition from an island bed, island surface, building props, trees, lamps, and a selection ring. The island canvas preloads and draws catalogued SVG assets for terrain, buildings, project pins, and the player. Project data continues to own positions and metadata; asset IDs are presentation fields, so content updates do not require renderer changes.

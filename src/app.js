@@ -85,7 +85,7 @@ function setScreen(nextState) {
   Object.entries(screens).forEach(([name, screen]) => {
     screen.classList.toggle('is-hidden', name !== state.screen);
   });
-  topbarMode.textContent = state.screen === 'sky' ? 'SKY MAP' : state.screen === 'island' ? '2D ISLAND WORLD' : 'PROJECT EXHIBIT';
+  topbarMode.textContent = state.screen === 'sky' ? '하늘맵' : state.screen === 'island' ? '2D 탐방 월드' : '프로젝트 전시';
 
   if (state.screen === 'island') renderIsland();
   if (state.screen === 'project') renderProject();
@@ -93,13 +93,13 @@ function setScreen(nextState) {
 }
 
 const classificationLabels = {
-  'candidate-project': 'FEATURED CANDIDATES',
-  'learning-log': 'LEARNING LOGS',
-  tooling: 'TOOLS / AUTOMATION',
-  'profile-tooling': 'PROFILE TOOLING',
-  sandbox: 'SANDBOXES',
-  'dependency-or-study': 'STUDY / DEPENDENCY',
-  'empty-or-placeholder': 'EMPTY / PLACEHOLDER',
+  'candidate-project': '주요 프로젝트 후보',
+  'learning-log': '학습 기록',
+  tooling: '도구 / 자동화',
+  'profile-tooling': '프로필 도구',
+  sandbox: '실험 프로젝트',
+  'dependency-or-study': '스터디 / 의존성',
+  'empty-or-placeholder': '비어 있음 / 자리표시자',
 };
 
 function escapeHtml(value) {
@@ -114,7 +114,7 @@ function escapeHtml(value) {
 
 function renderArchiveIndex() {
   if (!repoInventory.length) {
-    archiveIndexMeta.textContent = 'INVENTORY UNAVAILABLE / PLAYABLE MAP STILL ONLINE';
+    archiveIndexMeta.textContent = '인벤토리를 불러오지 못함 / 탐방 맵은 계속 사용 가능';
     archiveIndexList.innerHTML = '<p class="archive-index-empty">레포 인벤토리를 불러오지 못했어요. 프로젝트 섬 탐방은 계속 사용할 수 있습니다.</p>';
     return;
   }
@@ -130,7 +130,7 @@ function renderArchiveIndex() {
     return (order.indexOf(left) === -1 ? 99 : order.indexOf(left)) - (order.indexOf(right) === -1 ? 99 : order.indexOf(right));
   });
 
-  archiveIndexMeta.textContent = `${repoInventory.length} REPOSITORIES / ${orderedGroups.length} CATEGORIES / READ-ONLY`; 
+  archiveIndexMeta.textContent = `레포지토리 ${repoInventory.length}개 / 카테고리 ${orderedGroups.length}개 / 읽기 전용`;
   archiveIndexList.innerHTML = orderedGroups.map(([classification, repositories]) => `
     <section class="archive-index-group">
       <div class="archive-index-group-head"><h3>${escapeHtml(classificationLabels[classification] ?? classification)}</h3><span>${repositories.length.toString().padStart(2, '0')}</span></div>
@@ -213,7 +213,7 @@ function renderSky() {
       <span class="island-card">
         <span class="island-icon" aria-hidden="true">${island.id === 'profile' ? '◎' : island.id === 'personal' ? '✦' : island.id === 'team' ? '◈' : island.id === 'external' ? '↗' : '✎'}</span>
         <span class="island-name">${island.shortTitle}</span>
-        <span class="island-subtitle">${island.projects.length} EXHIBIT${island.projects.length > 1 ? 'S' : ''}</span>
+        <span class="island-subtitle">전시 ${island.projects.length}개</span>
       </span>
     </button>
   `).join('');
@@ -258,7 +258,7 @@ function renderIsland() {
   document.querySelector('#island-title').textContent = currentIsland.title;
   document.querySelector('#island-subtitle').textContent = currentIsland.subtitle;
   document.querySelector('#island-description').textContent = currentIsland.description;
-  document.querySelector('#island-count').textContent = `${currentIsland.projects.length} PROJECT EXHIBIT${currentIsland.projects.length > 1 ? 'S' : ''}`;
+  document.querySelector('#island-count').textContent = `프로젝트 전시 ${currentIsland.projects.length}개`;
   document.querySelector('#island-screen').style.setProperty('--island-accent', currentIsland.color);
 
   projectMarkers.innerHTML = currentIsland.projects.map((project, index) => {
@@ -312,8 +312,8 @@ function renderMaterials(project) {
   };
   return project.materials.map((material, index) => `
     <article class="material-card material-${material.kind.toLowerCase()}">
-      <div class="material-art" aria-hidden="true"><img src="${assetUrl(materialAssetMap[material.kind] ?? 'project-screen')}" alt="" /><span>${material.kind} / ${String(index + 1).padStart(2, '0')}</span><b>REPLACE WITH REAL MATERIAL</b></div>
-      <div class="material-card-head"><span>${material.label}</span><em>TEMP</em></div>
+       <div class="material-art" aria-hidden="true"><img src="${assetUrl(materialAssetMap[material.kind] ?? 'project-screen')}" alt="" /><span>${material.kind} / ${String(index + 1).padStart(2, '0')}</span><b>실제 자료로 교체</b></div>
+       <div class="material-card-head"><span>${material.label}</span><em>임시</em></div>
       <h3>${material.title}</h3>
       <p>${material.description}</p>
       <small>${material.format}</small>
@@ -326,31 +326,33 @@ function renderProject() {
   const projectAction = project.repoUrl
     ? `<a class="primary-action" href="${project.repoUrl}" target="_blank" rel="noreferrer">${project.linkLabel} <span>↗</span></a>`
     : `<button type="button" class="primary-action" disabled>${project.linkLabel} <span>↗</span></button>`;
-  const roleStatusLabel = project.roleStatus === 'needs-confirmation' ? 'NEEDS CONFIRMATION' : 'SELF-RECORDED';
-  document.querySelector('#project-toolbar-meta').textContent = `${island.shortTitle} / PROJECT EXHIBIT`;
+  const roleStatusLabel = project.roleStatus === 'needs-confirmation' ? '확인 필요' : '직접 기록';
+  const categoryNames = { PROFILE: '프로필', PERSONAL: '개인 프로젝트', TEAM: '팀 프로젝트', EXTERNAL: '대외활동', STUDY: '스터디' };
+  const categoryLabel = project.category.split(' / ').map((token, index) => index === 0 ? (categoryNames[token] ?? token) : token).join(' / ');
+  document.querySelector('#project-toolbar-meta').textContent = `${island.shortTitle} / 프로젝트 전시`;
   document.querySelector('#project-exhibit').innerHTML = `
     <div class="exhibit-grid" style="--project-color:${project.color}">
       <div class="exhibit-copy">
-        <p class="eyebrow">${project.category}</p>
+        <p class="eyebrow">${categoryLabel}</p>
         <h1 id="project-title">${project.title}</h1>
         <p class="exhibit-summary">${project.summary}</p>
         <div class="project-tags">${project.stack.map((tag) => `<span>${tag}</span>`).join('')}</div>
-        <div class="exhibit-meta"><span><b>REPOSITORY</b>${project.repo}</span><span><b>STATUS</b>${project.status}</span><span><b>ROLE CONFIDENCE</b>${roleStatusLabel}</span></div>
+        <div class="exhibit-meta"><span><b>레포지토리</b>${project.repo}</span><span><b>상태</b>${project.status}</span><span><b>역할 확실성</b>${roleStatusLabel}</span></div>
         <div class="exhibit-actions">${projectAction}<button type="button" class="text-action" id="inline-back">전시로 돌아가기</button></div>
       </div>
-      <div class="exhibit-visual-wrap"><div class="visual-kicker"><span>INTERACTIVE CASE VIEW</span><span>01 / 04</span></div>${visualMarkup(project)}<div class="visual-shadow"></div></div>
+       <div class="exhibit-visual-wrap"><div class="visual-kicker"><span>인터랙티브 케이스 뷰</span><span>01 / 04</span></div>${visualMarkup(project)}<div class="visual-shadow"></div></div>
       <div class="exhibit-dossier">
-        <div class="dossier-label">PROJECT DOSSIER</div>
-        <div class="dossier-block"><span>MY ROLE</span><strong>${project.role}</strong></div>
-        <div class="dossier-block"><span>HOW IT MOVES</span><div class="flow-list">${project.flow.map((step, index) => `<div><i>0${index + 1}</i><b>${step}</b>${index < project.flow.length - 1 ? '<span class="flow-arrow">→</span>' : ''}</div>`).join('')}</div></div>
-        <div class="dossier-block dossier-timeline"><span>DEVELOPMENT LOG</span><div class="timeline-list">${project.timeline.map((entry) => `<article class="timeline-item"><span class="timeline-phase">${entry.phase}</span><div><strong>${entry.title}</strong><p>${entry.detail}</p></div></article>`).join('')}</div><small class="timeline-source">SOURCE / ${project.detailSource}</small></div>
-        <div class="dossier-block dossier-note"><span>WHY</span><p>${project.detail}</p></div>
+         <div class="dossier-label">프로젝트 기록</div>
+         <div class="dossier-block"><span>내 역할</span><strong>${project.role}</strong></div>
+         <div class="dossier-block"><span>진행 흐름</span><div class="flow-list">${project.flow.map((step, index) => `<div><i>0${index + 1}</i><b>${step}</b>${index < project.flow.length - 1 ? '<span class="flow-arrow">→</span>' : ''}</div>`).join('')}</div></div>
+         <div class="dossier-block dossier-timeline"><span>개발 로그</span><div class="timeline-list">${project.timeline.map((entry) => `<article class="timeline-item"><span class="timeline-phase">${entry.phase}</span><div><strong>${entry.title}</strong><p>${entry.detail}</p></div></article>`).join('')}</div><small class="timeline-source">출처 / ${project.detailSource}</small></div>
+         <div class="dossier-block dossier-note"><span>만든 이유</span><p>${project.detail}</p></div>
       </div>
     </div>
     <section class="exhibit-materials" aria-labelledby="materials-title">
       <div class="materials-heading">
-        <div><span class="materials-kicker">PORTFOLIO MATERIALS / TEMPORARY ARCHIVE</span><h2 id="materials-title">자료 보관함</h2></div>
-        <span class="materials-status">${project.materials.length} SLOTS READY / REPLACE LATER</span>
+         <div><span class="materials-kicker">포트폴리오 자료 / 임시 보관함</span><h2 id="materials-title">자료 보관함</h2></div>
+         <span class="materials-status">자료 자리 ${project.materials.length}개 / 나중에 교체</span>
       </div>
       <p class="materials-intro">포트폴리오, 자기소개서, 프로젝트 설명, 기타 증빙 자료가 들어갈 자리를 먼저 만들어뒀습니다. 지금은 화면 구조를 확인하기 위한 임시 카드입니다.</p>
       <div class="materials-grid">${renderMaterials(project)}</div>
