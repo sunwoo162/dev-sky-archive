@@ -60,4 +60,4 @@
 - [x] Run the full Node suite, syntax checks, and diff checks.
 - [x] Browser QA the 3D sky map, keyboard fallback, 2D island, and exhibit.
 - [x] Update docs with the tile grammar and Three.js scene entry point.
-- [ ] Commit and push the implementation to PR #2.
+- [x] Commit and push the implementation to PR #2.
