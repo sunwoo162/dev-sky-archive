@@ -22,32 +22,32 @@ const COLORS = Object.freeze({
 
 const ISLAND_LAYOUTS = Object.freeze({
   profile: {
-    position: [0, -0.55], rotation: 0.02, elevation: 0.62,
-    palette: { top: 0xe0ba69, roof: 0x756581 }, building: 'profile',
-    cells: [[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0], [-1, 1], [0, 1], [1, 1], [0, -2], [0, 2]],
+    position: [0, 0.72], rotation: 0.02, elevation: 0.62, scale: 1.22, labelHeight: 2.45,
+    palette: { top: 0xe0ba69, highlight: 0xf2d47b, path: 0xf7c66b, roof: 0x756581 }, building: 'profile',
+    cells: [[-2, -1], [-1, -1], [0, -1], [1, -1], [2, -1], [-2, 0], [-1, 0], [0, 0], [1, 0], [2, 0], [-1, 1], [0, 1], [1, 1], [0, 2], [0, -2]],
     props: [[-1.18, 0.18, 0.44, 0.58], [1.18, 0.18, -0.5, 0.58], [1.25, 0.18, 0.46]],
   },
   personal: {
-    position: [-6.1, 2.8], rotation: -0.12, elevation: 0.08,
-    palette: { top: COLORS.grass, roof: COLORS.coral }, building: 'archive',
+    position: [-6.1, 2.8], rotation: -0.12, elevation: 0.08, scale: 1.05,
+    palette: { top: COLORS.grass, highlight: COLORS.grassLight, path: 0xf0a477, roof: COLORS.coral }, building: 'archive',
     cells: [[-2, -1], [-1, -1], [0, -1], [1, -1], [2, -1], [-2, 0], [-1, 0], [0, 0], [1, 0], [2, 0], [-1, 1], [0, 1], [1, 1]],
     props: [[-1.35, 0.18, 0.4, 0.72], [1.35, 0.18, -0.56, 0.58], [1.5, 0.18, 0.52]],
   },
   team: {
-    position: [6.1, 2.75], rotation: 0.16, elevation: 0.3,
-    palette: { top: COLORS.blue, roof: 0x6d8ed0 }, building: 'team',
+    position: [6.1, 2.75], rotation: 0.16, elevation: 0.3, scale: 1.08,
+    palette: { top: COLORS.blue, highlight: 0xa9c9ea, path: 0xb8d5f2, roof: 0x6d8ed0 }, building: 'team',
     cells: [[-1, -2], [0, -2], [1, -2], [-2, -1], [-1, -1], [0, -1], [1, -1], [2, -1], [-2, 0], [-1, 0], [0, 0], [1, 0], [2, 0], [-1, 1], [0, 1], [1, 1]],
     props: [[-1.42, 0.18, 0.5, 0.62], [1.35, 0.18, -0.8, 0.7], [1.55, 0.18, 0.48]],
   },
   external: {
-    position: [-5.7, -3.75], rotation: 0.34, elevation: 0.82,
-    palette: { top: 0x87b5c2, roof: 0x5d8ca1 }, building: 'external',
+    position: [-5.7, -3.75], rotation: 0.34, elevation: 0.82, scale: .94,
+    palette: { top: 0x87b5c2, highlight: 0xb1d8d0, path: 0xaedbd3, roof: 0x5d8ca1 }, building: 'external',
     cells: [[-2, -1], [-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0], [2, 0], [-1, 1], [0, 1], [1, 1], [2, 1]],
     props: [[-1.42, 0.18, 0.42, 0.76], [1.55, 0.18, -0.62, 0.55], [1.42, 0.18, 0.5]],
   },
   study: {
-    position: [5.7, -3.95], rotation: -0.26, elevation: 0.14,
-    palette: { top: 0xa8bf8b, roof: 0x7b7554 }, building: 'study',
+    position: [5.7, -3.95], rotation: -0.26, elevation: 0.14, scale: .94,
+    palette: { top: 0xa8bf8b, highlight: 0xd4dc9d, path: 0xd9d98a, roof: 0x7b7554 }, building: 'study',
     cells: [[-2, -1], [-1, -1], [0, -1], [1, -1], [2, -1], [-2, 0], [-1, 0], [0, 0], [1, 0], [2, 0], [-2, 1], [-1, 1], [0, 1], [1, 1]],
     props: [[-1.4, 0.18, 0.38, 0.64], [1.45, 0.18, -0.7, 0.68], [1.46, 0.18, 0.5]],
   },
@@ -71,7 +71,7 @@ function createIslandTerrain(island) {
   const cells = config.cells;
 
   cells.forEach(([x, z], index) => {
-    const top = createBlock({ top: config.palette.top, side: COLORS.soil, bottom: COLORS.stoneDark, height: 0.42 });
+    const top = createBlock({ top: index % 4 === 0 ? (config.palette.highlight ?? config.palette.top) : config.palette.top, side: COLORS.soil, bottom: COLORS.stoneDark, height: 0.42 });
     top.position.set(x * TILE, 0, z * TILE);
     group.add(top);
 
@@ -93,7 +93,7 @@ function createIslandTerrain(island) {
 function createBuilding(type, roofColor) {
   const group = new THREE.Group();
   const profiles = {
-    profile: { body: [1.65, 0.98, 1.48], roof: [1.3, 0.52], y: 0.66 },
+    profile: { body: [1.78, 1.16, 1.62], roof: [1.38, 0.58], y: 0.75 },
     archive: { body: [1.55, 0.92, 1.22], roof: [1.12, 0.52], y: 0.63 },
     team: { body: [1.15, 1.3, 1.05], roof: [0.92, 0.42], y: 0.82 },
     external: { body: [1.5, 0.82, 1.08], roof: [1.24, 0.28], y: 0.58 },
@@ -107,15 +107,35 @@ function createBuilding(type, roofColor) {
     external: [0x5d8190, 0x4b6c80, 0xd4e7d0, 0x3d566d, 0x83a8aa, 0x445c70],
     study: [0x68776b, 0x536258, 0xf0dda0, 0x414d4b, 0x97a987, 0x4e5b58],
   };
-  const body = new THREE.Mesh(new THREE.BoxGeometry(...profile.body), (bodyPalettes[type] ?? bodyPalettes.archive).map((color) => material(color)));
+  const bodyGeometry = type === 'profile'
+    ? new THREE.CylinderGeometry(1.02, 1.18, profile.body[1], 6)
+    : new THREE.BoxGeometry(...profile.body);
+  const bodyMaterials = (bodyPalettes[type] ?? bodyPalettes.archive).map((color) => material(color));
+  const body = new THREE.Mesh(bodyGeometry, type === 'profile' ? bodyMaterials[0] : bodyMaterials);
   body.position.y = profile.y;
   group.add(body);
 
   const roofSides = type === 'team' || type === 'study' ? 4 : type === 'profile' ? 6 : 5;
-  const roof = new THREE.Mesh(new THREE.ConeGeometry(profile.roof[0], profile.roof[1], roofSides), material(roofColor));
-  roof.rotation.y = Math.PI / 4;
+  const roofGeometry = type === 'team'
+    ? new THREE.BoxGeometry(1.78, .16, .76)
+    : type === 'profile'
+      ? new THREE.CylinderGeometry(profile.roof[0], profile.roof[0] * .84, profile.roof[1], roofSides)
+      : new THREE.ConeGeometry(profile.roof[0], profile.roof[1], roofSides);
+  const roof = new THREE.Mesh(roofGeometry, material(roofColor));
+  if (type !== 'team' && type !== 'profile') roof.rotation.y = Math.PI / 4;
   roof.position.y = profile.y + profile.body[1] / 2 + profile.roof[1] / 2;
   group.add(roof);
+
+  const fasciaColors = {
+    profile: COLORS.coral,
+    archive: COLORS.coral,
+    team: 0x8eb5e3,
+    external: COLORS.mint,
+    study: 0xd6a165,
+  };
+  const fascia = new THREE.Mesh(new THREE.BoxGeometry(profile.body[0] * .72, .12, .05), material(fasciaColors[type] ?? COLORS.coral));
+  fascia.position.set(0, profile.y + .23, profile.body[2] / 2 + .04);
+  group.add(fascia);
 
   if (type === 'external') {
     const gateMaterial = material(COLORS.cream, { emissive: COLORS.cream, emissiveIntensity: .16 });
@@ -166,6 +186,10 @@ function createBuilding(type, roofColor) {
     group.add(teamDeck);
   }
   if (type === 'profile') {
+    const orbit = new THREE.Mesh(new THREE.TorusGeometry(.78, .055, 4, 8), material(COLORS.path, { emissive: COLORS.path, emissiveIntensity: .25 }));
+    orbit.rotation.x = Math.PI / 2;
+    orbit.position.y = 1.38;
+    group.add(orbit);
     const core = new THREE.Mesh(new THREE.BoxGeometry(.42, .56, .42), material(COLORS.cream, { emissive: COLORS.cream, emissiveIntensity: .22 }));
     core.position.y = 1.55;
     group.add(core);
@@ -183,7 +207,15 @@ function createBuilding(type, roofColor) {
   door.position.set(0, Math.max(.44, profile.y - .12), profile.body[2] / 2 + .02);
   group.add(door);
 
-  const windowMaterial = material(COLORS.cream, { emissive: COLORS.cream, emissiveIntensity: .18 });
+  const windowColors = {
+    profile: COLORS.cream,
+    archive: 0xffe6ad,
+    team: 0xd3efff,
+    external: 0xc8fff0,
+    study: 0xffedb9,
+  };
+  const windowColor = windowColors[type] ?? COLORS.cream;
+  const windowMaterial = material(windowColor, { emissive: windowColor, emissiveIntensity: .18 });
   [-.4, .4].forEach((x) => {
     const window = new THREE.Mesh(new THREE.BoxGeometry(.19, .2, .03), windowMaterial);
     window.position.set(x * Math.min(1, profile.body[0] / 1.28), profile.y + .16, profile.body[2] / 2 + .02);
@@ -221,9 +253,11 @@ function createLamp() {
 function createIsland(island) {
   const { group, config } = createIslandTerrain(island);
   group.position.set(config.position[0], config.elevation ?? 0, config.position[1]);
+  group.scale.setScalar(config.scale ?? 1);
   group.rotation.y = config.rotation;
   group.userData.islandId = island.id;
   group.userData.baseY = config.elevation ?? 0;
+  group.userData.baseScale = config.scale ?? 1;
 
   const building = createBuilding(config.building, config.palette.roof);
   building.position.set(0, .18, -.1);
@@ -264,19 +298,24 @@ function createConnection(from, to, index = 0) {
   const distance = direction.length();
   const steps = Math.max(4, Math.floor(distance / .58));
   const unit = direction.clone().normalize();
+  const perpendicular = new THREE.Vector3(-unit.z, 0, unit.x);
+  const curveOffset = (index % 2 === 0 ? 1 : -1) * .68;
+  const control = start.clone().lerp(end, .5).add(perpendicular.multiplyScalar(curveOffset));
+  control.y += .3 + (index === 1 ? .15 : 0);
+  const curve = new THREE.QuadraticBezierCurve3(start, control, end);
   const group = new THREE.Group();
   group.userData.connection = true;
 
   for (let step = 1; step < steps; step += 1) {
     const progress = step / steps;
     const tile = createBlock({
-      top: step % 2 === 0 ? COLORS.cream : COLORS.path,
+      top: step % 2 === 0 ? (to.palette.path ?? COLORS.cream) : COLORS.cream,
       side: COLORS.soil,
       bottom: COLORS.stoneDark,
       height: .14,
     });
     tile.scale.set(.62, 1, .62);
-    tile.position.copy(start).lerp(end, progress);
+    tile.position.copy(curve.getPoint(progress));
     tile.position.y += Math.sin(progress * Math.PI) * .08;
     tile.rotation.y = Math.atan2(unit.x, unit.z) + (index % 2 ? .08 : -.08);
     group.add(tile);
@@ -306,14 +345,15 @@ function createCloud(x, y, z, scale = 1, rotation = 0, variant = 0) {
 function createSkyWorld({ canvas, islands, onSelect, reducedMotion = false } = {}) {
   if (!canvas) throw new Error('sky canvas is required');
 
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: false, powerPreference: 'high-performance' });
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true, powerPreference: 'high-performance' });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-  renderer.setClearColor(COLORS.sky, 1);
+  renderer.setClearColor(COLORS.sky, 0);
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(42, 1, .1, 100);
-  const viewTarget = new THREE.Vector3(0, 0.45, -0.45);
-  camera.position.set(0, 8.4, 18.5);
+  scene.fog = new THREE.Fog(COLORS.sky, 18, 42);
+  const camera = new THREE.PerspectiveCamera(44, 1, .1, 100);
+  const viewTarget = new THREE.Vector3(0, 0.12, -0.45);
+  camera.position.set(2.2, 8.1, 20.2);
   camera.lookAt(viewTarget);
 
   scene.add(new THREE.HemisphereLight(0xfff7e5, 0x4a5870, 2.2));
@@ -367,7 +407,8 @@ function createSkyWorld({ canvas, islands, onSelect, reducedMotion = false } = {
     islandGroups.forEach((group) => {
       const label = labels.get(group.userData.islandId);
       if (!label) return;
-      const point = new THREE.Vector3(group.position.x, group.position.y + 2.0, group.position.z);
+      const config = ISLAND_LAYOUTS[group.userData.islandId] ?? ISLAND_LAYOUTS.personal;
+      const point = new THREE.Vector3(group.position.x, group.position.y + (config.labelHeight ?? 2.0), group.position.z);
       point.project(camera);
       label.style.left = `${(point.x * .5 + .5) * 100}%`;
       label.style.top = `${(-point.y * .5 + .5) * 100}%`;
@@ -407,7 +448,7 @@ function createSkyWorld({ canvas, islands, onSelect, reducedMotion = false } = {
     if (!shouldAnimate) return;
     frame = requestAnimationFrame(render);
     islandGroups.forEach((group, index) => {
-      const target = group.userData.hovered ? 1.08 : 1;
+      const target = group.userData.baseScale * (group.userData.hovered ? 1.08 : 1);
       group.scale.lerp(new THREE.Vector3(target, target, target), .12);
       group.position.y = group.userData.baseY + (motionReduced ? 0 : Math.sin(timestamp / 1200 + index * 1.7) * .08);
     });
