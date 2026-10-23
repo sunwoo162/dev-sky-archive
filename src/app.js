@@ -81,6 +81,7 @@ function drawAsset(id, x, y, width, height) {
 
 function setScreen(nextState) {
   state = nextState;
+  document.body.classList.toggle('is-sky-mode', state.screen === 'sky');
   Object.entries(screens).forEach(([name, screen]) => {
     screen.classList.toggle('is-hidden', name !== state.screen);
   });

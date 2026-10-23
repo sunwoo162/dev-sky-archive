@@ -35,38 +35,16 @@
 
       <main>
         <section class="screen sky-screen" id="sky-screen" aria-labelledby="sky-title">
-          <div class="sky-intro">
-            <p class="eyebrow">WELCOME TO MY WORK ARCHIPELAGO</p>
-            <h1 id="sky-title"><span class="sky-title-line">내가 만든 것들이</span><span class="sky-title-line"><em>하늘에 떠 있어요.</em></span></h1>
-            <p class="intro-copy">섬을 클릭하면 그 안의 2D 프로젝트 월드로 들어갑니다.<br />직접 돌아다니며 내가 무엇을 만들었는지 찾아보세요.</p>
-            <div class="intro-hint"><span class="mouse-icon">⌁</span> CLICK AN ISLAND TO ENTER</div>
-          </div>
+          <h1 id="sky-title" class="sr-only"><span class="sky-title-line">프로젝트 하늘섬</span><span class="sky-title-line">탐방 월드</span></h1>
 
           <div class="sky-map-wrap">
-            <div class="sky-map-label label-top"><span>ARCHIVE SKY / 01</span><span>4 ISLANDS ONLINE</span></div>
             <div class="sky-stage" id="sky-stage" aria-label="프로젝트 하늘섬 선택 지도">
               <canvas id="sky-3d-canvas" aria-label="블록 타일로 조립된 3D 프로젝트 하늘맵"></canvas>
               <div class="sky-3d-fallback is-hidden" id="sky-3d-fallback" role="status">3D 맵을 불러오지 못했어요. 아래 카테고리 버튼으로 섬에 들어갈 수 있습니다.</div>
-              <img class="cloud cloud-a" src="./assets/world/cloud-pixel.svg" alt="" aria-hidden="true" />
-              <img class="cloud cloud-b" src="./assets/world/cloud-pixel.svg" alt="" aria-hidden="true" />
-              <img class="cloud cloud-c" src="./assets/world/cloud-pixel.svg" alt="" aria-hidden="true" />
-              <img class="sky-compass" src="./assets/ui/3d-compass.svg" alt="3D 하늘맵 방향 표시" />
-              <div class="route route-one" aria-hidden="true"></div>
-              <div class="route route-two" aria-hidden="true"></div>
-              <div class="route route-three" aria-hidden="true"></div>
-              <div class="map-center-marker" aria-hidden="true"><span>YOU ARE HERE</span><i></i></div>
               <div id="island-list"></div>
             </div>
-            <div class="sky-map-label label-bottom"><span>CLICK TO DESCEND</span><span>NO DATA LOST IN CLOUDS</span></div>
           </div>
-
-          <div class="sky-footer">
-            <div><span class="footer-kicker">CURRENT OBJECTIVE</span><strong>프로젝트들을 직접 발견하기</strong></div>
-            <div class="sky-footer-tools">
-              <div class="sky-legend"><span><i class="legend-dot legend-personal"></i> WORKS</span><span><i class="legend-dot legend-team"></i> COLLAB</span><span><i class="legend-dot legend-lab"></i> LAB / TIL</span></div>
-              <button class="archive-index-trigger" id="archive-index-trigger" type="button" aria-haspopup="dialog" aria-controls="archive-index-modal">ARCHIVE INDEX <span>35 REPOS ↗</span></button>
-            </div>
-          </div>
+          <button class="archive-index-trigger" id="archive-index-trigger" type="button" aria-haspopup="dialog" aria-controls="archive-index-modal" hidden>ARCHIVE INDEX</button>
         </section>
 
         <div class="archive-modal is-hidden" id="archive-index-modal" role="dialog" aria-modal="true" aria-labelledby="archive-index-title" aria-hidden="true">

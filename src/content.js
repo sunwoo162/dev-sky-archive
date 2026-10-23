@@ -121,7 +121,7 @@ export const islands = [
     description: '문제를 발견하고, 화면과 흐름을 직접 설계해 제품으로 만든 기록.',
     color: '#ff9b71',
     accent: '#ffe0a7',
-    position: { x: 26, y: 42, scale: 1.08 },
+    position: { x: 24, y: 51, scale: 1.08 },
     projects: [
       project({
         id: 'dev-sky-archive',
@@ -234,7 +234,7 @@ export const islands = [
     description: '팀 안에서 맡은 역할과 의사결정, 실제 기여를 한눈에 보여주는 섬.',
     color: '#8aa8ff',
     accent: '#d5e0ff',
-    position: { x: 67, y: 27, scale: 0.98 },
+    position: { x: 50, y: 73, scale: 0.98 },
     projects: [
       project({
         id: 'washer-client-v2',
@@ -328,7 +328,7 @@ export const islands = [
     description: '컴포넌트, 상태, 애니메이션처럼 프론트엔드의 핵심을 직접 실험한다.',
     color: '#b99cff',
     accent: '#e8ddff',
-    position: { x: 29, y: 76, scale: 0.91 },
+    position: { x: 50, y: 29, scale: 0.91 },
     projects: [
       project({
         id: 'npc-platform',
@@ -459,7 +459,7 @@ export const islands = [
     description: '알고리즘과 개발 메모를 읽고, 움직이고, 직접 확인하는 작은 도서관.',
     color: '#72c9b5',
     accent: '#cbf2e8',
-    position: { x: 73, y: 73, scale: 0.86 },
+    position: { x: 76, y: 49, scale: 0.86 },
     projects: [
       project({
         id: 'til',
