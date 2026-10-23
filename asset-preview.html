@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dev Sky Archive — Asset Breakdown</title>
+    <style>
+      :root { color-scheme: dark; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; background: #101728; color: #fff8e8; }
+      * { box-sizing: border-box; }
+      body { margin: 0; padding: 32px; background: #101728; }
+      main { width: min(1180px, 100%); margin: auto; }
+      header { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 30px; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,.14); }
+      h1, h2, p { margin: 0; }
+      h1 { font: 800 clamp(28px, 5vw, 60px)/.95 Inter, system-ui, sans-serif; letter-spacing: -.07em; }
+      h1 em { color: #f7c66b; font-style: normal; }
+      header p { max-width: 360px; color: rgba(255,255,255,.55); font-size: 11px; line-height: 1.6; }
+      section { margin: 34px 0; }
+      .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+      h2 { color: #f7c66b; font-size: 13px; letter-spacing: .14em; }
+      .section-head span { color: rgba(255,255,255,.3); font-size: 10px; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+      .asset { min-height: 148px; display: grid; place-items: center; gap: 6px; padding: 15px; background: #18243a; border: 1px solid rgba(255,255,255,.1); }
+      .asset img { width: 110px; height: 90px; object-fit: contain; image-rendering: pixelated; }
+      .asset.tall img { height: 106px; }
+      .asset small { color: rgba(255,255,255,.58); font-size: 9px; letter-spacing: .08em; }
+      .assembly { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      .assembly-card { min-height: 270px; padding: 20px; background: #18243a; border: 1px solid rgba(255,255,255,.1); }
+      .assembly-card h3 { margin: 0 0 14px; color: #fff4d3; font-size: 12px; letter-spacing: .1em; }
+      .stack { position: relative; height: 196px; perspective: 900px; }
+      .stack img { position: absolute; left: 50%; object-fit: contain; image-rendering: pixelated; transform: translateX(-50%) rotateX(58deg) rotateZ(-6deg); transform-origin: center; }
+      .stack .bed { top: 24px; width: 245px; height: 170px; filter: drop-shadow(0 14px 4px rgba(0,0,0,.28)); }
+      .stack .top { top: 3px; width: 245px; height: 140px; }
+      .stack .building { top: 0; width: 75px; height: 95px; transform: translateX(-50%) translateZ(34px) rotateX(0deg) rotateZ(0deg); }
+      .stack .tree { top: 58px; left: 31%; width: 40px; height: 58px; transform: translateX(-50%) translateZ(30px) rotateX(0deg) rotateZ(0deg); }
+      .stack .lamp { top: 82px; left: 70%; width: 24px; height: 42px; transform: translateX(-50%) translateZ(32px) rotateX(0deg) rotateZ(0deg); }
+      .assembly-note { color: rgba(255,255,255,.45); font-size: 10px; line-height: 1.55; }
+      .final-callout { margin-top: 18px; padding: 18px 20px; color: #21334a; background: #f7c66b; font: 800 12px/1.5 ui-monospace, monospace; }
+      @media (max-width: 680px) { body { padding: 18px; } header { display: block; } header p { margin-top: 16px; } .assembly { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div><p style="margin-bottom:12px;color:#8fd0bd;font-size:10px;letter-spacing:.15em;">DESIGN ASSET BREAKDOWN / 01</p><h1>하나씩 만들고,<br /><em>합쳐서 월드가 된다.</em></h1></div>
+        <p>최종 플레이 화면은 독립적인 픽셀 에셋을 데이터와 레이어 순서로 조합해서 만든다. 이 보드는 그 구조를 눈으로 확인하는 용도다.</p>
+      </header>
+
+      <section>
+        <div class="section-head"><h2>3D SKY ISLAND PARTS</h2><span>WORLD / 3D COMPOSITION</span></div>
+        <div class="assembly">
+          <article class="assembly-card"><h3>01 / PERSONAL ISLAND STACK</h3><div class="stack"><img class="bed" src="./assets/world/sky-island-bed.svg" alt="" /><img class="top" src="./assets/world/island-top-personal.svg" alt="" /><img class="building" src="./assets/props/sky-archive-tower.svg" alt="" /><img class="tree" src="./assets/props/sky-tree.svg" alt="" /><img class="lamp" src="./assets/props/sky-lamp.svg" alt="" /></div><p class="assembly-note">절벽 바닥 → 섬 표면 → 전용 건물 → 주변 소품 순서로 쌓인다.</p></article>
+          <article class="assembly-card"><h3>02 / TEAM ISLAND STACK</h3><div class="stack"><img class="bed" src="./assets/world/sky-island-bed.svg" alt="" /><img class="top" src="./assets/world/island-top-team.svg" alt="" /><img class="building" src="./assets/props/sky-team-lab.svg" alt="" /><img class="tree" src="./assets/props/sky-tree.svg" alt="" /><img class="lamp" src="./assets/props/sky-lamp.svg" alt="" /></div><p class="assembly-note">섬 종류가 바뀌면 표면 팔레트와 대표 건물만 교체된다.</p></article>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head"><h2>ASSET LIBRARY</h2><span>REPLACEABLE PIECES</span></div>
+        <div class="grid">
+          <article class="asset tall"><img src="./assets/world/sky-island-bed.svg" alt="" /><small>ISLAND BED</small></article>
+          <article class="asset tall"><img src="./assets/world/island-top-frontend.svg" alt="" /><small>ISLAND TOP</small></article>
+          <article class="asset tall"><img src="./assets/props/sky-frontend-node.svg" alt="" /><small>BUILDING PROP</small></article>
+          <article class="asset tall"><img src="./assets/props/sky-tree.svg" alt="" /><small>TREE PROP</small></article>
+          <article class="asset tall"><img src="./assets/props/sky-lamp.svg" alt="" /><small>LAMP PROP</small></article>
+          <article class="asset tall"><img src="./assets/ui/selection-ring.svg" alt="" /><small>SELECTION UI</small></article>
+          <article class="asset"><img src="./assets/tiles/grass.svg" alt="" /><small>2D GRASS TILE</small></article>
+          <article class="asset"><img src="./assets/tiles/path.svg" alt="" /><small>2D PATH TILE</small></article>
+          <article class="asset tall"><img src="./assets/characters/player.svg" alt="" /><small>PLAYER</small></article>
+          <article class="asset tall"><img src="./assets/props/project-kiosk.svg" alt="" /><small>PROJECT KIOSK</small></article>
+          <article class="asset tall"><img src="./assets/projects/project-system.svg" alt="" /><small>EXHIBIT / SYSTEM</small></article>
+          <article class="asset tall"><img src="./assets/projects/project-evidence.svg" alt="" /><small>EXHIBIT / EVIDENCE</small></article>
+        </div>
+      </section>
+
+      <p class="final-callout">FINAL SCREEN = ASSET PARTS + DATA POSITION + INTERACTION STATE → 실제 플레이 화면은 메인 페이지에서 확인</p>
+    </main>
+  </body>
+</html>

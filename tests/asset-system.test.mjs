@@ -28,6 +28,7 @@ test('assetUrl returns a safe local fallback for unknown IDs', () => {
 test('runtime rendering imports the catalog and uses asset-backed world hooks', () => {
   const app = readFileSync(path.join(root, 'src', 'app.js'), 'utf8');
   const html = readFileSync(path.join(root, 'index.html'), 'utf8');
+  const preview = readFileSync(path.join(root, 'asset-preview.html'), 'utf8');
 
   assert.match(app, /from ['"]\.\/asset-catalog\.js['"]/);
   assert.match(app, /assetUrl\(/);
@@ -35,4 +36,6 @@ test('runtime rendering imports the catalog and uses asset-backed world hooks', 
   assert.match(app, /worldPropIds|sky-prop/);
   assert.match(html, /asset-palette|data-asset-id/);
   assert.match(html, /3d-compass/);
+  assert.match(preview, /3D SKY ISLAND PARTS/);
+  assert.match(preview, /ASSET LIBRARY/);
 });

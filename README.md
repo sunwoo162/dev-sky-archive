@@ -26,6 +26,7 @@ py -m http.server 4173
 ## 구조
 
 - `index.html`: 세 화면의 기본 구조
+- `asset-preview.html`: 3D 하늘섬 파츠와 전체 에셋 라이브러리를 확인하는 디자인 분해 보드
 - `src/game-state.js`: 화면 전환 상태와 순수 함수
 - `src/content.js`: 실제 레포 기반 섬·프로젝트 전시 데이터
 - `src/app.js`: 렌더링, 입력, Canvas 맵, 상호작용
