@@ -196,7 +196,12 @@ function renderSky() {
     <button class="island-button" type="button" data-island-id="${island.id}"
       style="--island-x:${island.position.x}%;--island-y:${island.position.y}%;--island-scale:${island.position.scale};--island-color:${island.color};--island-accent:${island.accent};"
       aria-label="${island.title} 섬 입장">
-      <img class="island-asset" data-asset-id="${island.worldAssetId}" src="${assetUrl(island.worldAssetId)}" alt="" />
+      <span class="island-scene" aria-hidden="true">
+        <img class="island-selection-ring" data-asset-id="selection-ring" src="${assetUrl('selection-ring')}" alt="" />
+        <img class="island-bed" data-asset-id="${island.worldBaseAssetId}" src="${assetUrl(island.worldBaseAssetId)}" alt="" />
+        <img class="island-top" data-asset-id="${island.worldAssetId}" src="${assetUrl(island.worldAssetId)}" alt="" />
+        ${(island.worldPropIds ?? []).map((assetId, index) => `<img class="sky-prop sky-prop-${index + 1}" data-asset-id="${assetId}" src="${assetUrl(assetId)}" alt="" />`).join('')}
+      </span>
       <span class="island-flag" aria-hidden="true">${island.index}</span>
       <span class="island-card">
         <span class="island-icon" aria-hidden="true">${island.id === 'personal' ? '✦' : island.id === 'team' ? '◈' : island.id === 'frontend' ? '⌘' : '✎'}</span>

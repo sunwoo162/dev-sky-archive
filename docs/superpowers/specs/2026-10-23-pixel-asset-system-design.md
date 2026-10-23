@@ -2,7 +2,7 @@
 
 ## Intent
 
-Replace the current CSS-only geometric decoration with a small, original pixel asset system that makes the portfolio world feel authored and game-like. The visual reference is the way Zombie High Maker separates maps, tiles, objects, characters, and editor UI; no proprietary sprites or images are copied.
+Replace the current CSS-only geometric decoration with a small, original pixel asset system that makes the portfolio world feel authored and game-like. The sky screen is an isometric 3D-feeling world assembled from an extruded island bed, typed island surfaces, and island props. The visual reference is the way Zombie High Maker separates maps, tiles, objects, characters, and editor UI; no proprietary sprites or images are copied.
 
 ## Goals
 
@@ -21,7 +21,7 @@ Replace the current CSS-only geometric decoration with a small, original pixel a
 
 ## Asset boundaries
 
-- `assets/world`: sky hub and island bases.
+- `assets/world`: sky hub, extruded island beds, and typed island surfaces.
 - `assets/tiles`: top-down terrain and path pieces.
 - `assets/characters`: player and NPC sprites.
 - `assets/props`: buildings, signs, terminals, and exhibit objects.
@@ -35,7 +35,7 @@ Use a restrained 16-bit-inspired pixel language: hard edges, limited palettes, o
 
 ## Interaction and rendering
 
-The sky map renders island thumbnails from `assets/world`. The island canvas preloads and draws catalogued SVG assets for terrain, buildings, project pins, and the player. Project data continues to own positions and metadata; asset IDs are presentation fields, so content updates do not require renderer changes.
+The sky map renders a 3D-feeling composition from an island bed, island surface, building props, trees, lamps, and a selection ring. The island canvas preloads and draws catalogued SVG assets for terrain, buildings, project pins, and the player. Project data continues to own positions and metadata; asset IDs are presentation fields, so content updates do not require renderer changes.
 
 ## Constraints
 

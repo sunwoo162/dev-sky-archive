@@ -111,7 +111,9 @@ const project = (config) => ({
 export const islands = [
   {
     id: 'personal',
-    worldAssetId: 'island-personal',
+    worldAssetId: 'island-top-personal',
+    worldBaseAssetId: 'island-bed',
+    worldPropIds: ['sky-archive-tower', 'sky-tree', 'sky-lamp'],
     index: '01',
     title: 'PERSONAL WORKS',
     shortTitle: 'PERSONAL',
@@ -222,7 +224,9 @@ export const islands = [
   },
   {
     id: 'team',
-    worldAssetId: 'island-team',
+    worldAssetId: 'island-top-team',
+    worldBaseAssetId: 'island-bed',
+    worldPropIds: ['sky-team-lab', 'sky-tree', 'sky-lamp'],
     index: '02',
     title: 'TEAM PROJECTS',
     shortTitle: 'TEAM',
@@ -314,7 +318,9 @@ export const islands = [
   },
   {
     id: 'frontend',
-    worldAssetId: 'island-frontend',
+    worldAssetId: 'island-top-frontend',
+    worldBaseAssetId: 'island-bed',
+    worldPropIds: ['sky-frontend-node', 'sky-tree', 'sky-lamp'],
     index: '03',
     title: 'FRONTEND LAB',
     shortTitle: 'FRONTEND',
@@ -443,7 +449,9 @@ export const islands = [
   },
   {
     id: 'til',
-    worldAssetId: 'island-til',
+    worldAssetId: 'island-top-til',
+    worldBaseAssetId: 'island-bed',
+    worldPropIds: ['sky-til-library', 'sky-tree', 'sky-lamp'],
     index: '04',
     title: 'TIL LIBRARY',
     shortTitle: 'TIL',

@@ -31,5 +31,8 @@ test('runtime rendering imports the catalog and uses asset-backed world hooks', 
 
   assert.match(app, /from ['"]\.\/asset-catalog\.js['"]/);
   assert.match(app, /assetUrl\(/);
+  assert.match(app, /worldBaseAssetId|island-bed/);
+  assert.match(app, /worldPropIds|sky-prop/);
   assert.match(html, /asset-palette|data-asset-id/);
+  assert.match(html, /3d-compass/);
 });

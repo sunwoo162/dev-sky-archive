@@ -4,6 +4,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import { islands } from '../src/content.js';
+import { assetCatalog } from '../src/asset-catalog.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const readJson = (fileName) => JSON.parse(readFileSync(join(here, '..', 'data', fileName), 'utf8'));
@@ -88,15 +89,12 @@ test('every playable exhibit exposes repository and role certainty metadata', ()
 });
 
 test('every island and exhibit is connected to the pixel asset catalog', () => {
-  const assetIds = new Set([
-    'island-personal', 'island-team', 'island-frontend', 'island-til',
-    'project-screen', 'project-system', 'project-role', 'project-evidence',
-  ]);
-
   for (const island of islands) {
-    assert.ok(assetIds.has(island.worldAssetId), `${island.id} needs a world asset`);
+    assert.ok(assetCatalog[island.worldAssetId], `${island.id} needs a world asset`);
+    assert.ok(assetCatalog[island.worldBaseAssetId], `${island.id} needs a 3D island base`);
+    assert.ok(island.worldPropIds?.every((assetId) => assetCatalog[assetId]), `${island.id} needs valid 3D props`);
     for (const project of island.projects) {
-      assert.ok(assetIds.has(project.assetId), `${project.id} needs a project asset`);
+      assert.ok(assetCatalog[project.assetId], `${project.id} needs a project asset`);
     }
   }
 });

@@ -216,11 +216,35 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 .material-art img { display: block; width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; opacity: .92; }
 .material-art > span, .material-art > b { z-index: 2; }
 
+/* 3D sky asset kit: the sky map is composed from an extruded bed, a typed island top, and props. */
+.sky-stage { perspective: 1120px; transform-style: preserve-3d; }
+.sky-stage::before { transform: rotateX(68deg) rotateZ(-4deg) scale(1.08); }
+.sky-stage::after { width: 320px; height: 110px; opacity: .82; transform: translate(-50%, -50%) rotateX(68deg) rotateZ(-5deg); }
+.sky-compass { position: absolute; z-index: 2; right: 3%; top: 5%; width: 40px; height: 40px; image-rendering: pixelated; opacity: .82; filter: drop-shadow(0 4px 0 rgba(47, 72, 89, .13)); }
+.island-button { width: 236px; height: 190px; transform: translate(-50%, -50%) scale(var(--island-scale)) rotateX(58deg) rotateZ(-6deg); transform-style: preserve-3d; }
+.island-button:hover, .island-button:focus-visible { transform: translate(-50%, -50%) scale(calc(var(--island-scale) * 1.08)) rotateX(58deg) rotateZ(-6deg) translateY(-10px); }
+.island-scene { position: absolute; inset: 0; display: block; transform-style: preserve-3d; pointer-events: none; }
+.island-selection-ring { position: absolute; left: 55px; top: 113px; width: 126px; height: 44px; object-fit: contain; image-rendering: pixelated; opacity: .55; transform: translateZ(-9px) rotateX(-2deg); }
+.island-bed { position: absolute; left: 6px; top: 15px; width: 224px; height: 160px; object-fit: contain; image-rendering: pixelated; transform: translateZ(-22px) translateY(20px); filter: drop-shadow(0 18px 8px rgba(42, 72, 88, .28)); }
+.island-top { position: absolute; left: 6px; top: 0; width: 224px; height: 128px; object-fit: contain; image-rendering: pixelated; transform: translateZ(2px); filter: drop-shadow(0 8px 1px rgba(44, 72, 82, .16)); }
+.sky-prop { position: absolute; z-index: 2; width: auto; object-fit: contain; image-rendering: pixelated; transform-style: preserve-3d; filter: drop-shadow(0 7px 1px rgba(40, 64, 77, .18)); }
+.sky-prop-1 { left: 92px; top: 0; height: 84px; transform: translateZ(36px) rotateX(-58deg) rotateZ(6deg); }
+.sky-prop-2 { left: 34px; top: 35px; height: 58px; transform: translateZ(30px) rotateX(-58deg) rotateZ(6deg) scale(.78); }
+.sky-prop-3 { left: 179px; top: 62px; height: 42px; transform: translateZ(32px) rotateX(-58deg) rotateZ(6deg); }
+.island-flag { top: -5px; left: 105px; transform: translateZ(64px) rotateX(-58deg) rotateZ(6deg); }
+.island-card { top: 151px; min-width: 136px; padding: 8px 10px 7px; transform: translateZ(66px) translateX(-50%) rotateX(-58deg) rotateZ(6deg); }
+.island-icon { display: none; }
+
 @media (max-width: 760px) {
-  .island-button { width: 144px; height: 120px; }
-  .island-asset { width: 144px; height: 96px; }
-  .island-flag { left: 63px; }
-  .island-card { top: 69px; min-width: 92px; padding: 6px 7px; }
+  .island-button { width: 176px; height: 145px; }
+  .island-selection-ring { left: 41px; top: 84px; width: 96px; height: 35px; }
+  .island-bed { left: 0; top: 8px; width: 176px; height: 126px; }
+  .island-top { left: 0; width: 176px; height: 101px; }
+  .sky-prop-1 { left: 69px; top: -1px; height: 63px; }
+  .sky-prop-2 { left: 24px; top: 24px; height: 43px; }
+  .sky-prop-3 { left: 134px; top: 46px; height: 31px; }
+  .island-flag { top: -4px; left: 77px; }
+  .island-card { top: 113px; min-width: 104px; padding: 6px 7px; }
   .asset-palette { gap: 5px; }
   .asset-palette-label { flex-basis: 100%; }
 }
