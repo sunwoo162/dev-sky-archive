@@ -1,0 +1,45 @@
+# Pixel Asset System Design
+
+## Intent
+
+Replace the current CSS-only geometric decoration with a small, original pixel asset system that makes the portfolio world feel authored and game-like. The visual reference is the way Zombie High Maker separates maps, tiles, objects, characters, and editor UI; no proprietary sprites or images are copied.
+
+## Goals
+
+- Give every visual layer a named, replaceable asset instead of an inline CSS shape.
+- Make the 2D island read as a composed top-down world: terrain, path, building, prop, player, and project marker.
+- Keep the frontend portfolio value visible through an asset catalog, data-driven composition, responsive UI, and accessible controls.
+- Preserve the current interaction flow: sky map → island → project exhibit.
+- Keep the build dependency-free and GitHub Pages compatible.
+
+## Non-goals
+
+- Rebuilding the project as a full map editor.
+- Copying Zombie High Maker assets, sprites, logos, or UI artwork.
+- Replacing the real project material placeholders before the user provides content.
+- Introducing a game engine or a runtime asset pipeline.
+
+## Asset boundaries
+
+- `assets/world`: sky hub and island bases.
+- `assets/tiles`: top-down terrain and path pieces.
+- `assets/characters`: player and NPC sprites.
+- `assets/props`: buildings, signs, terminals, and exhibit objects.
+- `assets/ui`: cursors, badges, and editor-like frame elements.
+- `assets/projects`: replaceable project preview art.
+- `src/asset-catalog.js`: the single runtime catalog that maps asset IDs to URLs and semantic roles.
+
+## Visual direction
+
+Use a restrained 16-bit-inspired pixel language: hard edges, limited palettes, one-pixel highlights, readable silhouettes, and no gradients inside world sprites. The sky hub may keep a soft atmospheric background, but islands and the playable map should use the same pixel palette so the two screens belong to one world.
+
+## Interaction and rendering
+
+The sky map renders island thumbnails from `assets/world`. The island canvas preloads and draws catalogued SVG assets for terrain, buildings, project pins, and the player. Project data continues to own positions and metadata; asset IDs are presentation fields, so content updates do not require renderer changes.
+
+## Constraints
+
+- Existing keyboard and click navigation must remain intact.
+- Existing reduced-motion and focus behavior must remain intact.
+- Every asset must be original, local, and inspectable in the repository.
+- Tests must verify catalog coverage, local paths, and the rendered asset hooks.

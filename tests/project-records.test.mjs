@@ -87,6 +87,20 @@ test('every playable exhibit exposes repository and role certainty metadata', ()
   }
 });
 
+test('every island and exhibit is connected to the pixel asset catalog', () => {
+  const assetIds = new Set([
+    'island-personal', 'island-team', 'island-frontend', 'island-til',
+    'project-screen', 'project-system', 'project-role', 'project-evidence',
+  ]);
+
+  for (const island of islands) {
+    assert.ok(assetIds.has(island.worldAssetId), `${island.id} needs a world asset`);
+    for (const project of island.projects) {
+      assert.ok(assetIds.has(project.assetId), `${project.id} needs a project asset`);
+    }
+  }
+});
+
 test('every playable exhibit exposes temporary portfolio material slots', () => {
   const projects = islands.flatMap((island) => island.projects);
 

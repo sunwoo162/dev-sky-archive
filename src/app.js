@@ -6,6 +6,7 @@ import {
   openProject,
 } from './game-state.js';
 import { findIsland, findProject, islands } from './content.js';
+import { assetCatalog, assetUrl } from './asset-catalog.js';
 
 const screens = {
   sky: document.querySelector('#sky-screen'),
@@ -38,6 +39,8 @@ const pressedKeys = new Set();
 let lastFrame = performance.now();
 const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 let prefersReducedMotion = reducedMotionQuery.matches;
+const assetImages = new Map();
+const assetPatterns = new Map();
 
 reducedMotionQuery.addEventListener?.('change', (event) => {
   prefersReducedMotion = event.matches;
@@ -51,6 +54,25 @@ const markerPositions = [
   { x: 790, y: 430, left: 82, top: 80 },
   { x: 520, y: 350, left: 54, top: 65 },
 ];
+
+function preloadAssets() {
+  Object.entries(assetCatalog).forEach(([id, entry]) => {
+    const image = new Image();
+    image.decoding = 'async';
+    image.onload = () => {
+      assetImages.set(id, image);
+      assetPatterns.set(id, context.createPattern(image, 'repeat'));
+    };
+    image.src = assetUrl(id);
+  });
+}
+
+function drawAsset(id, x, y, width, height) {
+  const image = assetImages.get(id);
+  if (!image) return false;
+  context.drawImage(image, x, y, width, height);
+  return true;
+}
 
 function setScreen(nextState) {
   state = nextState;
@@ -174,9 +196,7 @@ function renderSky() {
     <button class="island-button" type="button" data-island-id="${island.id}"
       style="--island-x:${island.position.x}%;--island-y:${island.position.y}%;--island-scale:${island.position.scale};--island-color:${island.color};--island-accent:${island.accent};"
       aria-label="${island.title} 섬 입장">
-      <span class="island-shadow" aria-hidden="true"></span>
-      <span class="island-rock" aria-hidden="true"></span>
-      <span class="island-land" aria-hidden="true"><i></i><i></i><i></i></span>
+      <img class="island-asset" data-asset-id="${island.worldAssetId}" src="${assetUrl(island.worldAssetId)}" alt="" />
       <span class="island-flag" aria-hidden="true">${island.index}</span>
       <span class="island-card">
         <span class="island-icon" aria-hidden="true">${island.id === 'personal' ? '✦' : island.id === 'team' ? '◈' : island.id === 'frontend' ? '⌘' : '✎'}</span>
@@ -211,7 +231,7 @@ function renderIsland() {
   projectMarkers.innerHTML = currentIsland.projects.map((project, index) => {
     const marker = getMarkerPosition(index);
     return `<button class="project-marker" type="button" data-project-id="${project.id}" data-project-source="marker" style="--marker-left:${marker.left}%;--marker-top:${marker.top}%;--marker-color:${project.color}" aria-label="${project.title} 전시 열기">
-      <span class="marker-pulse" aria-hidden="true"></span><span class="marker-pin" aria-hidden="true">⌕</span><span class="marker-label">${project.title}</span>
+      <span class="marker-pulse" aria-hidden="true"></span><span class="marker-pin" aria-hidden="true"><img src="${assetUrl('cursor-open')}" alt="" /></span><span class="marker-label">${project.title}</span>
     </button>`;
   }).join('');
 
@@ -247,9 +267,19 @@ function visualMarkup(project) {
 }
 
 function renderMaterials(project) {
+  const materialAssetMap = {
+    SCREEN: 'project-screen',
+    SYSTEM: 'project-system',
+    ROLE: 'project-role',
+    EVIDENCE: 'project-evidence',
+    PORTFOLIO: project.assetId,
+    SELFINTRO: 'project-role',
+    PROJECT: 'project-screen',
+    OTHER: 'project-evidence',
+  };
   return project.materials.map((material, index) => `
     <article class="material-card material-${material.kind.toLowerCase()}">
-      <div class="material-art" aria-hidden="true"><span>${material.kind} / ${String(index + 1).padStart(2, '0')}</span><i></i><b>REPLACE WITH REAL MATERIAL</b></div>
+      <div class="material-art" aria-hidden="true"><img src="${assetUrl(materialAssetMap[material.kind] ?? 'project-screen')}" alt="" /><span>${material.kind} / ${String(index + 1).padStart(2, '0')}</span><b>REPLACE WITH REAL MATERIAL</b></div>
       <div class="material-card-head"><span>${material.label}</span><em>TEMP</em></div>
       <h3>${material.title}</h3>
       <p>${material.description}</p>
@@ -310,49 +340,29 @@ function drawRoundedRect(x, y, width, height, radius, fill, stroke) {
 function drawMap() {
   const islandColor = currentIsland?.color ?? '#8aa8ff';
   context.clearRect(0, 0, canvas.width, canvas.height);
-  context.fillStyle = '#b8d8bd';
+  const grassPattern = assetPatterns.get('grass');
+  context.fillStyle = grassPattern ?? '#9acb82';
   context.fillRect(0, 0, canvas.width, canvas.height);
 
-  context.globalAlpha = 0.18;
-  context.strokeStyle = '#537a69';
-  context.lineWidth = 1;
-  for (let x = 0; x < canvas.width; x += 32) {
-    context.beginPath(); context.moveTo(x, 0); context.lineTo(x, canvas.height); context.stroke();
-  }
-  for (let y = 0; y < canvas.height; y += 32) {
-    context.beginPath(); context.moveTo(0, y); context.lineTo(canvas.width, y); context.stroke();
-  }
-  context.globalAlpha = 1;
-
-  context.fillStyle = '#d7c09f';
   context.beginPath();
   context.moveTo(0, 390); context.bezierCurveTo(180, 300, 230, 420, 355, 345); context.bezierCurveTo(500, 260, 610, 382, 960, 250);
-  context.lineWidth = 58; context.strokeStyle = '#d7c09f'; context.stroke();
-  context.lineWidth = 42; context.strokeStyle = '#eee0bf'; context.stroke();
+  const pathPattern = assetPatterns.get('path');
+  context.lineWidth = 62; context.strokeStyle = pathPattern ?? '#dbc18b'; context.stroke();
+  context.lineWidth = 44; context.strokeStyle = '#ead6a2'; context.stroke();
 
-  drawRoundedRect(70, 58, 230, 112, 16, '#f4e8d2', '#d5b88f');
-  drawRoundedRect(83, 71, 204, 75, 10, '#ffbb78', '#b96652');
-  context.fillStyle = '#75495a'; context.font = 'bold 14px ui-monospace, monospace'; context.fillText(currentIsland?.shortTitle ?? 'PROJECTS', 102, 112);
-  context.fillStyle = '#fff0cd'; context.font = '11px ui-monospace, monospace'; context.fillText('ARCHIVE HALL', 102, 130);
-  context.fillStyle = '#d27e61'; context.fillRect(257, 102, 18, 44);
-
-  const garden = [[430, 75], [470, 104], [785, 110], [730, 188], [90, 255], [165, 470], [830, 430]];
-  garden.forEach(([x, y], index) => {
-    context.fillStyle = index % 2 ? '#4c8e62' : '#5da66d';
-    context.fillRect(x, y, 18, 18); context.fillRect(x + 8, y - 9, 12, 27);
-    context.fillStyle = '#3d7b58'; context.fillRect(x - 8, y + 12, 32, 5);
-  });
+  drawAsset('archive-hall', 52, 45, 196, 171);
+  drawAsset('archive-npc', 274, 118, 48, 64);
+  drawAsset('signpost', 408, 120, 56, 72);
+  drawAsset('project-kiosk', 770, 102, 72, 88);
+  drawAsset('project-kiosk', 116, 396, 72, 88);
 
   markerPositions.slice(0, currentIsland?.projects.length ?? 1).forEach((marker, index) => {
     const project = currentIsland?.projects[index];
     if (!project) return;
-    context.fillStyle = '#f1ddbb';
-    context.beginPath(); context.arc(marker.x, marker.y, 38, 0, Math.PI * 2); context.fill();
+    drawAsset('project-kiosk', marker.x - 36, marker.y - 44, 72, 88);
+    drawAsset(project.assetId, marker.x - 23, marker.y - 34, 46, 28);
     context.fillStyle = project.color;
-    context.fillRect(marker.x - 29, marker.y - 25, 58, 50);
-    context.fillStyle = '#fff4da'; context.fillRect(marker.x - 23, marker.y - 19, 46, 32);
-    context.fillStyle = '#654d67'; context.fillRect(marker.x - 9, marker.y + 13, 18, 12);
-    context.fillStyle = '#6d5371'; context.font = 'bold 11px ui-monospace, monospace'; context.textAlign = 'center'; context.fillText(project.title.toUpperCase(), marker.x, marker.y + 52); context.textAlign = 'left';
+    context.fillRect(marker.x - 26, marker.y - 30, 52, 5);
   });
 
   const near = getNearestProject();
@@ -362,11 +372,7 @@ function drawMap() {
   }
 
   const px = Math.round(player.x); const py = Math.round(player.y);
-  context.fillStyle = 'rgba(48, 57, 68, .22)'; context.fillRect(px - 11, py + 14, 22, 6);
-  context.fillStyle = '#3f4a58'; context.fillRect(px - 8, py - 7, 16, 24); context.fillRect(px - 12, py - 1, 24, 7);
-  context.fillStyle = '#f6c8a7'; context.fillRect(px - 7, py - 18, 14, 12);
-  context.fillStyle = '#59415e'; context.fillRect(px - 9, py - 21, 18, 6); context.fillRect(px - 10, py - 16, 4, 5);
-  context.fillStyle = '#c7ecdb'; context.fillRect(px - 4, py - 5, 8, 8);
+  drawAsset('player', px - 24, py - 31, 48, 64);
 }
 
 function getNearestProject() {
@@ -450,4 +456,5 @@ renderSky();
 setScreen(state);
 renderArchiveIndex();
 loadRepoInventory();
+preloadAssets();
 requestAnimationFrame(animate);

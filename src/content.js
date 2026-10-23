@@ -90,9 +90,18 @@ const temporaryMaterials = (config) => config.materials ?? [
   },
 ];
 
+const visualAssetMap = Object.freeze({
+  archive: 'project-screen',
+  washer: 'project-screen',
+  repo: 'project-system',
+  motion: 'project-role',
+  graph: 'project-evidence',
+});
+
 const project = (config) => ({
   ...config,
   materials: temporaryMaterials(config),
+  assetId: config.assetId ?? visualAssetMap[config.visual] ?? 'project-screen',
   linkLabel: config.linkLabel ?? 'GitHub 열기',
   repoUrl: config.repo?.startsWith('sunwoo162/') ? `https://github.com/${config.repo}` : null,
   status: recordMetadata[config.id]?.status ?? config.status ?? 'catalogued',
@@ -102,6 +111,7 @@ const project = (config) => ({
 export const islands = [
   {
     id: 'personal',
+    worldAssetId: 'island-personal',
     index: '01',
     title: 'PERSONAL WORKS',
     shortTitle: 'PERSONAL',
@@ -212,6 +222,7 @@ export const islands = [
   },
   {
     id: 'team',
+    worldAssetId: 'island-team',
     index: '02',
     title: 'TEAM PROJECTS',
     shortTitle: 'TEAM',
@@ -303,6 +314,7 @@ export const islands = [
   },
   {
     id: 'frontend',
+    worldAssetId: 'island-frontend',
     index: '03',
     title: 'FRONTEND LAB',
     shortTitle: 'FRONTEND',
@@ -431,6 +443,7 @@ export const islands = [
   },
   {
     id: 'til',
+    worldAssetId: 'island-til',
     index: '04',
     title: 'TIL LIBRARY',
     shortTitle: 'TIL',

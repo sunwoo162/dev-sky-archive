@@ -185,3 +185,42 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .001ms !important; }
 }
+
+/* Pixel asset layer: world artwork lives in assets/, layout owns composition. */
+.cloud { width: 160px; height: 48px; border-radius: 0; background: transparent; filter: none; object-fit: contain; image-rendering: pixelated; }
+.cloud::before, .cloud::after { display: none; }
+.cloud-a { left: 3%; top: 29%; }
+.cloud-b { right: 2%; bottom: 20%; width: 190px; }
+.cloud-c { left: 47%; top: 3%; width: 90px; opacity: .55; }
+
+.island-button { width: 192px; height: 150px; transform: translate(-50%, -50%) scale(var(--island-scale)); }
+.island-button:hover, .island-button:focus-visible { transform: translate(-50%, -50%) scale(calc(var(--island-scale) * 1.08)) translateY(-8px); }
+.island-asset { position: absolute; inset: 0; width: 192px; height: 128px; object-fit: contain; image-rendering: pixelated; filter: drop-shadow(0 14px 7px rgba(42, 72, 88, .2)); }
+.island-flag { top: 2px; left: 84px; }
+.island-card { top: 92px; min-width: 126px; padding: 8px 10px 7px; transform: translateZ(26px) translateX(-50%); }
+.island-icon { display: none; }
+
+.marker-pin img { width: 18px; height: 18px; object-fit: contain; image-rendering: pixelated; }
+.project-marker:hover .marker-pin, .project-marker:focus-visible .marker-pin { background: #f7c66b; }
+
+.asset-palette { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; padding: 10px 3px 2px; border-top: 1px solid rgba(255,255,255,.08); }
+.asset-palette-label { margin-right: 4px; color: rgba(255,255,255,.3); font: 8px ui-monospace, monospace; letter-spacing: .12em; }
+.asset-chip { display: inline-flex; align-items: center; gap: 5px; padding: 4px 6px; color: rgba(255,255,255,.53); background: #17243a; border: 1px solid rgba(255,255,255,.1); font: 8px ui-monospace, monospace; letter-spacing: .08em; }
+.asset-chip i { display: inline-block; width: 8px; height: 8px; background: #9acb82; border: 1px solid rgba(255,255,255,.4); image-rendering: pixelated; }
+.asset-chip:nth-of-type(3) i { background: #dbc18b; }
+.asset-chip:nth-of-type(4) i { background: #b7dc91; }
+.asset-chip:nth-of-type(5) i { background: #3e4e64; }
+
+.material-art { display: grid; place-items: stretch; }
+.material-art::before, .material-art::after { display: none; }
+.material-art img { display: block; width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; opacity: .92; }
+.material-art > span, .material-art > b { z-index: 2; }
+
+@media (max-width: 760px) {
+  .island-button { width: 144px; height: 120px; }
+  .island-asset { width: 144px; height: 96px; }
+  .island-flag { left: 63px; }
+  .island-card { top: 69px; min-width: 92px; padding: 6px 7px; }
+  .asset-palette { gap: 5px; }
+  .asset-palette-label { flex-basis: 100%; }
+}
