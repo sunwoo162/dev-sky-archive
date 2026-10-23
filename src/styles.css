@@ -214,6 +214,43 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 .asset-chip:nth-of-type(4) i { background: #b7dc91; }
 .asset-chip:nth-of-type(5) i { background: #3e4e64; }
 
+/* Project material cards open a readable temporary document without changing the map art direction. */
+.material-card { display: block; width: 100%; min-width: 0; color: inherit; font: inherit; text-align: left; cursor: pointer; appearance: none; transition: transform .2s ease, border-color .2s ease, background .2s ease; }
+.material-card:hover, .material-card[aria-expanded="true"] { transform: translateY(-3px); background: rgba(255,255,255,.08); border-color: #f7c66b; }
+.materials-reader { margin-top: 18px; padding: clamp(18px, 3vw, 30px); color: rgba(255,255,255,.72); background: linear-gradient(135deg, rgba(247,198,107,.11), rgba(255,255,255,.045)); border: 1px solid rgba(247,198,107,.35); border-left: 3px solid #f7c66b; scroll-margin-top: 24px; }
+.material-reader-head { display: flex; align-items: start; justify-content: space-between; gap: 24px; }
+.material-reader-kicker { display: block; margin-bottom: 9px; color: #f7c66b; font: 9px ui-monospace, monospace; letter-spacing: .15em; }
+.material-reader-head h3 { margin: 0; color: #fff9ec; font-size: clamp(20px, 3vw, 32px); letter-spacing: -.04em; }
+.material-reader-close { flex: 0 0 auto; padding: 7px 9px; color: rgba(255,255,255,.72); background: transparent; border: 1px solid rgba(255,255,255,.2); cursor: pointer; }
+.material-reader-close:hover { color: #fff9ec; border-color: #f7c66b; }
+.material-reader-close span { margin-left: 8px; color: #f7c66b; font: 8px ui-monospace, monospace; }
+.material-reader-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 9px 16px; margin: 19px 0 22px; color: rgba(255,255,255,.42); font: 9px ui-monospace, monospace; letter-spacing: .08em; }
+.material-reader-meta em { padding: 4px 6px; color: #17253a; background: #f7c66b; font-style: normal; font-weight: 800; }
+.material-reader-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(230px, .7fr); gap: 28px; }
+.material-reader-copy { max-width: 650px; }
+.material-reader-copy p { margin: 0 0 16px; font-size: 12px; line-height: 1.75; }
+.material-reader-lead { color: #fff9ec; font-size: 16px !important; line-height: 1.55 !important; }
+.material-reader-sections { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; margin-top: 25px; }
+.material-reader-sections section { padding: 13px; background: rgba(0,0,0,.12); border: 1px solid rgba(255,255,255,.1); }
+.material-reader-sections span, .material-reader-context > span { display: block; margin-bottom: 8px; color: #f7c66b; font: 9px ui-monospace, monospace; letter-spacing: .1em; }
+.material-reader-sections p { margin: 0; color: rgba(255,255,255,.58); font-size: 10px; line-height: 1.6; }
+.material-reader-context { padding: 15px; background: rgba(0,0,0,.14); border: 1px solid rgba(255,255,255,.1); }
+.material-reader-context strong { display: block; color: rgba(255,255,255,.82); font-size: 12px; line-height: 1.55; }
+.material-reader-context small { display: block; margin-top: 15px; color: rgba(255,255,255,.38); font-size: 9px; line-height: 1.6; }
+.material-reader-context ul { display: grid; gap: 8px; margin: 18px 0 0; padding: 0; list-style: none; }
+.material-reader-context li { display: flex; gap: 10px; color: rgba(255,255,255,.55); font-size: 10px; }
+.material-reader-context li span { color: #f7c66b; font: 9px ui-monospace, monospace; }
+.material-reader-context li strong { color: rgba(255,255,255,.72); font-size: 10px; }
+.material-reader-note { margin: 24px 0 0; padding-top: 13px; color: rgba(255,255,255,.4); font-size: 10px; line-height: 1.6; border-top: 1px solid rgba(255,255,255,.12); }
+.material-reader-note b { margin-right: 8px; color: #f7c66b; font: 9px ui-monospace, monospace; letter-spacing: .08em; }
+
+@media (max-width: 760px) {
+  .material-reader-head { display: block; }
+  .material-reader-close { margin-top: 16px; }
+  .material-reader-grid, .material-reader-sections { grid-template-columns: 1fr; }
+  .material-reader-grid { gap: 18px; }
+}
+
 .material-art { display: grid; place-items: stretch; }
 .material-art::before, .material-art::after { display: none; }
 .material-art img { display: block; width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; opacity: .92; }

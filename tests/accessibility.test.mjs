@@ -32,3 +32,11 @@ test('archive and exhibit navigation manage focus', () => {
   assert.match(app, /document\.querySelector\(['"]#back-to-sky['"]\)\?\.focus\(\)/);
   assert.match(app, /treasureMapApi\?\.focusLandmark\(previousIslandId\)/);
 });
+
+test('project material documents expose an accessible reader lifecycle', () => {
+  assert.match(app, /<button class="material-card/);
+  assert.match(app, /aria-live="polite"/);
+  assert.match(app, /data-material-kind/);
+  assert.match(app, /event\.key === ['"]Escape['"]/);
+  assert.match(app, /lastMaterialFocus/);
+});

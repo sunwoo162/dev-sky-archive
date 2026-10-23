@@ -124,6 +124,9 @@ test('every playable exhibit exposes temporary portfolio material slots', () => 
 
   assert.match(appSource, /exhibit-materials/);
   assert.match(appSource, /실제 자료로 교체/);
+  assert.match(appSource, /data-material-kind/);
+  assert.match(appSource, /materials-reader/);
+  assert.match(appSource, /material-reader-close/);
 });
 
 test('playable exhibit metadata stays aligned with the records source of truth', () => {

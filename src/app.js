@@ -35,6 +35,7 @@ let repoInventory = [];
 let lastArchiveFocus = null;
 let lastProjectFocusProjectId = null;
 let lastProjectFocusSource = 'marker';
+let lastMaterialFocus = null;
 let player = { x: 480, y: 350 };
 const pressedKeys = new Set();
 let lastFrame = performance.now();
@@ -271,14 +272,128 @@ function renderMaterials(project) {
     OTHER: 'project-evidence',
   };
   return project.materials.map((material, index) => `
-    <article class="material-card material-${material.kind.toLowerCase()}">
+    <button class="material-card material-${material.kind.toLowerCase()}" type="button" data-material-kind="${material.kind}" aria-controls="materials-reader" aria-expanded="false" aria-label="${escapeHtml(material.title)} 문서 열기">
        <div class="material-art" aria-hidden="true"><img src="${assetUrl(materialAssetMap[material.kind] ?? 'project-screen')}" alt="" /><span>${material.kind} / ${String(index + 1).padStart(2, '0')}</span><b>실제 자료로 교체</b></div>
        <div class="material-card-head"><span>${material.label}</span><em>임시</em></div>
       <h3>${material.title}</h3>
       <p>${material.description}</p>
-      <small>${material.format}</small>
-    </article>
+      <small>${material.format} · 문서 열기 ↗</small>
+    </button>
   `).join('');
+}
+
+const materialDrafts = {
+  SCREEN: {
+    eyebrow: 'SCREEN / 화면 기록',
+    lead: '최종 화면과 실제 사용 흐름을 보여주는 자료를 넣는 문서입니다.',
+    sections: [
+      ['넣을 자료', '대표 화면 캡처, 짧은 GIF, 반응형 화면 또는 Figma 링크'],
+      ['정리 방식', '문제 상황 → 핵심 화면 → 인터랙션 결과 순서로 3~5개의 장면을 배치'],
+    ],
+  },
+  SYSTEM: {
+    eyebrow: 'SYSTEM / 구조 기록',
+    lead: '컴포넌트, 상태, 데이터 흐름을 읽을 수 있게 정리하는 문서입니다.',
+    sections: [
+      ['넣을 자료', '컴포넌트 트리, 상태 전이, API 또는 데이터 모델 다이어그램'],
+      ['정리 방식', '입력 → 상태 변화 → 화면 출력과 각 경계의 책임을 짧게 설명'],
+    ],
+  },
+  ROLE: {
+    eyebrow: 'ROLE / 역할 기록',
+    lead: '프로젝트에서 실제로 맡은 범위를 근거와 함께 적는 문서입니다.',
+    sections: [
+      ['넣을 자료', '담당 화면, PR, 커밋, 이슈, 협업 메모와 같은 역할 증빙'],
+      ['정리 방식', '내가 결정한 것 → 구현한 것 → 협업으로 조정한 것을 구분'],
+    ],
+  },
+  EVIDENCE: {
+    eyebrow: 'EVIDENCE / 근거 기록',
+    lead: 'README, 배포 링크, 테스트 결과처럼 프로젝트를 확인할 수 있는 자료입니다.',
+    sections: [
+      ['넣을 자료', 'GitHub 링크, 배포 주소, 테스트 명령, 성능 지표, 릴리스 기록'],
+      ['정리 방식', '주장 하나마다 확인 가능한 링크나 파일 경로를 붙여 신뢰도를 보강'],
+    ],
+  },
+  PORTFOLIO: {
+    eyebrow: 'PORTFOLIO / 포트폴리오 원고',
+    lead: '프로젝트를 문제·해결·결과의 흐름으로 설명하는 최종 케이스 스터디입니다.',
+    sections: [
+      ['넣을 자료', '문제 정의, 선택한 해결책, 구현 과정, 결과와 배운 점'],
+      ['정리 방식', '한 문단에 한 메시지만 남기고 화면·근거 자료와 연결'],
+    ],
+  },
+  SELFINTRO: {
+    eyebrow: 'SELFINTRO / 자기소개서 원고',
+    lead: '이 프로젝트에서 드러난 강점과 성장 경험을 지원 문장으로 정리하는 문서입니다.',
+    sections: [
+      ['넣을 자료', '지원 직무에 맞춘 자기소개 문장, 회고, 배운 점'],
+      ['정리 방식', '상황 → 행동 → 결과 → 다음에 적용할 점을 짧게 연결'],
+    ],
+  },
+  PROJECT: {
+    eyebrow: 'PROJECT / 프로젝트 설명',
+    lead: '면접이나 발표에서 이 프로젝트를 빠르게 설명하기 위한 원고입니다.',
+    sections: [
+      ['넣을 자료', '한 줄 소개, 1분 설명, 기술 선택 이유, 예상 질문 답변'],
+      ['정리 방식', '왜 만들었는지부터 무엇을 만들었고 내가 무엇을 했는지 순서로 설명'],
+    ],
+  },
+  OTHER: {
+    eyebrow: 'OTHER / 기타 기록',
+    lead: '이력서, 발표 자료, 회고, 인증서처럼 다른 문서와 연결하는 자리입니다.',
+    sections: [
+      ['넣을 자료', 'PDF, 슬라이드, 회고, 인증서, 외부 링크'],
+      ['정리 방식', '자료의 용도와 연결된 프로젝트 맥락을 한 줄로 덧붙임'],
+    ],
+  },
+};
+
+function renderMaterialReader(project, material) {
+  const draft = materialDrafts[material.kind] ?? materialDrafts.OTHER;
+  const timeline = project.timeline.slice(0, 3).map((entry) => `<li><span>${escapeHtml(entry.phase)}</span><strong>${escapeHtml(entry.title)}</strong></li>`).join('');
+  return `
+    <div class="material-reader-head">
+      <div><span class="material-reader-kicker">문서 미리보기 / TEMP DRAFT</span><h3 id="materials-reader-title">${escapeHtml(material.title)}</h3></div>
+      <button class="material-reader-close" id="material-reader-close" type="button">닫기 <span>Esc</span></button>
+    </div>
+    <div class="material-reader-meta"><span>${escapeHtml(draft.eyebrow)}</span><span>${escapeHtml(material.format)}</span><em>임시 초안</em></div>
+    <div class="material-reader-grid">
+      <div class="material-reader-copy">
+        <p class="material-reader-lead">${escapeHtml(draft.lead)}</p>
+        <p>${escapeHtml(project.title)}의 현재 기록과 연결된 자료 자리입니다. 실제 원고나 파일이 들어오면 이 임시 안내문을 교체합니다.</p>
+        <div class="material-reader-sections">${draft.sections.map(([title, copy]) => `<section><span>${escapeHtml(title)}</span><p>${escapeHtml(copy)}</p></section>`).join('')}</div>
+      </div>
+      <aside class="material-reader-context">
+        <span>현재 프로젝트 기록</span>
+        <strong>${escapeHtml(project.summary)}</strong>
+        <small>기술 스택 / ${escapeHtml(project.stack.join(' · '))}</small>
+        <ul>${timeline}</ul>
+      </aside>
+    </div>
+    <p class="material-reader-note"><b>실제 자료로 교체</b> 네 문서·캡처·링크를 받으면 이 카드의 임시 초안과 연결 정보만 교체하면 됩니다. 현재 내용은 구조 확인용입니다.</p>
+  `;
+}
+
+function closeMaterialReader() {
+  const reader = document.querySelector('#materials-reader');
+  if (!reader) return;
+  reader.classList.add('is-hidden');
+  reader.setAttribute('aria-hidden', 'true');
+  document.querySelectorAll('[data-material-kind]').forEach((button) => button.setAttribute('aria-expanded', 'false'));
+  if (lastMaterialFocus instanceof HTMLElement) lastMaterialFocus.focus();
+}
+
+function openMaterialReader(project, material, button) {
+  const reader = document.querySelector('#materials-reader');
+  if (!reader || !material) return;
+  lastMaterialFocus = button;
+  reader.innerHTML = renderMaterialReader(project, material);
+  reader.classList.remove('is-hidden');
+  reader.setAttribute('aria-hidden', 'false');
+  document.querySelectorAll('[data-material-kind]').forEach((card) => card.setAttribute('aria-expanded', card === button ? 'true' : 'false'));
+  reader.querySelector('#material-reader-close')?.focus();
+  reader.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'nearest' });
 }
 
 function renderProject() {
@@ -316,9 +431,16 @@ function renderProject() {
       </div>
       <p class="materials-intro">포트폴리오, 자기소개서, 프로젝트 설명, 기타 증빙 자료가 들어갈 자리를 먼저 만들어뒀습니다. 지금은 화면 구조를 확인하기 위한 임시 카드입니다.</p>
       <div class="materials-grid">${renderMaterials(project)}</div>
+      <div class="materials-reader is-hidden" id="materials-reader" aria-hidden="true" aria-live="polite" aria-labelledby="materials-reader-title"></div>
     </section>
   `;
-      document.querySelector('#inline-back').addEventListener('click', closeProjectToIsland);
+  document.querySelector('#inline-back').addEventListener('click', closeProjectToIsland);
+  document.querySelectorAll('[data-material-kind]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const material = project.materials.find((item) => item.kind === button.dataset.materialKind);
+      openMaterialReader(project, material, button);
+    });
+  });
 }
 
 function drawRoundedRect(x, y, width, height, radius, fill, stroke) {
@@ -432,6 +554,10 @@ window.addEventListener('keydown', (event) => {
   }
   if (!archiveModal.classList.contains('is-hidden') && key === 'tab') {
     trapArchiveFocus(event);
+    return;
+  }
+  if (state.screen === 'project' && !document.querySelector('#materials-reader')?.classList.contains('is-hidden') && event.key === 'Escape') {
+    closeMaterialReader();
     return;
   }
   if (state.screen === 'island' && key === 'e') {
