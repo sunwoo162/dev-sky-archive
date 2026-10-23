@@ -96,9 +96,8 @@ test('every playable exhibit exposes repository and role certainty metadata', ()
 
 test('every island and exhibit is connected to the pixel asset catalog', () => {
   for (const island of islands) {
-    assert.ok(assetCatalog[island.worldAssetId], `${island.id} needs a world asset`);
-    assert.ok(assetCatalog[island.worldBaseAssetId], `${island.id} needs a 3D island base`);
-    assert.ok(island.worldPropIds?.every((assetId) => assetCatalog[assetId]), `${island.id} needs valid 3D props`);
+    assert.ok(island.map?.landmark, `${island.id} needs a treasure-map landmark`);
+    assert.ok(island.map?.label, `${island.id} needs a Korean treasure-map label`);
     for (const project of island.projects) {
       assert.ok(assetCatalog[project.assetId], `${project.id} needs a project asset`);
     }

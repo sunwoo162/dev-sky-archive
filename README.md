@@ -40,7 +40,7 @@ py -m http.server 4173
 - `assets/world/`: 상세 2D 월드와 레거시 하늘섬 조합에서 사용하는 그래픽
 - `assets/tiles/`: 잔디·길·벽·물 패턴
 - `assets/characters/`: 플레이어와 NPC 스프라이트
-- `assets/props/`: 3D 하늘섬 건물·나무·램프와 2D 전시 키오스크·표지판
+- `assets/props/`: 2D 탐방 월드의 아카이브 홀·키오스크·표지판
 - `assets/ui/`: 커서와 공통 픽셀 프레임
 - `assets/projects/`: 프로젝트 역할·화면·시스템·근거를 보여주는 전시 아트
 - `data/project-records.json`: 기술 스택·역할·개발 과정·근거를 정규화한 원본 데이터

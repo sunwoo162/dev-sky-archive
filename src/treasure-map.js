@@ -173,6 +173,11 @@ export function renderTreasureMap({ container, islands, onSelect, reducedMotion 
       container.classList.toggle('is-reduced-motion', Boolean(value));
     },
     refresh() {},
+    focusLandmark(islandId) {
+      [...container.querySelectorAll('[data-island-id]')]
+        .find((button) => button.dataset.islandId === islandId)
+        ?.focus();
+    },
     destroy() {
       container.removeEventListener('click', handleClick);
       container.innerHTML = '';

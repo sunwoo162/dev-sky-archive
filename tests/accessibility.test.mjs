@@ -29,4 +29,6 @@ test('archive and exhibit navigation manage focus', () => {
   assert.match(app, /archiveModal.*querySelectorAll/s);
   assert.match(app, /lastProjectFocusProjectId/);
   assert.match(app, /projectFocusTarget\?\.focus\(\)/);
+  assert.match(app, /document\.querySelector\(['"]#back-to-sky['"]\)\?\.focus\(\)/);
+  assert.match(app, /treasureMapApi\?\.focusLandmark\(previousIslandId\)/);
 });

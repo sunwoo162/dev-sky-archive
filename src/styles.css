@@ -60,7 +60,7 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 .screen { min-height: 100vh; padding-top: 74px; }
 .is-hidden { display: none !important; }
 
-/* 3D sky map */
+/* Treasure-map landing screen */
 .sky-screen {
   position: relative;
   display: grid;
@@ -234,7 +234,8 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 .sky-map-wrap { position: absolute; inset: 0; min-height: 0; padding: clamp(18px, 4vw, 62px); background: #35271f; }
 .sky-stage { position: relative; inset: auto; width: 100%; height: 100%; overflow: visible; perspective: none; }
 .sky-stage::before, .sky-stage::after { display: none; }
-.treasure-map, .treasure-map-canvas { position: absolute; inset: 0; }
+.treasure-map { position: absolute; inset: 0; }
+.treasure-map-canvas { position: absolute; left: 50%; top: 50%; width: min(100%, calc(100dvh * 1.578947)); aspect-ratio: 1200 / 760; height: auto; transform: translate(-50%, -50%); }
 .treasure-map-canvas { overflow: hidden; border: 1px solid rgba(247, 221, 163, .28); box-shadow: 0 18px 46px rgba(14, 9, 6, .38), inset 0 0 0 1px rgba(74, 42, 24, .18); background: #e1c98c; }
 .treasure-map-svg { display: block; width: 100%; height: 100%; color: #4d3424; }
 .treasure-map-paper { fill: #e1c98c; stroke: #4d3424; stroke-width: 5; }

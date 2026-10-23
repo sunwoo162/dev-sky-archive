@@ -9,8 +9,8 @@ const root = path.resolve(import.meta.dirname, '..');
 test('the pixel asset catalog is grouped by visual responsibility', () => {
   const categories = new Set(Object.values(assetCatalog).map((entry) => entry.category));
 
-  assert.deepEqual(categories, new Set(['world', 'tiles', 'characters', 'props', 'ui', 'projects']));
-  assert.ok(assetIds.length >= 18);
+  assert.deepEqual(categories, new Set(['tiles', 'characters', 'props', 'ui', 'projects']));
+  assert.ok(assetIds.length >= 12);
 });
 
 test('every catalog entry points to an existing local SVG asset', () => {
@@ -37,8 +37,8 @@ test('runtime rendering imports the catalog and uses asset-backed world hooks', 
   assert.match(app, /renderTreasureMap\(/);
   assert.doesNotMatch(app, /sky-3d/);
   assert.match(app, /assetUrl\(/);
-  assert.match(content, /worldBaseAssetId/);
-  assert.match(content, /worldPropIds/);
+  assert.match(content, /map:\s*\{/);
+  assert.match(content, /landmark:/);
   assert.match(html, /asset-palette|data-asset-id/);
   assert.match(html, /id="treasure-map"/);
   assert.doesNotMatch(html, /sky-3d-canvas/);

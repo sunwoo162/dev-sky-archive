@@ -34,6 +34,22 @@
       .stack .tree { top: 58px; left: 31%; width: 40px; height: 58px; transform: translateX(-50%) translateZ(30px) rotateX(0deg) rotateZ(0deg); }
       .stack .lamp { top: 82px; left: 70%; width: 24px; height: 42px; transform: translateX(-50%) translateZ(32px) rotateX(0deg) rotateZ(0deg); }
       .assembly-note { color: rgba(255,255,255,.45); font-size: 10px; line-height: 1.55; }
+      .map-composition { position: relative; height: 196px; overflow: hidden; padding: 20px; background: #e1c98c; border: 8px solid #4d3424; }
+      .map-paper { position: relative; height: 100%; overflow: hidden; border: 2px solid #76523a; background: #efdca8; }
+      .map-paper::before, .map-paper::after { position: absolute; content: ''; border: 2px solid #9d7652; border-radius: 45%; opacity: .55; }
+      .map-paper::before { width: 38%; height: 48%; left: 8%; top: 22%; }
+      .map-paper::after { width: 34%; height: 42%; right: 9%; bottom: 16%; }
+      .map-route { position: absolute; z-index: 1; height: 0; border-top: 2px dashed #9d6252; transform-origin: left center; }
+      .route-a { width: 35%; left: 22%; top: 42%; transform: rotate(-27deg); }
+      .route-b { width: 38%; left: 43%; top: 49%; transform: rotate(21deg); }
+      .route-c { width: 32%; left: 34%; top: 50%; transform: rotate(88deg); }
+      .map-dot { position: absolute; z-index: 2; padding: 4px 6px; color: #4d3424; background: #f5e4b7; border: 2px solid #4d3424; font: 700 8px/1 ui-monospace, sans-serif; }
+      .dot-a { left: 8%; top: 18%; }.dot-b { left: 42%; top: 40%; background: #6e4632; color: #f4e4b6; }.dot-c { right: 7%; bottom: 12%; }
+      .map-landmark-preview { position: absolute; left: 22%; top: 28%; display: grid; justify-items: center; gap: 8px; color: #4d3424; }
+      .map-landmark-preview.study { left: 58%; top: 20%; }
+      .landmark-art { display: grid; place-items: center; width: 50px; height: 64px; color: #efdca8; background: #6e4632; border: 3px solid #4d3424; font: 32px/1 sans-serif; }
+      .map-landmark-preview b { padding: 4px 7px; background: #f5e4b7; border: 2px solid #4d3424; font-size: 9px; white-space: nowrap; }
+      .map-landmark-preview small { color: #76523a; font-size: 7px; white-space: nowrap; }
       .final-callout { margin-top: 18px; padding: 18px 20px; color: #21334a; background: #f7c66b; font: 800 12px/1.5 ui-monospace, monospace; }
       @media (max-width: 680px) { body { padding: 18px; } header { display: block; } header p { margin-top: 16px; } .assembly { grid-template-columns: 1fr; } }
     </style>
@@ -46,22 +62,22 @@
       </header>
 
       <section>
-        <div class="section-head"><h2>WORLD ASSET PARTS</h2><span>WORLD / COMPOSITION</span></div>
+        <div class="section-head"><h2>TREASURE MAP PARTS</h2><span>SVG / COMPOSITION</span></div>
         <div class="assembly">
-          <article class="assembly-card"><h3>01 / PERSONAL ISLAND STACK</h3><div class="stack"><img class="bed" src="./assets/world/sky-island-bed.svg" alt="" /><img class="top" src="./assets/world/island-top-personal.svg" alt="" /><img class="building" src="./assets/props/sky-archive-tower.svg" alt="" /><img class="tree" src="./assets/props/sky-tree.svg" alt="" /><img class="lamp" src="./assets/props/sky-lamp.svg" alt="" /></div><p class="assembly-note">절벽 바닥 → 섬 표면 → 전용 건물 → 주변 소품 순서로 쌓인다.</p></article>
-          <article class="assembly-card"><h3>02 / TEAM ISLAND STACK</h3><div class="stack"><img class="bed" src="./assets/world/sky-island-bed.svg" alt="" /><img class="top" src="./assets/world/island-top-team.svg" alt="" /><img class="building" src="./assets/props/sky-team-lab.svg" alt="" /><img class="tree" src="./assets/props/sky-tree.svg" alt="" /><img class="lamp" src="./assets/props/sky-lamp.svg" alt="" /></div><p class="assembly-note">섬 종류가 바뀌면 표면 팔레트와 대표 건물만 교체된다.</p></article>
+          <article class="assembly-card"><h3>01 / PAPER + ROUTE</h3><div class="map-composition"><div class="map-paper"><i class="map-route route-a"></i><i class="map-route route-b"></i><i class="map-route route-c"></i><span class="map-dot dot-a">대외활동</span><span class="map-dot dot-b">프로필</span><span class="map-dot dot-c">개인</span></div></div><p class="assembly-note">양피지·해안선·점선 경로를 하나의 반응형 SVG 레이어로 렌더링한다.</p></article>
+          <article class="assembly-card"><h3>02 / LANDMARK BUTTON</h3><div class="map-composition"><div class="map-landmark-preview"><span class="landmark-art">⌂</span><b>팀 프로젝트</b><small>HTML BUTTON / FOCUSABLE</small></div><div class="map-landmark-preview study"><span class="landmark-art">▤</span><b>스터디</b><small>DATA → CALLBACK</small></div></div><p class="assembly-note">지도 그림과 클릭 가능한 한글 버튼을 분리해 키보드 탐방과 반응형 배치를 보장한다.</p></article>
         </div>
       </section>
 
       <section>
         <div class="section-head"><h2>ASSET LIBRARY</h2><span>REPLACEABLE PIECES</span></div>
         <div class="grid">
-          <article class="asset tall"><img src="./assets/world/sky-island-bed.svg" alt="" /><small>ISLAND BED</small></article>
-          <article class="asset tall"><img src="./assets/world/island-top-frontend.svg" alt="" /><small>ISLAND TOP</small></article>
-          <article class="asset tall"><img src="./assets/props/sky-frontend-node.svg" alt="" /><small>BUILDING PROP</small></article>
-          <article class="asset tall"><img src="./assets/props/sky-tree.svg" alt="" /><small>TREE PROP</small></article>
-          <article class="asset tall"><img src="./assets/props/sky-lamp.svg" alt="" /><small>LAMP PROP</small></article>
-          <article class="asset tall"><img src="./assets/ui/selection-ring.svg" alt="" /><small>SELECTION UI</small></article>
+          <article class="asset"><img src="./assets/props/archive-hall.svg" alt="" /><small>ARCHIVE HALL</small></article>
+          <article class="asset"><img src="./assets/characters/archive-npc.svg" alt="" /><small>GUIDE NPC</small></article>
+          <article class="asset"><img src="./assets/props/signpost.svg" alt="" /><small>SIGNPOST</small></article>
+          <article class="asset"><img src="./assets/ui/cursor-open.svg" alt="" /><small>OPEN CURSOR</small></article>
+          <article class="asset"><img src="./assets/tiles/water.svg" alt="" /><small>WATER TILE</small></article>
+          <article class="asset"><img src="./assets/tiles/wall.svg" alt="" /><small>WALL TILE</small></article>
           <article class="asset"><img src="./assets/tiles/grass.svg" alt="" /><small>2D GRASS TILE</small></article>
           <article class="asset"><img src="./assets/tiles/path.svg" alt="" /><small>2D PATH TILE</small></article>
           <article class="asset tall"><img src="./assets/characters/player.svg" alt="" /><small>PLAYER</small></article>
@@ -71,7 +87,7 @@
         </div>
       </section>
 
-      <p class="final-callout">FINAL SCREEN = ASSET PARTS + DATA POSITION + INTERACTION STATE → 실제 플레이 화면은 메인 페이지에서 확인</p>
+      <p class="final-callout">FINAL SCREEN = MAP LAYERS + LANDMARK DATA + INTERACTION STATE → 실제 플레이 화면은 메인 페이지에서 확인</p>
     </main>
   </body>
 </html>

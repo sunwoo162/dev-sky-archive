@@ -22,8 +22,8 @@
 - 화면 코드에는 파일 경로를 직접 넣지 않고 `src/asset-catalog.js`에 `assetId`, 경로, 대체 텍스트를 등록합니다.
 - 기본 에셋은 로컬 오리지널 SVG를 사용합니다. 외부 게임의 스프라이트·UI·아이콘을 복사하지 않습니다.
 - 픽셀 에셋은 `shape-rendering="crispEdges"`를 유지하고, 실제 스프라이트로 교체할 때도 기존 `assetId`를 우선 보존합니다.
-- 3D 하늘맵의 지형은 한 칸을 한 타일로 취급합니다. 타일은 정수 격자에 배치하고, 잔디 상판·흙/돌 단면·카테고리 파츠를 조합해 섬을 만듭니다.
-- `src/sky-3d.js`에는 장면 조립과 포인터 선택만 두고, 프로젝트 내용·역할·레포 정보는 `data/project-records.json`과 `src/content.js`에서 관리합니다.
+- 첫 화면의 지도는 `src/treasure-map.js`에서 종이·해안선·경로·랜드마크를 SVG 레이어로 조합합니다. 카테고리 좌표와 라벨은 `src/content.js`에서 관리합니다.
+- 프로젝트 내용·역할·레포 정보는 `data/project-records.json`과 `src/content.js`에서 관리하고, 지도 렌더러에는 사실 데이터를 하드코딩하지 않습니다.
 - 외부 게임의 스프라이트를 복제하지 않고, 단순한 기하와 로컬 에셋으로 같은 장르의 모듈형 게임 문법만 구현합니다.
 
 ## 로컬 검증
@@ -34,12 +34,12 @@ node --check src/app.js
 node --check src/content.js
 node --check src/asset-catalog.js
 node --check src/game-state.js
-node --check src/sky-3d.js
+node --check src/treasure-map.js
 git diff --check
 py -m http.server 4173
 ```
 
-브라우저에서 `sky(3D 타일 맵) → island → project exhibit → ESC` 흐름, DOM 버튼 keyboard fallback, WASD 이동, Archive Index 35개 레포 목록, GitHub 링크를 확인합니다. 화면을 바꾼 경우 데스크톱과 좁은 화면에서 레이아웃도 확인합니다.
+브라우저에서 `treasure map → island → project exhibit → ESC` 흐름, 랜드마크 keyboard focus, WASD 이동, Archive Index 35개 레포 목록, GitHub 링크를 확인합니다. 화면을 바꾼 경우 데스크톱과 좁은 화면에서 레이아웃도 확인합니다.
 
 ## Pull Request
 

@@ -199,6 +199,13 @@ function closeProjectToIsland() {
 function enterSelectedIsland(islandId) {
   player = { x: 480, y: 365 };
   setScreen(enterIsland(state, islandId));
+  requestAnimationFrame(() => document.querySelector('#back-to-sky')?.focus());
+}
+
+function returnToSky() {
+  const previousIslandId = state.islandId;
+  setScreen(exitToSky(state));
+  requestAnimationFrame(() => treasureMapApi?.focusLandmark(previousIslandId));
 }
 
 function getMarkerPosition(index) {
@@ -403,8 +410,8 @@ function animate(timestamp) {
   requestAnimationFrame(animate);
 }
 
-document.querySelector('#back-to-sky').addEventListener('click', () => setScreen(exitToSky(state)));
-document.querySelector('#brand-button').addEventListener('click', () => setScreen(exitToSky(state)));
+document.querySelector('#back-to-sky').addEventListener('click', returnToSky);
+document.querySelector('#brand-button').addEventListener('click', returnToSky);
 document.querySelector('#back-to-island').addEventListener('click', closeProjectToIsland);
 document.querySelector('#close-project').addEventListener('click', closeProjectToIsland);
 archiveIndexTrigger.addEventListener('click', openArchiveIndex);

@@ -112,9 +112,6 @@ const project = (config) => ({
 export const islands = [
   {
     id: 'profile',
-    worldAssetId: 'island-top-profile',
-    worldBaseAssetId: 'island-bed',
-    worldPropIds: ['sky-profile-core', 'sky-tree', 'sky-lamp'],
     index: '00',
     title: '프로필',
     shortTitle: '프로필',
@@ -149,9 +146,6 @@ export const islands = [
   },
   {
     id: 'personal',
-    worldAssetId: 'island-top-personal',
-    worldBaseAssetId: 'island-bed',
-    worldPropIds: ['sky-archive-tower', 'sky-tree', 'sky-lamp'],
     index: '01',
     title: '개인 프로젝트',
     shortTitle: '개인',
@@ -263,9 +257,6 @@ export const islands = [
   },
   {
     id: 'team',
-    worldAssetId: 'island-top-team',
-    worldBaseAssetId: 'island-bed',
-    worldPropIds: ['sky-team-lab', 'sky-tree', 'sky-lamp'],
     index: '02',
     title: '팀 프로젝트',
     shortTitle: '팀',
@@ -358,9 +349,6 @@ export const islands = [
   },
   {
     id: 'external',
-    worldAssetId: 'island-top-external',
-    worldBaseAssetId: 'island-bed',
-    worldPropIds: ['sky-external-gateway', 'sky-tree', 'sky-lamp'],
     index: '03',
     title: '대외활동',
     shortTitle: '대외활동',
@@ -490,9 +478,6 @@ export const islands = [
   },
   {
     id: 'study',
-    worldAssetId: 'island-top-study',
-    worldBaseAssetId: 'island-bed',
-    worldPropIds: ['sky-study-library', 'sky-tree', 'sky-lamp'],
     index: '04',
     title: '스터디',
     shortTitle: '스터디',
