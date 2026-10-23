@@ -27,6 +27,7 @@ test('assetUrl returns a safe local fallback for unknown IDs', () => {
 
 test('runtime rendering imports the catalog and uses asset-backed world hooks', () => {
   const app = readFileSync(path.join(root, 'src', 'app.js'), 'utf8');
+  const sky3d = readFileSync(path.join(root, 'src', 'sky-3d.js'), 'utf8');
   const html = readFileSync(path.join(root, 'index.html'), 'utf8');
   const preview = readFileSync(path.join(root, 'asset-preview.html'), 'utf8');
 
@@ -36,6 +37,12 @@ test('runtime rendering imports the catalog and uses asset-backed world hooks', 
   assert.match(app, /worldPropIds|sky-prop/);
   assert.match(html, /asset-palette|data-asset-id/);
   assert.match(html, /3d-compass/);
+  assert.match(html, /type="importmap"/);
+  assert.match(html, /sky-3d-canvas/);
+  assert.match(sky3d, /createSkyWorld/);
+  assert.match(sky3d, /OrthographicCamera/);
+  assert.match(sky3d, /createBlock/);
+  assert.match(sky3d, /Raycaster/);
   assert.match(preview, /3D SKY ISLAND PARTS/);
   assert.match(preview, /ASSET LIBRARY/);
 });

@@ -27,6 +27,9 @@ const archiveIndexMeta = document.querySelector('#archive-index-meta');
 const archiveIndexList = document.querySelector('#archive-index-list');
 const canvas = document.querySelector('#game-canvas');
 const context = canvas.getContext('2d');
+const skyStage = document.querySelector('#sky-stage');
+const sky3dCanvas = document.querySelector('#sky-3d-canvas');
+const sky3dFallback = document.querySelector('#sky-3d-fallback');
 
 let state = createInitialState();
 let currentIsland = null;
@@ -41,9 +44,11 @@ const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
 let prefersReducedMotion = reducedMotionQuery.matches;
 const assetImages = new Map();
 const assetPatterns = new Map();
+let skyWorld = null;
 
 reducedMotionQuery.addEventListener?.('change', (event) => {
   prefersReducedMotion = event.matches;
+  skyWorld?.setReducedMotion(prefersReducedMotion);
 });
 
 const markerPositions = [
@@ -83,6 +88,7 @@ function setScreen(nextState) {
 
   if (state.screen === 'island') renderIsland();
   if (state.screen === 'project') renderProject();
+  if (state.screen === 'sky') requestAnimationFrame(() => skyWorld?.resize());
 }
 
 const classificationLabels = {
@@ -218,6 +224,27 @@ function renderSky() {
       setScreen(enterIsland(state, islandId));
     });
   });
+}
+
+async function setupSkyWorld() {
+  if (!sky3dCanvas) return;
+  try {
+    const { createSkyWorld } = await import('./sky-3d.js');
+    skyWorld = createSkyWorld({
+      canvas: sky3dCanvas,
+      islands,
+      reducedMotion: prefersReducedMotion,
+      onSelect: (islandId) => {
+        player = { x: 480, y: 365 };
+        setScreen(enterIsland(state, islandId));
+      },
+    });
+    skyStage.classList.add('has-3d');
+  } catch (error) {
+    sky3dFallback?.classList.remove('is-hidden');
+    skyStage?.classList.add('has-3d-fallback');
+    console.warn('3D sky world unavailable; keeping the accessible DOM map.', error);
+  }
 }
 
 function getMarkerPosition(index) {
@@ -462,4 +489,5 @@ setScreen(state);
 renderArchiveIndex();
 loadRepoInventory();
 preloadAssets();
+setupSkyWorld();
 requestAnimationFrame(animate);

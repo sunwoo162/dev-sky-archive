@@ -216,6 +216,17 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 .material-art img { display: block; width: 100%; height: 100%; object-fit: cover; image-rendering: pixelated; opacity: .92; }
 .material-art > span, .material-art > b { z-index: 2; }
 
+/* Playable voxel sky: Three.js owns the scene; the DOM island buttons remain the keyboard/accessibility fallback. */
+#sky-3d-canvas { position: absolute; z-index: 1; inset: 0; display: block; width: 100%; height: 100%; background: #c9e7f3; image-rendering: pixelated; }
+.sky-stage.has-3d > .cloud,
+.sky-stage.has-3d > .sky-compass,
+.sky-stage.has-3d > .route,
+.sky-stage.has-3d > .map-center-marker { display: none; }
+.sky-stage.has-3d #island-list { z-index: 4; pointer-events: none; }
+.sky-stage.has-3d .island-button { opacity: 0; pointer-events: none; }
+.sky-stage.has-3d .island-button:focus-visible { opacity: 1; pointer-events: auto; outline: 3px solid #f7c66b; outline-offset: 5px; background: rgba(16,23,40,.22); }
+.sky-3d-fallback { position: absolute; z-index: 5; left: 50%; bottom: 12px; padding: 8px 12px; color: #27364a; background: rgba(255,253,248,.9); border: 1px solid rgba(39,54,74,.18); font: 10px/1.4 ui-monospace, SFMono-Regular, Consolas, monospace; transform: translateX(-50%); }
+
 /* 3D sky asset kit: the sky map is composed from an extruded bed, a typed island top, and props. */
 .sky-stage { perspective: 1120px; transform-style: preserve-3d; }
 .sky-stage::before { transform: rotateX(68deg) rotateZ(-4deg) scale(1.08); }

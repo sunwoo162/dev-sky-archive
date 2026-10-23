@@ -7,6 +7,13 @@
     <meta name="description" content="프로젝트를 탐방하는 3D 하늘섬 포트폴리오 게임" />
     <title>Dev Sky Archive — Portfolio World</title>
     <link rel="stylesheet" href="./src/styles.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.180.0/build/three.module.js"
+        }
+      }
+    </script>
   </head>
   <body>
     <div class="app-shell">
@@ -38,6 +45,8 @@
           <div class="sky-map-wrap">
             <div class="sky-map-label label-top"><span>ARCHIVE SKY / 01</span><span>4 ISLANDS ONLINE</span></div>
             <div class="sky-stage" id="sky-stage" aria-label="프로젝트 하늘섬 선택 지도">
+              <canvas id="sky-3d-canvas" aria-label="블록 타일로 조립된 3D 프로젝트 하늘맵"></canvas>
+              <div class="sky-3d-fallback is-hidden" id="sky-3d-fallback" role="status">3D 맵을 불러오지 못했어요. 아래 카테고리 버튼으로 섬에 들어갈 수 있습니다.</div>
               <img class="cloud cloud-a" src="./assets/world/cloud-pixel.svg" alt="" aria-hidden="true" />
               <img class="cloud cloud-b" src="./assets/world/cloud-pixel.svg" alt="" aria-hidden="true" />
               <img class="cloud cloud-c" src="./assets/world/cloud-pixel.svg" alt="" aria-hidden="true" />

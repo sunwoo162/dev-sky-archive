@@ -1,6 +1,6 @@
 # Dev Sky Archive
 
-3D 하늘섬 월드맵에서 프로젝트 섬을 선택하고, 섬 안의 2D 탑다운 공간을 탐방하는 포트폴리오 게임 프로토타입입니다.
+블록 타일을 조립한 3D 하늘섬 월드맵에서 프로젝트 섬을 선택하고, 섬 안의 2D 탑다운 공간을 탐방하는 포트폴리오 게임 프로토타입입니다.
 
 ## 실행
 
@@ -12,7 +12,10 @@ py -m http.server 4173
 
 ## 현재 구현
 
-- 3D처럼 보이는 하늘섬 선택 맵
+- Three.js `OrthographicCamera` 기반의 고정 시점 3D 하늘섬 선택 맵
+- 잔디·흙·돌 블록을 한 칸씩 조립하는 모듈형 타일 지형
+- 카테고리별 건물·나무·램프·구름을 코드 파츠로 합성하는 월드 에셋 구조
+- WebGL/CDN 로드가 실패해도 DOM 버튼으로 계속 탐방할 수 있는 fallback
 - 섬 클릭으로 2D 탑다운 프로젝트 월드 진입
 - WASD/방향키 이동
 - 프로젝트 표지판 클릭 또는 가까이에서 `E` 입력
@@ -30,6 +33,7 @@ py -m http.server 4173
 - `src/game-state.js`: 화면 전환 상태와 순수 함수
 - `src/content.js`: 실제 레포 기반 섬·프로젝트 전시 데이터
 - `src/app.js`: 렌더링, 입력, Canvas 맵, 상호작용
+- `src/sky-3d.js`: 타일 블록·건물·소품을 조립하는 Three.js 3D 하늘맵
 - `src/asset-catalog.js`: 에셋 ID, 경로, 대체 이미지, 접근성 텍스트를 관리하는 단일 카탈로그
 - `src/styles.css`: 하늘맵, 2D 맵, 프로젝트 전시 스타일
 - `assets/world/`: 3D 하늘섬 절벽 바닥·섬 표면·구름처럼 월드 전체에서 사용하는 그래픽
@@ -60,6 +64,8 @@ node --test tests/*.mjs
 ## 배포
 
 `main`에 반영되면 `.github/workflows/deploy-pages.yml`이 정적 사이트를 GitHub Pages로 배포합니다. PR과 `main` push에서는 `.github/workflows/ci.yml`이 테스트와 JavaScript 문법 검사를 실행합니다. 저장소 설정에서 Pages의 빌드 소스를 `GitHub Actions`로 선택한 뒤 사용할 수 있습니다.
+
+3D 하늘맵은 `index.html`의 import map으로 고정한 Three.js ES module을 불러옵니다. 별도 번들러 없이 Pages에서 실행되도록 유지하고, `src/sky-3d.js`가 WebGL 장면·리사이즈·포인터 선택·reduced motion을 담당합니다. 실제 게임 화면의 탐방과 전시 데이터는 기존 `src/app.js`와 `data/`가 담당합니다.
 
 새 에셋은 먼저 적절한 책임 폴더에 추가하고, `src/asset-catalog.js`에 고유한 `assetId`와 대체 텍스트를 등록합니다. 월드에서 쓰는 에셋은 원본 SVG 또는 교체 가능한 로컬 파일로만 관리하며, 화면 코드에 파일 경로를 직접 흩뿌리지 않습니다.
 
