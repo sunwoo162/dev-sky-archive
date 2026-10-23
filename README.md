@@ -12,7 +12,7 @@ py -m http.server 4173
 
 ## 현재 구현
 
-- Three.js `OrthographicCamera` 기반의 고정 시점 3D 하늘섬 선택 맵
+- Three.js `PerspectiveCamera` 기반의 전방 관찰 시점 3D 하늘섬 선택 맵
 - 잔디·흙·돌 블록을 한 칸씩 조립하는 모듈형 타일 지형
 - 카테고리별 건물·나무·램프·구름을 코드 파츠로 합성하는 월드 에셋 구조
 - WebGL/CDN 로드가 실패해도 DOM 버튼으로 계속 탐방할 수 있는 fallback

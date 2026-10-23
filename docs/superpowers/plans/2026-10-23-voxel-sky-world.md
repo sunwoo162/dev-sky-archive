@@ -4,9 +4,9 @@
 
 **Goal:** Replace the flat sky island cards with a real modular isometric 3D sky hub built from reusable block tiles.
 
-**Architecture:** A focused `src/sky-3d.js` module creates a Three.js orthographic scene and exposes `createSkyWorld`/`destroy`. The existing app keeps navigation and accessible DOM controls; the 3D canvas is the visual layer and dispatches island selection through a callback.
+**Architecture:** A focused `src/sky-3d.js` module creates a Three.js perspective scene from a fixed viewer position and exposes `createSkyWorld`/`destroy`. The existing app keeps navigation and accessible DOM controls; the 3D canvas is the visual layer and dispatches island selection through a callback.
 
-**Tech Stack:** Buildless HTML modules, Three.js WebGLRenderer, OrthographicCamera, flat-shaded BoxGeometry/CylinderGeometry, Node test runner, GitHub Pages.
+**Tech Stack:** Buildless HTML modules, Three.js WebGLRenderer, PerspectiveCamera, flat-shaded BoxGeometry/CylinderGeometry, Node test runner, GitHub Pages.
 
 **Spec:** `docs/superpowers/specs/2026-10-23-voxel-sky-world-design.md`
 
@@ -35,7 +35,7 @@
 
 - [x] Define the `createSkyWorld({ canvas, islands, onSelect, reducedMotion })` interface.
 - [x] Add grid tile factories and category building compositions.
-- [x] Add orthographic camera, flat-shaded lights, clouds, island picking, resize, and cleanup.
+- [x] Add perspective viewer camera, flat-shaded lights, clouds, island picking, resize, and cleanup.
 - [x] Add a readable fallback state for WebGL/import failures.
 - [x] Add static tests for the scene module contract and import map.
 

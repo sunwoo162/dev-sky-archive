@@ -6,7 +6,7 @@ Replace the decorative 2.5D sky cards with a real, modular 3D game space. The po
 
 ## Goals
 
-- Render the sky hub with a fixed isometric `OrthographicCamera` and WebGL.
+- Render the sky hub with a fixed forward-looking `PerspectiveCamera` placed outside the islands and WebGL.
 - Build island terrain from repeated grass, soil, and stone block modules.
 - Build each category island from the same tile grammar with a distinct building prop.
 - Keep island selection clickable in 3D and keyboard-accessible through existing buttons.
@@ -22,7 +22,8 @@ Replace the decorative 2.5D sky cards with a real, modular 3D game space. The po
 
 ## Visual rules
 
-- Orthographic isometric view, fixed 30°-ish diagonal camera.
+- Perspective view from a fixed viewer position, with a stable center target and no free orbit.
+- Island placement uses depth layers: foreground islands are larger and background islands recede toward the horizon.
 - One world tile is one grid unit; all terrain and props snap to that grid.
 - Flat-shaded materials, limited palette, no noisy texture detail.
 - Three terrain layers: grass top, soil band, dark stone underside.

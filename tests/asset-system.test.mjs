@@ -39,7 +39,7 @@ test('runtime rendering imports the catalog and uses asset-backed world hooks', 
   assert.match(html, /type="importmap"/);
   assert.match(html, /sky-3d-canvas/);
   assert.match(sky3d, /createSkyWorld/);
-  assert.match(sky3d, /OrthographicCamera/);
+  assert.match(sky3d, /PerspectiveCamera/);
   assert.match(sky3d, /createBlock/);
   assert.match(sky3d, /Raycaster/);
   assert.match(preview, /3D SKY ISLAND PARTS/);

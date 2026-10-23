@@ -22,25 +22,25 @@ const COLORS = Object.freeze({
 
 const ISLAND_LAYOUTS = Object.freeze({
   personal: {
-    position: [-4.45, 1.9], rotation: -0.18,
+    position: [-4.2, 2.35], rotation: -0.18,
     palette: { top: COLORS.grass, roof: COLORS.coral }, building: 'archive',
     cells: [[-2, -1], [-1, -1], [0, -1], [1, -1], [2, -1], [-2, 0], [-1, 0], [0, 0], [1, 0], [2, 0], [-1, 1], [0, 1], [1, 1]],
     props: [[-1.35, 0.18, 0.4, 0.72], [1.35, 0.18, -0.56, 0.58], [1.5, 0.18, 0.52]],
   },
   team: {
-    position: [4.45, 2.2], rotation: 0.3,
+    position: [3.8, 1.85], rotation: 0.3,
     palette: { top: COLORS.blue, roof: 0x6d8ed0 }, building: 'team',
     cells: [[-1, -2], [0, -2], [1, -2], [-2, -1], [-1, -1], [0, -1], [1, -1], [2, -1], [-2, 0], [-1, 0], [0, 0], [1, 0], [2, 0], [-1, 1], [0, 1], [1, 1]],
     props: [[-1.42, 0.18, 0.5, 0.62], [1.35, 0.18, -0.8, 0.7], [1.55, 0.18, 0.48]],
   },
   frontend: {
-    position: [-3.5, -3.15], rotation: 0.58,
+    position: [-2.65, -3.65], rotation: 0.58,
     palette: { top: COLORS.violet, roof: 0x7c67cd }, building: 'frontend',
     cells: [[-2, -1], [-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0], [2, 0], [-1, 1], [0, 1], [1, 1], [2, 1]],
     props: [[-1.42, 0.18, 0.42, 0.76], [1.55, 0.18, -0.62, 0.55], [1.42, 0.18, 0.5]],
   },
   til: {
-    position: [3.85, -3.05], rotation: -0.42,
+    position: [2.75, -4.05], rotation: -0.42,
     palette: { top: COLORS.mint, roof: 0x4e8c72 }, building: 'til',
     cells: [[-2, -1], [-1, -1], [0, -1], [1, -1], [2, -1], [-2, 0], [-1, 0], [0, 0], [1, 0], [2, 0], [-2, 1], [-1, 1], [0, 1], [1, 1]],
     props: [[-1.4, 0.18, 0.38, 0.64], [1.45, 0.18, -0.7, 0.68], [1.46, 0.18, 0.5]],
@@ -224,9 +224,9 @@ function createSkyWorld({ canvas, islands, onSelect, reducedMotion = false } = {
   renderer.setClearColor(COLORS.sky, 1);
 
   const scene = new THREE.Scene();
-  const camera = new THREE.OrthographicCamera(-8, 8, 5, -5, .1, 100);
-  const viewTarget = new THREE.Vector3(0, 0, 0);
-  camera.position.set(9, 10, 9);
+  const camera = new THREE.PerspectiveCamera(40, 1, .1, 100);
+  const viewTarget = new THREE.Vector3(0, 0.35, -0.8);
+  camera.position.set(8.5, 9.5, 15);
   camera.lookAt(viewTarget);
 
   scene.add(new THREE.HemisphereLight(0xfff7e5, 0x4a5870, 2.2));
@@ -260,11 +260,7 @@ function createSkyWorld({ canvas, islands, onSelect, reducedMotion = false } = {
     const width = Math.max(canvas.clientWidth, 1);
     const height = Math.max(canvas.clientHeight, 1);
     const aspect = width / height;
-    const size = 8.8;
-    camera.left = -size * aspect;
-    camera.right = size * aspect;
-    camera.top = size;
-    camera.bottom = -size;
+    camera.aspect = aspect;
     camera.updateProjectionMatrix();
     renderer.setSize(width, height, false);
     updateIslandLabels();
