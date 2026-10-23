@@ -16,17 +16,17 @@
       "category": "profile",
       "status": "profile-hub",
       "summary": "프로젝트, 기술 스택, 역할, 자기소개 자료를 하나의 탐방 흐름으로 연결하는 중심 기록.",
-      "stack": ["HTML", "CSS", "JavaScript", "Three.js", "Canvas", "GitHub Pages"],
+      "stack": ["HTML", "CSS", "JavaScript", "SVG", "Canvas", "GitHub Pages"],
       "role": {
         "status": "self-recorded",
         "summary": "포트폴리오 구조, 프론트엔드 구현, 정보 설계"
       },
       "developmentTimeline": [
         {"phase": "hub", "title": "중심점 정의", "detail": "프로젝트를 나열하는 대신 나를 중심으로 각각의 작업이 뻗어 나가는 구조를 정했다.", "source": "conversation"},
-        {"phase": "connections", "title": "섬 연결", "detail": "PERSONAL, TEAM, FRONTEND, TIL 섬을 PROFILE 허브와 시각적인 경로로 연결했다.", "source": "src/sky-3d.js"},
+        {"phase": "connections", "title": "지도 연결", "detail": "개인 프로젝트, 팀 프로젝트, 대외활동, 스터디 랜드마크를 프로필 허브와 점선 경로로 연결했다.", "source": "src/treasure-map.js"},
         {"phase": "materials", "title": "자료 슬롯 준비", "detail": "프로필, 자기소개서, 포트폴리오, 프로젝트 설명을 나중에 교체할 수 있는 전시 구조로 만들었다.", "source": "src/content.js"}
       ],
-      "evidence": ["index.html", "src/content.js", "src/sky-3d.js", "data/project-records.json"],
+      "evidence": ["index.html", "src/content.js", "src/treasure-map.js", "data/project-records.json"],
       "links": {"github": "https://github.com/sunwoo162/dev-sky-archive"}
     },
     {
@@ -35,15 +35,15 @@
       "repo": null,
       "category": "personal",
       "status": "prototype",
-      "summary": "프로젝트를 3D 하늘섬에서 선택하고 2D 탑다운 월드에서 탐방하는 포트폴리오 게임.",
-      "stack": ["HTML", "CSS", "JavaScript", "Canvas", "Node test runner", "Python HTTP server"],
+      "summary": "보물지도에서 프로젝트를 선택하고 2D 탑다운 월드에서 탐방하는 포트폴리오 게임.",
+      "stack": ["HTML", "CSS", "JavaScript", "SVG", "Canvas", "Node test runner", "Python HTTP server"],
       "role": {
         "status": "self-recorded",
         "summary": "컨셉 정의, 정보 구조, 인터랙션 설계, 프론트엔드 프로토타입 구현"
       },
       "developmentTimeline": [
         {"phase": "problem", "title": "내가 어떤 프로젝트를 했는지 모른다", "detail": "레포·포트폴리오·TIL을 한눈에 찾을 수 있는 시각적 아카이브가 필요하다고 정의했다.", "source": "conversation"},
-        {"phase": "world-model", "title": "건물에서 하늘섬 구조로 전환", "detail": "3D 하늘맵은 카테고리를 선택하는 지도, 2D 화면은 실제 프로젝트를 탐방하는 공간으로 분리했다.", "source": "conversation"},
+        {"phase": "world-model", "title": "보물지도와 탐방 월드로 분리", "detail": "2D 보물지도는 카테고리를 선택하는 지도, 2D 화면은 실제 프로젝트를 탐방하는 공간으로 분리했다.", "source": "conversation"},
         {"phase": "playable-prototype", "title": "클릭 → 2D 맵 → 전시 화면", "detail": "섬 클릭, Canvas 탑다운 맵, WASD/방향키 이동, E키·표지판 클릭, 프로젝트 전시 전환을 구현했다.", "source": "src/app.js, src/game-state.js"},
         {"phase": "data-model", "title": "레포 근거를 프로젝트 데이터로 정규화", "detail": "기술 스택, 기능, 개발 과정, 커밋 근거, 역할 확인 상태를 데이터 필드로 분리했다.", "source": "data/project-records.json"}
       ],

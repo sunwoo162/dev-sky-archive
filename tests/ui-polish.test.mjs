@@ -9,7 +9,7 @@ async function read(relativePath) {
   return fs.readFile(path.join(root, relativePath), 'utf8');
 }
 
-test('sky landing screen keeps Korean title lines intact and exposes clear map controls', async () => {
+test('sky landing screen keeps Korean title lines intact and exposes the treasure map', async () => {
   const html = await read('index.html');
   const css = await read('src/styles.css');
 
@@ -17,9 +17,11 @@ test('sky landing screen keeps Korean title lines intact and exposes clear map c
   assert.match(css, /\.sky-title-line\s*\{/);
   assert.match(css, /\.sky-title-line[^}]*white-space:\s*nowrap/);
   assert.match(css, /\.sky-title-line[^}]*overflow-wrap:\s*normal/);
-  assert.match(css, /\.sky-map-label[^}]*color:\s*rgba\(40,64,82/);
+  assert.match(html, /id="treasure-map"/);
+  assert.match(css, /\.treasure-map-canvas\s*\{/);
+  assert.match(css, /\.treasure-map-landmark:focus-visible/);
+  assert.match(css, /\.treasure-map-route\s*\{/);
   assert.match(css, /\.archive-index-trigger:focus-visible/);
-  assert.match(css, /\.island-button:focus-visible/);
   assert.match(css, /\.app-shell\s*\{[^}]*overflow-x:\s*hidden/);
   assert.doesNotMatch(css, /\.app-shell\s*\{[^}]*overflow:\s*hidden/);
 });

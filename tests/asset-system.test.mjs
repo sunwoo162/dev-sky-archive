@@ -27,21 +27,23 @@ test('assetUrl returns a safe local fallback for unknown IDs', () => {
 
 test('runtime rendering imports the catalog and uses asset-backed world hooks', () => {
   const app = readFileSync(path.join(root, 'src', 'app.js'), 'utf8');
-  const sky3d = readFileSync(path.join(root, 'src', 'sky-3d.js'), 'utf8');
+  const content = readFileSync(path.join(root, 'src', 'content.js'), 'utf8');
+  const treasureMap = readFileSync(path.join(root, 'src', 'treasure-map.js'), 'utf8');
   const html = readFileSync(path.join(root, 'index.html'), 'utf8');
   const preview = readFileSync(path.join(root, 'asset-preview.html'), 'utf8');
 
   assert.match(app, /from ['"]\.\/asset-catalog\.js['"]/);
+  assert.match(app, /from ['"]\.\/treasure-map\.js['"]/);
+  assert.match(app, /renderTreasureMap\(/);
+  assert.doesNotMatch(app, /sky-3d/);
   assert.match(app, /assetUrl\(/);
-  assert.match(app, /worldBaseAssetId|island-bed/);
-  assert.match(app, /worldPropIds|sky-prop/);
+  assert.match(content, /worldBaseAssetId/);
+  assert.match(content, /worldPropIds/);
   assert.match(html, /asset-palette|data-asset-id/);
-  assert.match(html, /type="importmap"/);
-  assert.match(html, /sky-3d-canvas/);
-  assert.match(sky3d, /createSkyWorld/);
-  assert.match(sky3d, /PerspectiveCamera/);
-  assert.match(sky3d, /createBlock/);
-  assert.match(sky3d, /Raycaster/);
-  assert.match(preview, /3D SKY ISLAND PARTS/);
+  assert.match(html, /id="treasure-map"/);
+  assert.doesNotMatch(html, /sky-3d-canvas/);
+  assert.match(treasureMap, /treasure-map-svg/);
+  assert.match(treasureMap, /treasure-map-landmark/);
+  assert.match(preview, /DESIGN ASSET BREAKDOWN/);
   assert.match(preview, /ASSET LIBRARY/);
 });

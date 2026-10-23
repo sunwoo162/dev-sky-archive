@@ -123,6 +123,7 @@ export const islands = [
     color: '#f7c66b',
     accent: '#fff1b8',
     position: { x: 50, y: 50, scale: 1.15 },
+    map: { x: 50, y: 48, landmark: 'profile', label: '프로필' },
     projects: [
       project({
         id: 'profile-core',
@@ -131,7 +132,7 @@ export const islands = [
         category: 'PROFILE / CORE HUB',
         summary: '프로젝트, 기술 스택, 역할, 자기소개 자료를 하나의 탐방 흐름으로 연결하는 중심 기록.',
         role: '포트폴리오 구조 · 프론트엔드 구현 · 정보 설계',
-        stack: ['HTML', 'CSS', 'JavaScript', 'Three.js', 'Canvas', 'GitHub Pages'],
+        stack: ['HTML', 'CSS', 'JavaScript', 'SVG', 'Canvas', 'GitHub Pages'],
         flow: ['Profile', 'Project islands', 'Evidence archive'],
         detail: '이 섬은 프로젝트를 따로 흩어진 목록으로 보여주는 대신, 나를 중심으로 이어진 작업 세계로 보여주기 위한 시작점이다. 실제 자기소개서, 이력서, 기술 스택 자료는 나중에 이 전시 슬롯에 교체한다.',
         timeline: [
@@ -159,20 +160,21 @@ export const islands = [
     color: '#ff9b71',
     accent: '#ffe0a7',
     position: { x: 22, y: 69, scale: 1.05 },
+    map: { x: 22, y: 67, landmark: 'personal', label: '개인 프로젝트' },
     projects: [
       project({
         id: 'dev-sky-archive',
         title: 'Dev Sky Archive',
         repo: 'local/outputs/dev-sky-archive',
         category: 'PERSONAL / PORTFOLIO GAME',
-        summary: '3D 하늘섬에서 프로젝트를 선택하고 2D 탑다운 월드에서 탐방하는 포트폴리오 게임.',
+        summary: '보물지도에서 프로젝트를 선택하고 2D 탑다운 월드에서 탐방하는 포트폴리오 게임.',
         role: '컨셉 · 정보 구조 · 인터랙션 · 프론트엔드 구현',
         stack: ['HTML', 'CSS', 'JavaScript', 'Canvas', 'Node Test Runner'],
-        flow: ['3D sky map', '2D island world', 'Project exhibit'],
+        flow: ['2D treasure map', '2D island world', 'Project exhibit'],
         detail: '내가 무엇을 만들었는지 기억나지 않는 문제를 프로젝트 탐방 경험으로 바꿨다. 레포의 기술 스택, 기능, 개발 과정, 근거를 전시 데이터로 정규화하고 있다.',
         timeline: [
           { phase: '01', title: '문제 정의', detail: '내 프로젝트가 어디에 있는지 모르는 상태를 시각적 아카이브 문제로 정의했다.' },
-          { phase: '02', title: '하늘섬 구조', detail: '카테고리 선택은 3D 하늘맵, 프로젝트 탐방은 2D 월드로 분리했다.' },
+          { phase: '02', title: '보물지도 구조', detail: '카테고리 선택은 2D 보물지도, 프로젝트 탐방은 2D 월드로 분리했다.' },
           { phase: '03', title: '플레이 가능 프로토타입', detail: '섬 클릭, WASD 이동, E키 상호작용, 프로젝트 전시 화면을 연결했다.' },
           { phase: '04', title: '레포 데이터화', detail: '레포 분석 결과를 stack, role, timeline, evidence 필드로 기록한다.' },
         ],
@@ -272,6 +274,7 @@ export const islands = [
     color: '#8aa8ff',
     accent: '#d5e0ff',
     position: { x: 78, y: 69, scale: 1.02 },
+    map: { x: 78, y: 64, landmark: 'team', label: '팀 프로젝트' },
     projects: [
       project({
         id: 'washer-client-v2',
@@ -366,6 +369,7 @@ export const islands = [
     color: '#b99cff',
     accent: '#e8ddff',
     position: { x: 22, y: 29, scale: 0.94 },
+    map: { x: 24, y: 29, landmark: 'external', label: '대외활동' },
     projects: [
       project({
         id: 'npc-platform',
@@ -497,6 +501,7 @@ export const islands = [
     color: '#72c9b5',
     accent: '#cbf2e8',
     position: { x: 78, y: 27, scale: 0.88 },
+    map: { x: 76, y: 27, landmark: 'study', label: '스터디' },
     projects: [
       project({
         id: 'til',

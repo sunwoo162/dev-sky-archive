@@ -4,16 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#101728" />
-    <meta name="description" content="프로젝트를 탐방하는 3D 하늘섬 포트폴리오 게임" />
+    <meta name="description" content="보물지도를 따라 프로젝트를 탐방하는 2D 포트폴리오 게임" />
     <title>Dev Sky Archive — Portfolio World</title>
     <link rel="stylesheet" href="./src/styles.css" />
-    <script type="importmap">
-      {
-        "imports": {
-          "three": "https://unpkg.com/three@0.180.0/build/three.module.js"
-        }
-      }
-    </script>
   </head>
   <body>
     <div class="app-shell">
@@ -38,10 +31,8 @@
           <h1 id="sky-title" class="sr-only"><span class="sky-title-line">프로젝트 하늘섬</span><span class="sky-title-line">탐방 월드</span></h1>
 
           <div class="sky-map-wrap">
-            <div class="sky-stage" id="sky-stage" aria-label="프로젝트 하늘섬 선택 지도">
-              <canvas id="sky-3d-canvas" aria-label="블록 타일로 조립된 3D 프로젝트 하늘맵"></canvas>
-              <div class="sky-3d-fallback is-hidden" id="sky-3d-fallback" role="status">3D 맵을 불러오지 못했어요. 아래 카테고리 버튼으로 섬에 들어갈 수 있습니다.</div>
-              <div id="island-list"></div>
+            <div class="sky-stage" id="sky-stage" aria-label="프로젝트 보물지도">
+              <div class="treasure-map" id="treasure-map"></div>
             </div>
           </div>
           <button class="archive-index-trigger" id="archive-index-trigger" type="button" aria-haspopup="dialog" aria-controls="archive-index-modal" hidden>ARCHIVE INDEX</button>

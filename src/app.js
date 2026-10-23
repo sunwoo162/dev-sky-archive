@@ -7,6 +7,7 @@ import {
 } from './game-state.js';
 import { findIsland, findProject, islands } from './content.js';
 import { assetCatalog, assetUrl } from './asset-catalog.js';
+import { renderTreasureMap } from './treasure-map.js';
 
 const screens = {
   sky: document.querySelector('#sky-screen'),
@@ -15,7 +16,7 @@ const screens = {
 };
 
 const topbarMode = document.querySelector('#topbar-mode');
-const islandList = document.querySelector('#island-list');
+const treasureMap = document.querySelector('#treasure-map');
 const projectMarkers = document.querySelector('#project-markers');
 const projectIndex = document.querySelector('#project-index');
 const interactionToast = document.querySelector('#interaction-toast');
@@ -27,9 +28,6 @@ const archiveIndexMeta = document.querySelector('#archive-index-meta');
 const archiveIndexList = document.querySelector('#archive-index-list');
 const canvas = document.querySelector('#game-canvas');
 const context = canvas.getContext('2d');
-const skyStage = document.querySelector('#sky-stage');
-const sky3dCanvas = document.querySelector('#sky-3d-canvas');
-const sky3dFallback = document.querySelector('#sky-3d-fallback');
 
 let state = createInitialState();
 let currentIsland = null;
@@ -44,11 +42,11 @@ const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
 let prefersReducedMotion = reducedMotionQuery.matches;
 const assetImages = new Map();
 const assetPatterns = new Map();
-let skyWorld = null;
+let treasureMapApi = null;
 
 reducedMotionQuery.addEventListener?.('change', (event) => {
   prefersReducedMotion = event.matches;
-  skyWorld?.setReducedMotion(prefersReducedMotion);
+  treasureMapApi?.setReducedMotion(prefersReducedMotion);
 });
 
 const markerPositions = [
@@ -89,7 +87,7 @@ function setScreen(nextState) {
 
   if (state.screen === 'island') renderIsland();
   if (state.screen === 'project') renderProject();
-  if (state.screen === 'sky') requestAnimationFrame(() => skyWorld?.resize());
+  if (state.screen === 'sky') requestAnimationFrame(() => treasureMapApi?.refresh());
 }
 
 const classificationLabels = {
@@ -198,54 +196,9 @@ function closeProjectToIsland() {
   projectFocusTarget?.focus();
 }
 
-function renderSky() {
-  islandList.innerHTML = islands.map((island) => `
-    <button class="island-button${island.id === 'profile' ? ' profile-island-button' : ''}" type="button" data-island-id="${island.id}"
-      style="--island-x:${island.position.x}%;--island-y:${island.position.y}%;--island-scale:${island.position.scale};--island-color:${island.color};--island-accent:${island.accent};"
-      aria-label="${island.title} 섬 입장">
-      <span class="island-scene" aria-hidden="true">
-        <img class="island-selection-ring" data-asset-id="selection-ring" src="${assetUrl('selection-ring')}" alt="" />
-        <img class="island-bed" data-asset-id="${island.worldBaseAssetId}" src="${assetUrl(island.worldBaseAssetId)}" alt="" />
-        <img class="island-top" data-asset-id="${island.worldAssetId}" src="${assetUrl(island.worldAssetId)}" alt="" />
-        ${(island.worldPropIds ?? []).map((assetId, index) => `<img class="sky-prop sky-prop-${index + 1}" data-asset-id="${assetId}" src="${assetUrl(assetId)}" alt="" />`).join('')}
-      </span>
-      <span class="island-flag" aria-hidden="true">${island.index}</span>
-      <span class="island-card">
-        <span class="island-icon" aria-hidden="true">${island.id === 'profile' ? '◎' : island.id === 'personal' ? '✦' : island.id === 'team' ? '◈' : island.id === 'external' ? '↗' : '✎'}</span>
-        <span class="island-name">${island.shortTitle}</span>
-        <span class="island-subtitle">전시 ${island.projects.length}개</span>
-      </span>
-    </button>
-  `).join('');
-
-  islandList.querySelectorAll('[data-island-id]').forEach((button) => {
-    button.addEventListener('click', () => {
-      const islandId = button.dataset.islandId;
-      player = { x: 480, y: 365 };
-      setScreen(enterIsland(state, islandId));
-    });
-  });
-}
-
-async function setupSkyWorld() {
-  if (!sky3dCanvas) return;
-  try {
-    const { createSkyWorld } = await import('./sky-3d.js');
-    skyWorld = createSkyWorld({
-      canvas: sky3dCanvas,
-      islands,
-      reducedMotion: prefersReducedMotion,
-      onSelect: (islandId) => {
-        player = { x: 480, y: 365 };
-        setScreen(enterIsland(state, islandId));
-      },
-    });
-    skyStage.classList.add('has-3d');
-  } catch (error) {
-    sky3dFallback?.classList.remove('is-hidden');
-    skyStage?.classList.add('has-3d-fallback');
-    console.warn('3D sky world unavailable; keeping the accessible DOM map.', error);
-  }
+function enterSelectedIsland(islandId) {
+  player = { x: 480, y: 365 };
+  setScreen(enterIsland(state, islandId));
 }
 
 function getMarkerPosition(index) {
@@ -282,7 +235,7 @@ function renderIsland() {
 
 function visualMarkup(project) {
   if (project.visual === 'archive') {
-    return `<div class="preview-window archive-window"><div class="preview-nav"><span class="preview-logo">dev-sky-archive / map</span><span class="archive-live">● PLAYABLE</span></div><div class="archive-stage"><div class="archive-route archive-route-one"></div><div class="archive-route archive-route-two"></div><i class="archive-island archive-island-one">01</i><i class="archive-island archive-island-two">02</i><i class="archive-island archive-island-three">03</i><span class="archive-player">YOU</span></div><div class="archive-caption">3D sky map → 2D island → exhibit</div></div>`;
+        return `<div class="preview-window archive-window"><div class="preview-nav"><span class="preview-logo">dev-sky-archive / map</span><span class="archive-live">● PLAYABLE</span></div><div class="archive-stage"><div class="archive-route archive-route-one"></div><div class="archive-route archive-route-two"></div><i class="archive-island archive-island-one">01</i><i class="archive-island archive-island-two">02</i><i class="archive-island archive-island-three">03</i><span class="archive-player">YOU</span></div><div class="archive-caption">treasure map → 2D island → exhibit</div></div>`;
   }
   if (project.visual === 'washer') {
     return `<div class="preview-window washer-window"><div class="preview-nav"><span class="preview-logo">washer/</span><span class="preview-avatar">YU</span></div><div class="washer-body"><div><small>MON, 14 OCT</small><h4>오늘의 세탁실</h4></div><div class="machine-stack"><div class="machine-row"><span class="machine-icon">○</span><span><b>세탁기 03</b><small>사용 가능 · 18분</small></span><em>예약</em></div><div class="machine-row active"><span class="machine-icon">◌</span><span><b>세탁기 07</b><small>사용 중 · 24분 남음</small></span><em>대기</em></div><div class="machine-row"><span class="machine-icon">○</span><span><b>건조기 02</b><small>사용 가능 · 42분</small></span><em>예약</em></div></div></div></div>`;
@@ -487,10 +440,14 @@ window.addEventListener('keydown', (event) => {
 
 window.addEventListener('keyup', (event) => pressedKeys.delete(event.key.toLowerCase()));
 
-renderSky();
+treasureMapApi = renderTreasureMap({
+  container: treasureMap,
+  islands,
+  reducedMotion: prefersReducedMotion,
+  onSelect: enterSelectedIsland,
+});
 setScreen(state);
 renderArchiveIndex();
 loadRepoInventory();
 preloadAssets();
-setupSkyWorld();
 requestAnimationFrame(animate);
