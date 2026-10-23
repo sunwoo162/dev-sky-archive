@@ -211,7 +211,7 @@ function renderSky() {
       </span>
       <span class="island-flag" aria-hidden="true">${island.index}</span>
       <span class="island-card">
-        <span class="island-icon" aria-hidden="true">${island.id === 'profile' ? '◎' : island.id === 'personal' ? '✦' : island.id === 'team' ? '◈' : island.id === 'frontend' ? '⌘' : '✎'}</span>
+        <span class="island-icon" aria-hidden="true">${island.id === 'profile' ? '◎' : island.id === 'personal' ? '✦' : island.id === 'team' ? '◈' : island.id === 'external' ? '↗' : '✎'}</span>
         <span class="island-name">${island.shortTitle}</span>
         <span class="island-subtitle">${island.projects.length} EXHIBIT${island.projects.length > 1 ? 'S' : ''}</span>
       </span>

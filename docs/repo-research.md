@@ -34,6 +34,10 @@
 
 `Dev Sky Archive`를 첫 번째 프로젝트로 등록했다. HTML/CSS/JavaScript, Canvas, Node test runner, Python HTTP server를 사용하고, 문제 정의 → 하늘섬 모델 → 플레이 가능 프로토타입 → 레포 데이터화의 흐름으로 기록한다.
 
+### 프로필 코어 섬
+
+- `Profile Core` — 프로젝트, 기술 스택, 역할, 자기소개 자료가 다른 섬으로 뻗어 나가는 중심 허브
+
 ### 개인 프로젝트 섬
 
 - `Dev Sky Archive` — 이 포트폴리오 게임 자체
@@ -49,7 +53,7 @@
 - `RepoDock` — `RD`, Rust 기반 안전한 저장소 동기화 도구
 - `구조판 LAB` — `fire-evac-ai-hackathon`, 3D 화재·대피 시뮬레이션
 
-### 프론트엔드 실험실 섬
+### 대외활동 섬
 
 - `NPC Platform` — `iseol-bot`, workspace·실행 기록·포트폴리오 플랫폼
 - `WebBridge` — Chrome MV3 데이터 추출·변환·자동 입력 확장
@@ -58,7 +62,7 @@
 - `OSS Product Builder` — `EEEE`, 근거 기반 local-first workbench
 - `gleave` — assistant·runtime·evidence verification 통합 플랫폼
 
-### TIL 라이브러리 섬
+### 스터디 섬
 
 - `TIL` — React Native, 네트워크, FSD/FDA, Git 학습 메모
 - `Restart TIL` — Cornell note, TanStack Query, HTTP, 도메인 모델

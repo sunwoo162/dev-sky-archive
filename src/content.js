@@ -122,7 +122,7 @@ export const islands = [
     description: '내가 어떤 프론트엔드 개발자인지, 무엇을 만들었고 어떻게 성장했는지를 모아두는 허브.',
     color: '#f7c66b',
     accent: '#fff1b8',
-    position: { x: 50, y: 49, scale: 1.12 },
+    position: { x: 50, y: 50, scale: 1.15 },
     projects: [
       project({
         id: 'profile-core',
@@ -152,13 +152,13 @@ export const islands = [
     worldBaseAssetId: 'island-bed',
     worldPropIds: ['sky-archive-tower', 'sky-tree', 'sky-lamp'],
     index: '01',
-    title: 'PERSONAL WORKS',
+    title: 'PERSONAL PROJECTS',
     shortTitle: 'PERSONAL',
     subtitle: '혼자 끝까지 밀어붙인 프로젝트',
     description: '문제를 발견하고, 화면과 흐름을 직접 설계해 제품으로 만든 기록.',
     color: '#ff9b71',
     accent: '#ffe0a7',
-    position: { x: 24, y: 51, scale: 1.08 },
+    position: { x: 22, y: 69, scale: 1.05 },
     projects: [
       project({
         id: 'dev-sky-archive',
@@ -271,7 +271,7 @@ export const islands = [
     description: '팀 안에서 맡은 역할과 의사결정, 실제 기여를 한눈에 보여주는 섬.',
     color: '#8aa8ff',
     accent: '#d5e0ff',
-    position: { x: 50, y: 73, scale: 0.98 },
+    position: { x: 78, y: 69, scale: 1.02 },
     projects: [
       project({
         id: 'washer-client-v2',
@@ -354,18 +354,18 @@ export const islands = [
     ],
   },
   {
-    id: 'frontend',
-    worldAssetId: 'island-top-frontend',
+    id: 'external',
+    worldAssetId: 'island-top-external',
     worldBaseAssetId: 'island-bed',
-    worldPropIds: ['sky-frontend-node', 'sky-tree', 'sky-lamp'],
+    worldPropIds: ['sky-external-gateway', 'sky-tree', 'sky-lamp'],
     index: '03',
-    title: 'FRONTEND LAB',
-    shortTitle: 'FRONTEND',
-    subtitle: '화면과 상호작용을 실험하는 곳',
-    description: '컴포넌트, 상태, 애니메이션처럼 프론트엔드의 핵심을 직접 실험한다.',
+    title: 'EXTERNAL ACTIVITIES',
+    shortTitle: 'EXTERNAL',
+    subtitle: '밖으로 확장한 활동과 협업',
+    description: '브라우저 확장, 오픈소스, 플랫폼, 해커톤처럼 외부와 연결된 활동을 모아둔 섬.',
     color: '#b99cff',
     accent: '#e8ddff',
-    position: { x: 50, y: 29, scale: 0.91 },
+    position: { x: 22, y: 29, scale: 0.94 },
     projects: [
       project({
         id: 'npc-platform',
@@ -485,18 +485,18 @@ export const islands = [
     ],
   },
   {
-    id: 'til',
-    worldAssetId: 'island-top-til',
+    id: 'study',
+    worldAssetId: 'island-top-study',
     worldBaseAssetId: 'island-bed',
-    worldPropIds: ['sky-til-library', 'sky-tree', 'sky-lamp'],
+    worldPropIds: ['sky-study-library', 'sky-tree', 'sky-lamp'],
     index: '04',
-    title: 'TIL LIBRARY',
-    shortTitle: 'TIL',
-    subtitle: '배운 것을 다시 꺼내보는 기록소',
-    description: '알고리즘과 개발 메모를 읽고, 움직이고, 직접 확인하는 작은 도서관.',
+    title: 'STUDY ARCHIVE',
+    shortTitle: 'STUDY',
+    subtitle: '배운 것과 실험을 쌓는 기록소',
+    description: 'TIL, 알고리즘, 코드 리뷰, 개발 메모처럼 학습의 흔적을 모아둔 작은 도서관.',
     color: '#72c9b5',
     accent: '#cbf2e8',
-    position: { x: 76, y: 49, scale: 0.86 },
+    position: { x: 78, y: 27, scale: 0.88 },
     projects: [
       project({
         id: 'til',

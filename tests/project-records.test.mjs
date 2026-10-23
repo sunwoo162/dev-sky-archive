@@ -22,6 +22,12 @@ test('the current portfolio game is represented as a first-class project record'
   assert.ok(project.developmentTimeline.length >= 3);
 });
 
+test('the playable world uses the five portfolio category hubs', () => {
+  assert.deepEqual(islands.map((island) => island.id), ['profile', 'personal', 'team', 'external', 'study']);
+  assert.deepEqual(islands.map((island) => island.shortTitle), ['PROFILE', 'PERSONAL', 'TEAM', 'EXTERNAL', 'STUDY']);
+  assert.equal(islands.find((island) => island.id === 'profile').projects[0].id, 'profile-core');
+});
+
 test('every curated project has the fields needed by the game exhibit', () => {
   for (const project of records.projects) {
     assert.ok(project.id);
