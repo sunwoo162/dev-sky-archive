@@ -34,6 +34,14 @@ function landmarkArt(landmark) {
       <path d="M-30 24h60V-39L0-57-30-39z" />
       <path d="M-21-20h42v31h-42zM-12-10h24M-12 0h24" class="art-detail" />
       <path d="M-8-39h16v9H-8z" class="art-detail" />`,
+    materials: `
+      <path d="M-34 24h68V-30L0-53-34-30z" />
+      <path d="M-20-14h40v30h-40zM-12-4h24M-12 6h24" class="art-detail" />
+      <path d="M-10-42h20v10h-20z" class="art-detail" />`,
+    work: `
+      <path d="M-35 24h70V-22L0-51-35-22z" />
+      <circle cx="0" cy="-9" r="15" class="art-detail" />
+      <path d="M0-34v10M0 6v10M-25-9h10M15-9h10M-18-27l8 8M10-19l8-8M-18 9l8-8M10 1l8 8" class="art-detail" />`,
   };
 
   return art[landmark] ?? art.profile;
@@ -46,6 +54,44 @@ function decorativeArt() {
       <path d="m145 177 19-28 16 24 18-4 27-46 24 37" class="art-detail" />
       <path d="M925 548 971 468l29 38 48-74 61 116z" />
       <path d="m957 505 15-28 19 27 17-4 27-42 19 34" class="art-detail" />
+    </g>
+    <g class="treasure-map-decoration treasure-map-decoration--balloons" aria-hidden="true">
+      <path class="balloon" d="M292 82c-38-9-55 33-36 67 10 18 21 28 36 41 15-13 26-23 36-41 19-34 2-76-36-67Z" />
+      <path d="M278 160h28M283 170h18M280 100c8 7 16 10 24 0M268 116c16 10 32 10 48 0M292 82v88" class="art-detail" />
+      <path class="balloon" d="M1080 274c-31-7-45 26-30 53 8 14 17 23 30 33 13-10 22-19 30-33 15-27 1-60-30-53Z" />
+      <path d="M1068 360h24M1072 369h16M1059 300c14 9 28 9 42 0M1080 274v95" class="art-detail" />
+      <path class="balloon" d="M160 606c-28-6-41 23-28 47 7 13 15 21 28 31 13-10 21-18 28-31 13-24 0-53-28-47Z" />
+      <path d="M150 684h20M153 693h14M141 628c13 8 25 8 38 0M160 606v87" class="art-detail" />
+    </g>
+    <g class="treasure-map-decoration treasure-map-decoration--landmarks" aria-hidden="true">
+      <g class="lighthouse" transform="translate(1030 154)">
+        <path d="M-22 44h44L14-21H-14z" />
+        <path d="M-14-22h28v-19H-14zM-21-43h42M-9-52h18" class="art-detail" />
+        <path d="M-8-9h16M-10 11h20" class="art-detail" />
+      </g>
+      <g class="castle" transform="translate(424 384)">
+        <path d="M-53 39h106V-2H-53zM-45-2v-39h18v18h18v-24h18v24h18v-39h18v60" />
+        <path d="M-7 39V13h14v26M-40 12h10M30 12h10" class="art-detail" />
+      </g>
+      <g class="cabin" transform="translate(612 184)">
+        <path d="M-43 29h86V-4L0-35-43-4z" />
+        <path d="M-14 29V9h28v20M-32 0h12v12h-12zM20 0h12v12H20z" class="art-detail" />
+        <path d="M-10-35h20v12h-20z" class="art-detail" />
+      </g>
+      <g class="ship" transform="translate(650 642)">
+        <path d="M-77 7h154l-22 24H-53z" />
+        <path d="M-2 7v-91M-2-84l-47 43h47M5-70l42 38H5" class="art-detail" />
+        <path d="M-23-10h42M-42 7h82" class="art-detail" />
+      </g>
+    </g>
+    <g class="treasure-map-decoration treasure-map-decoration--signs" aria-hidden="true">
+      <path d="M128 298v52M100 296h57l-10-15h-46zM110 318h35" />
+      <path d="M744 296v51M712 295h65l-12-16h-50zM726 316h35" />
+      <path d="M510 570v44M479 568h62l-11-15h-50zM493 589h34" />
+    </g>
+    <g class="treasure-map-decoration treasure-map-decoration--gems" aria-hidden="true">
+      <path d="m498 114 13-16 19 4 6 19-14 15-19-4zM731 478l13-16 19 4 6 19-14 15-19-4zM223 394l10-13 16 3 5 16-12 12-16-3z" />
+      <path d="m511 102 4 15 15 4M744 466l4 15 15 4M233 384l4 12 12 4" class="art-detail" />
     </g>
     <g class="treasure-map-decoration treasure-map-decoration--palms" aria-hidden="true">
       <path d="M865 142v88M865 151c-26-14-41-9-52 3 22 1 34 9 52 17M865 157c24-21 42-18 54-7-22 7-34 16-54 27M865 154c-8-28 0-42 15-49 3 22-3 35-15 49" />
@@ -93,11 +139,15 @@ function routeArt() {
       <path class="treasure-map-route" d="M600 365 C710 302 790 244 912 205" />
       <path class="treasure-map-route" d="M600 365 C505 410 400 465 264 509" />
       <path class="treasure-map-route" d="M600 365 C720 407 814 458 936 486" />
+      <path class="treasure-map-route" d="M600 365 C540 300 487 230 480 150" />
+      <path class="treasure-map-route" d="M600 365 C665 300 720 235 732 150" />
       <circle cx="600" cy="365" r="11" class="route-stop" />
       <circle cx="288" cy="220" r="7" class="route-stop" />
       <circle cx="912" cy="205" r="7" class="route-stop" />
       <circle cx="264" cy="509" r="7" class="route-stop" />
       <circle cx="936" cy="486" r="7" class="route-stop" />
+      <circle cx="480" cy="150" r="7" class="route-stop" />
+      <circle cx="732" cy="150" r="7" class="route-stop" />
     </g>
   `;
 }

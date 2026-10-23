@@ -402,7 +402,7 @@ function renderProject() {
     ? `<a class="primary-action" href="${project.repoUrl}" target="_blank" rel="noreferrer">${project.linkLabel} <span>↗</span></a>`
     : `<button type="button" class="primary-action" disabled>${project.linkLabel} <span>↗</span></button>`;
   const roleStatusLabel = project.roleStatus === 'needs-confirmation' ? '확인 필요' : '직접 기록';
-  const categoryNames = { PROFILE: '프로필', PERSONAL: '개인 프로젝트', TEAM: '팀 프로젝트', EXTERNAL: '대외활동', STUDY: '스터디' };
+  const categoryNames = { PROFILE: '프로필', PERSONAL: '개인 프로젝트', TEAM: '팀 프로젝트', EXTERNAL: '대외활동', STUDY: '스터디', MATERIALS: '자료', WORK: '작업' };
   const categoryLabel = project.category.split(' / ').map((token, index) => index === 0 ? (categoryNames[token] ?? token) : token).join(' / ');
   document.querySelector('#project-toolbar-meta').textContent = `${island.shortTitle} / 프로젝트 전시`;
   document.querySelector('#project-exhibit').innerHTML = `

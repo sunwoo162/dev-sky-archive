@@ -22,10 +22,23 @@ test('the current portfolio game is represented as a first-class project record'
   assert.ok(project.developmentTimeline.length >= 3);
 });
 
-test('the playable world uses the five portfolio category hubs', () => {
-  assert.deepEqual(islands.map((island) => island.id), ['profile', 'personal', 'team', 'external', 'study']);
-  assert.deepEqual(islands.map((island) => island.shortTitle), ['프로필', '개인', '팀', '대외활동', '스터디']);
+test('the playable world uses five portfolio hubs and two operations hubs', () => {
+  assert.deepEqual(islands.map((island) => island.id), ['profile', 'personal', 'team', 'external', 'study', 'materials', 'work']);
+  assert.deepEqual(islands.map((island) => island.shortTitle), ['프로필', '개인', '팀', '대외활동', '스터디', '자료', '작업']);
   assert.equal(islands.find((island) => island.id === 'profile').projects[0].id, 'profile-core');
+});
+
+test('operations hubs reserve future document and AI progress surfaces', () => {
+  const materials = islands.find((island) => island.id === 'materials');
+  const work = islands.find((island) => island.id === 'work');
+
+  assert.equal(materials.kind, 'materials');
+  assert.equal(work.kind, 'work');
+  assert.match(materials.description, /문서|자료/);
+  assert.match(work.description, /AI|작업|연결/);
+  assert.ok(materials.projects.some((project) => project.id === 'materials-index'));
+  assert.ok(work.projects.some((project) => project.id === 'work-queue'));
+  assert.ok(work.projects.every((project) => project.status === 'awaiting-connection'));
 });
 
 test('every curated project has the fields needed by the game exhibit', () => {

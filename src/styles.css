@@ -289,6 +289,12 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 .treasure-map-decoration { fill: none; stroke: #76523a; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; opacity: .78; }
 .treasure-map-decoration--clouds { stroke-width: 3; opacity: .55; }
 .treasure-map-decoration--waves { stroke-width: 3; opacity: .58; }
+.treasure-map-decoration--balloons { stroke-width: 3; opacity: .82; }
+.treasure-map-decoration--balloons .balloon { fill: #efdca8; stroke-width: 4; }
+.treasure-map-decoration--landmarks { stroke-width: 3; opacity: .86; }
+.treasure-map-decoration--signs { stroke-width: 3; opacity: .7; }
+.treasure-map-decoration--gems { stroke-width: 3; opacity: .7; }
+.treasure-map-decoration--gems > path:first-child { fill: #b84f42; stroke: #4d3424; }
 .treasure-map-compass { fill: none; stroke: #4d3424; stroke-width: 3; text-anchor: middle; }
 .treasure-map-compass .compass-inner { stroke: #76523a; stroke-width: 2; stroke-dasharray: 2 8; }
 .treasure-map-compass .compass-needle { fill: #9d6252; stroke: #4d3424; stroke-width: 2; }
@@ -306,8 +312,12 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 .treasure-map-landmark--team .treasure-map-landmark__art svg > path:first-child { fill: #d5bb81; }
 .treasure-map-landmark--external .treasure-map-landmark__art svg > path:first-child { fill: #cba96d; }
 .treasure-map-landmark--study .treasure-map-landmark__art svg > path:first-child { fill: #e5c98f; }
+.treasure-map-landmark--materials .treasure-map-landmark__art svg > path:first-child { fill: #d6ae6e; }
+.treasure-map-landmark--work .treasure-map-landmark__art svg > path:first-child { fill: #8eb7c4; }
 .treasure-map-landmark__label { display: inline-block; max-width: 100%; padding: 6px 10px 5px; color: #4d3424; background: rgba(239, 220, 168, .92); border: 2px solid #4d3424; border-radius: 2px; box-shadow: 3px 3px 0 rgba(77, 52, 36, .17); font: 800 clamp(11px, 1.2vw, 16px)/1.1 "Malgun Gothic", sans-serif; letter-spacing: -.04em; white-space: nowrap; }
 .treasure-map-landmark--profile .treasure-map-landmark__label { color: #f4e4b6; background: #6e4632; }
+.treasure-map-landmark--materials .treasure-map-landmark__label { background: #d6ae6e; }
+.treasure-map-landmark--work .treasure-map-landmark__label { background: #8eb7c4; }
 .treasure-map-hint { position: absolute; z-index: 4; left: 50%; bottom: clamp(12px, 2vw, 28px); margin: 0; padding: 7px 12px; color: #76523a; background: rgba(239, 220, 168, .8); border: 1px solid rgba(77, 52, 36, .34); font: 700 10px/1 ui-monospace, monospace; letter-spacing: .08em; transform: translateX(-50%); }
 .treasure-map.is-reduced-motion .treasure-map-landmark { transition: none; }
 
