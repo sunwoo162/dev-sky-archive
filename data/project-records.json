@@ -10,6 +10,26 @@
   },
   "projects": [
     {
+      "id": "profile-core",
+      "title": "Profile Core",
+      "repo": "sunwoo162/dev-sky-archive",
+      "category": "profile",
+      "status": "profile-hub",
+      "summary": "프로젝트, 기술 스택, 역할, 자기소개 자료를 하나의 탐방 흐름으로 연결하는 중심 기록.",
+      "stack": ["HTML", "CSS", "JavaScript", "Three.js", "Canvas", "GitHub Pages"],
+      "role": {
+        "status": "self-recorded",
+        "summary": "포트폴리오 구조, 프론트엔드 구현, 정보 설계"
+      },
+      "developmentTimeline": [
+        {"phase": "hub", "title": "중심점 정의", "detail": "프로젝트를 나열하는 대신 나를 중심으로 각각의 작업이 뻗어 나가는 구조를 정했다.", "source": "conversation"},
+        {"phase": "connections", "title": "섬 연결", "detail": "PERSONAL, TEAM, FRONTEND, TIL 섬을 PROFILE 허브와 시각적인 경로로 연결했다.", "source": "src/sky-3d.js"},
+        {"phase": "materials", "title": "자료 슬롯 준비", "detail": "프로필, 자기소개서, 포트폴리오, 프로젝트 설명을 나중에 교체할 수 있는 전시 구조로 만들었다.", "source": "src/content.js"}
+      ],
+      "evidence": ["index.html", "src/content.js", "src/sky-3d.js", "data/project-records.json"],
+      "links": {"github": "https://github.com/sunwoo162/dev-sky-archive"}
+    },
+    {
       "id": "dev-sky-archive",
       "title": "Dev Sky Archive",
       "repo": null,

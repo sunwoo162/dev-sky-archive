@@ -278,6 +278,9 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 .sky-stage.has-3d .island-flag, .sky-stage.has-3d .island-icon, .sky-stage.has-3d .island-subtitle { display: none; }
 .sky-stage.has-3d .island-card { position: absolute; left: 50%; top: 50%; min-width: 0; padding: 8px 13px; color: #26374d; background: rgba(255,253,248,.92); border: 1px solid rgba(38,55,77,.16); border-radius: 3px; box-shadow: 0 4px 0 rgba(38,55,77,.14); transform: translate(-50%, -50%); }
 .sky-stage.has-3d .island-name { margin: 0; color: #26374d; font: 800 11px ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .1em; white-space: nowrap; }
+.sky-stage.has-3d .profile-island-button { z-index: 5; }
+.sky-stage.has-3d .profile-island-button .island-card { color: #3e3045; background: #f7c66b; border-color: rgba(75,65,95,.28); box-shadow: 0 4px 0 rgba(75,65,95,.22); }
+.sky-stage.has-3d .profile-island-button .island-name { color: #3e3045; }
 .sky-stage.has-3d .island-button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 5px; }
 #archive-index-trigger { display: none !important; }
 .sky-3d-fallback { position: absolute; z-index: 5; left: 50%; bottom: 22px; padding: 8px 12px; color: #27364a; background: rgba(255,253,248,.9); border: 1px solid rgba(39,54,74,.18); font: 10px/1.4 ui-monospace, SFMono-Regular, Consolas, monospace; transform: translateX(-50%); }

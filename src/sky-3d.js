@@ -21,6 +21,12 @@ const COLORS = Object.freeze({
 });
 
 const ISLAND_LAYOUTS = Object.freeze({
+  profile: {
+    position: [0, 0.15], rotation: 0.08, elevation: 0.18,
+    palette: { top: 0xe0ba69, roof: 0x756581 }, building: 'profile',
+    cells: [[-1, -1], [0, -1], [1, -1], [-1, 0], [0, 0], [1, 0], [-1, 1], [0, 1], [1, 1], [0, -2], [0, 2]],
+    props: [[-1.18, 0.18, 0.44, 0.58], [1.18, 0.18, -0.5, 0.58], [1.25, 0.18, 0.46]],
+  },
   personal: {
     position: [-4.2, 2.35], rotation: -0.18,
     palette: { top: COLORS.grass, roof: COLORS.coral }, building: 'archive',
@@ -87,6 +93,7 @@ function createIslandTerrain(island) {
 function createBuilding(type, roofColor) {
   const group = new THREE.Group();
   const profiles = {
+    profile: { body: [1.65, 0.98, 1.48], roof: [1.3, 0.52], y: 0.66 },
     archive: { body: [1.55, 0.92, 1.22], roof: [1.12, 0.52], y: 0.63 },
     team: { body: [1.15, 1.3, 1.05], roof: [0.92, 0.42], y: 0.82 },
     frontend: { body: [1.18, 1.12, 1.18], roof: [0.88, 0.58], y: 0.72 },
@@ -119,6 +126,20 @@ function createBuilding(type, roofColor) {
     const book = new THREE.Mesh(new THREE.BoxGeometry(.7, .12, .8), material(COLORS.path));
     book.position.set(0, 1.72, 0);
     group.add(book);
+  }
+
+  if (type === 'profile') {
+    const core = new THREE.Mesh(new THREE.BoxGeometry(.42, .56, .42), material(COLORS.cream, { emissive: COLORS.cream, emissiveIntensity: .22 }));
+    core.position.y = 1.55;
+    group.add(core);
+    const coreCap = new THREE.Mesh(new THREE.OctahedronGeometry(.26, 0), material(COLORS.coral, { emissive: COLORS.coral, emissiveIntensity: .35 }));
+    coreCap.position.y = 1.98;
+    group.add(coreCap);
+    [-.65, .65].forEach((x) => {
+      const pillar = new THREE.Mesh(new THREE.BoxGeometry(.16, .62, .16), material(COLORS.path));
+      pillar.position.set(x, .96, -.52);
+      group.add(pillar);
+    });
   }
 
   const door = new THREE.Mesh(new THREE.BoxGeometry(.26, .46, .03), material(COLORS.navy));
@@ -162,10 +183,10 @@ function createLamp() {
 
 function createIsland(island) {
   const { group, config } = createIslandTerrain(island);
-  group.position.set(config.position[0], 0, config.position[1]);
+  group.position.set(config.position[0], config.elevation ?? 0, config.position[1]);
   group.rotation.y = config.rotation;
   group.userData.islandId = island.id;
-  group.userData.baseY = 0;
+  group.userData.baseY = config.elevation ?? 0;
 
   const building = createBuilding(config.building, config.palette.roof);
   building.position.set(0, .18, -.1);
@@ -194,6 +215,33 @@ function createIsland(island) {
   hit.userData.islandGroup = group;
   group.add(hit);
 
+  return group;
+}
+
+function createConnection(from, to, index = 0) {
+  const start = new THREE.Vector3(from[0], 0.26, from[1]);
+  const end = new THREE.Vector3(to[0], 0.16, to[1]);
+  const direction = end.clone().sub(start);
+  const distance = direction.length();
+  const steps = Math.max(4, Math.floor(distance / .58));
+  const unit = direction.clone().normalize();
+  const group = new THREE.Group();
+  group.userData.connection = true;
+
+  for (let step = 1; step < steps; step += 1) {
+    const progress = step / steps;
+    const tile = createBlock({
+      top: step % 2 === 0 ? COLORS.cream : COLORS.path,
+      side: COLORS.soil,
+      bottom: COLORS.stoneDark,
+      height: .14,
+    });
+    tile.scale.set(.62, 1, .62);
+    tile.position.copy(start).lerp(end, progress);
+    tile.position.y += Math.sin(progress * Math.PI) * .08;
+    tile.rotation.y = Math.atan2(unit.x, unit.z) + (index % 2 ? .08 : -.08);
+    group.add(tile);
+  }
   return group;
 }
 
@@ -237,6 +285,14 @@ function createSkyWorld({ canvas, islands, onSelect, reducedMotion = false } = {
   const world = new THREE.Group();
   scene.add(world);
   const islandGroups = islands.map(createIsland);
+  const profileLayout = ISLAND_LAYOUTS.profile;
+  const profilePosition = profileLayout.position;
+  islands
+    .filter((island) => island.id !== 'profile')
+    .forEach((island, index) => {
+      const layout = ISLAND_LAYOUTS[island.id];
+      if (layout) world.add(createConnection(profilePosition, layout.position, index));
+    });
   islandGroups.forEach((group) => world.add(group));
   const clouds = [
     createCloud(-7.4, 2.1, -3.8, 1.05, -.18, 0),
@@ -315,7 +371,7 @@ function createSkyWorld({ canvas, islands, onSelect, reducedMotion = false } = {
     islandGroups.forEach((group, index) => {
       const target = group.userData.hovered ? 1.08 : 1;
       group.scale.lerp(new THREE.Vector3(target, target, target), .12);
-      group.position.y = motionReduced ? 0 : Math.sin(timestamp / 1200 + index * 1.7) * .08;
+      group.position.y = group.userData.baseY + (motionReduced ? 0 : Math.sin(timestamp / 1200 + index * 1.7) * .08);
     });
     updateIslandLabels();
     renderer.render(scene, camera);

@@ -200,7 +200,7 @@ function closeProjectToIsland() {
 
 function renderSky() {
   islandList.innerHTML = islands.map((island) => `
-    <button class="island-button" type="button" data-island-id="${island.id}"
+    <button class="island-button${island.id === 'profile' ? ' profile-island-button' : ''}" type="button" data-island-id="${island.id}"
       style="--island-x:${island.position.x}%;--island-y:${island.position.y}%;--island-scale:${island.position.scale};--island-color:${island.color};--island-accent:${island.accent};"
       aria-label="${island.title} 섬 입장">
       <span class="island-scene" aria-hidden="true">
@@ -211,7 +211,7 @@ function renderSky() {
       </span>
       <span class="island-flag" aria-hidden="true">${island.index}</span>
       <span class="island-card">
-        <span class="island-icon" aria-hidden="true">${island.id === 'personal' ? '✦' : island.id === 'team' ? '◈' : island.id === 'frontend' ? '⌘' : '✎'}</span>
+        <span class="island-icon" aria-hidden="true">${island.id === 'profile' ? '◎' : island.id === 'personal' ? '✦' : island.id === 'team' ? '◈' : island.id === 'frontend' ? '⌘' : '✎'}</span>
         <span class="island-name">${island.shortTitle}</span>
         <span class="island-subtitle">${island.projects.length} EXHIBIT${island.projects.length > 1 ? 'S' : ''}</span>
       </span>

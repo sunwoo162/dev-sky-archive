@@ -2,12 +2,13 @@
 
 ## Intent
 
-Replace the decorative 2.5D sky cards with a real, modular 3D game space. The portfolio categories remain floating islands, but every island is built from reusable block tiles and small props so the result reads like a playable game rather than a generated illustration.
+Replace the decorative 2.5D sky cards with a real, modular 3D game space. A central `PROFILE` core island anchors the world, and the portfolio categories branch out from it as connected floating islands. Every island is built from reusable block tiles and small props so the result reads like a playable game rather than a generated illustration.
 
 ## Goals
 
 - Render the sky hub with a fixed forward-looking `PerspectiveCamera` placed outside the islands and WebGL.
 - Build island terrain from repeated grass, soil, and stone block modules.
+- Make `PROFILE` the visual hub and connect each category island with modular path tiles.
 - Build each category island from the same tile grammar with a distinct building prop.
 - Keep island selection clickable in 3D and keyboard-accessible through existing buttons.
 - Preserve the existing sky → 2D island → project exhibit flow.

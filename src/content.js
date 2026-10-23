@@ -1,6 +1,7 @@
 // Keep this synchronous projection aligned with data/project-records.json so the
 // buildless browser entrypoint can render before its async inventory fetch resolves.
 const recordMetadata = Object.freeze({
+  'profile-core': { status: 'profile-hub', roleStatus: 'self-recorded' },
   'dev-sky-archive': { status: 'prototype', roleStatus: 'self-recorded' },
   'washer-client-v2': { status: 'active-repo', roleStatus: 'needs-confirmation' },
   'bloom-bouquet': { status: 'production-oriented', roleStatus: 'needs-confirmation' },
@@ -109,6 +110,42 @@ const project = (config) => ({
 });
 
 export const islands = [
+  {
+    id: 'profile',
+    worldAssetId: 'island-top-profile',
+    worldBaseAssetId: 'island-bed',
+    worldPropIds: ['sky-profile-core', 'sky-tree', 'sky-lamp'],
+    index: '00',
+    title: 'PROFILE',
+    shortTitle: 'PROFILE',
+    subtitle: '모든 작업이 이어지는 중심 섬',
+    description: '내가 어떤 프론트엔드 개발자인지, 무엇을 만들었고 어떻게 성장했는지를 모아두는 허브.',
+    color: '#f7c66b',
+    accent: '#fff1b8',
+    position: { x: 50, y: 49, scale: 1.12 },
+    projects: [
+      project({
+        id: 'profile-core',
+        title: 'Profile Core',
+        repo: 'sunwoo162/dev-sky-archive',
+        category: 'PROFILE / CORE HUB',
+        summary: '프로젝트, 기술 스택, 역할, 자기소개 자료를 하나의 탐방 흐름으로 연결하는 중심 기록.',
+        role: '포트폴리오 구조 · 프론트엔드 구현 · 정보 설계',
+        stack: ['HTML', 'CSS', 'JavaScript', 'Three.js', 'Canvas', 'GitHub Pages'],
+        flow: ['Profile', 'Project islands', 'Evidence archive'],
+        detail: '이 섬은 프로젝트를 따로 흩어진 목록으로 보여주는 대신, 나를 중심으로 이어진 작업 세계로 보여주기 위한 시작점이다. 실제 자기소개서, 이력서, 기술 스택 자료는 나중에 이 전시 슬롯에 교체한다.',
+        timeline: [
+          { phase: '01', title: '중심점 정의', detail: '프로젝트를 나열하는 대신 나를 중심으로 각각의 작업이 뻗어 나가는 구조를 정했다.' },
+          { phase: '02', title: '섬 연결', detail: 'PERSONAL, TEAM, FRONTEND, TIL 섬을 PROFILE 허브와 시각적인 경로로 연결했다.' },
+          { phase: '03', title: '자료 슬롯 준비', detail: '프로필, 자기소개서, 포트폴리오, 프로젝트 설명을 나중에 교체할 수 있는 전시 구조로 만들었다.' },
+        ],
+        detailSource: 'conversation + local source',
+        color: '#f7c66b',
+        visual: 'archive',
+        linkLabel: '프로필 레포 열기',
+      }),
+    ],
+  },
   {
     id: 'personal',
     worldAssetId: 'island-top-personal',

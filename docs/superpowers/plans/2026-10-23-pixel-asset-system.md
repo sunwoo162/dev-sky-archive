@@ -60,7 +60,7 @@
 - Project records may provide `assetId`; islands provide `worldAssetId`.
 - `assetUrl(id)` is the only URL lookup used by rendering code.
 
-- [x] Add deterministic world asset IDs to all four islands and curated project markers.
+- [x] Add deterministic world asset IDs to the PROFILE hub, four category islands, and curated project markers.
 - [x] Replace island button CSS geometry with asset-backed `<img>` markup and alt-safe labels.
 - [x] Preload catalog images once and draw them in the island canvas with fallback behavior.
 - [x] Add tests that every island and playable project has a valid asset mapping.
