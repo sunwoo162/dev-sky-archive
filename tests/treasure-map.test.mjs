@@ -99,3 +99,12 @@ test('the treasure map is composed as a dense hand-drawn illustration', () => {
   assert.match(source, /palm-grove/);
   assert.match(source, /treasure-map-compass/);
 });
+
+test('landmark selection exposes a deterministic zoom handoff', () => {
+  const source = readFileSync(resolve('src/treasure-map.js'), 'utf8');
+
+  assert.match(source, /classList\.add\(['"]is-zooming['"]\)/);
+  assert.match(source, /dataset\.selectedIsland/);
+  assert.match(source, /setTimeout\(/);
+  assert.match(source, /reducedMotion/);
+});

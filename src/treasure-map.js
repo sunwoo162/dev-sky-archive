@@ -1,5 +1,6 @@
 const MAP_WIDTH = 1200;
 const MAP_HEIGHT = 760;
+const LANDMARK_ZOOM_DURATION = 520;
 
 function escapeText(value) {
   return String(value)
@@ -245,10 +246,30 @@ export function renderTreasureMap({ container, islands, onSelect, reducedMotion 
     </div>
   `;
 
+  let transitionTimer = null;
+
+  const completeSelection = (islandId) => {
+    container.classList.remove('is-zooming');
+    onSelect?.(islandId);
+  };
+
   const handleClick = (event) => {
     const button = event.target.closest('[data-island-id]');
     if (!button || !container.contains(button)) return;
-    onSelect?.(button.dataset.islandId);
+    if (container.classList.contains('is-zooming')) return;
+
+    const islandId = button.dataset.islandId;
+    container.dataset.selectedIsland = islandId;
+    container.classList.add('is-zooming');
+    if (container.classList.contains('is-reduced-motion')) {
+      completeSelection(islandId);
+      return;
+    }
+
+    transitionTimer = window.setTimeout(() => {
+      transitionTimer = null;
+      completeSelection(islandId);
+    }, LANDMARK_ZOOM_DURATION);
   };
 
   container.addEventListener('click', handleClick);
@@ -264,6 +285,7 @@ export function renderTreasureMap({ container, islands, onSelect, reducedMotion 
         ?.focus();
     },
     destroy() {
+      if (transitionTimer !== null) window.clearTimeout(transitionTimer);
       container.removeEventListener('click', handleClick);
       container.innerHTML = '';
     },
