@@ -272,6 +272,37 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
   .museum-modal-actions .primary-action { width: 100%; }
 }
 
+/* Full-screen playable island: the world is the interface, the chrome is only a small HUD. */
+.app-shell:has(#island-screen:not(.is-hidden)) .topbar { display: none !important; }
+.island-screen { position: fixed; inset: 0; z-index: 12; overflow: hidden; padding: 0; background: #293548; }
+.island-screen .game-viewport { position: fixed; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; overflow: hidden; border: 0; background: #9acb82; image-rendering: pixelated; }
+.island-screen .game-viewport canvas { width: 100%; height: 100%; image-rendering: pixelated; outline: 0; }
+.island-screen .game-viewport canvas:focus-visible { outline: 3px solid #f5d985; outline-offset: -8px; }
+.world-hud { position: absolute; z-index: 2; display: flex; align-items: center; pointer-events: none; color: #fff6df; text-shadow: 0 2px 0 rgba(31,43,65,.56); }
+.world-hud-top { top: 24px; left: 28px; right: 28px; justify-content: space-between; }
+.world-brand { display: flex; align-items: center; gap: 12px; padding: 10px 14px 10px 11px; background: rgba(37,48,69,.78); border: 1px solid rgba(245,217,133,.35); }
+.world-brand-mark { color: #f5d985; font-size: 21px; }
+.world-brand b, .world-brand small { display: block; }
+.world-brand b { color: #fff3c8; font: 800 12px ui-monospace, monospace; letter-spacing: .12em; }
+.world-brand small { margin-top: 4px; color: rgba(255,246,223,.65); font: 9px ui-monospace, monospace; letter-spacing: .08em; }
+.world-controls { display: flex; align-items: center; gap: 8px; padding: 10px 12px; color: rgba(255,246,223,.78); background: rgba(37,48,69,.68); border: 1px solid rgba(255,255,255,.16); font: 9px ui-monospace, monospace; letter-spacing: .05em; }
+.world-controls kbd { display: inline-grid; place-items: center; min-width: 23px; height: 22px; padding: 0 5px; color: #2e3851; background: #f5d985; border-bottom: 3px solid #b38a5e; font: 800 9px ui-monospace, monospace; }
+.world-hud-bottom { right: 28px; bottom: 24px; left: 28px; justify-content: space-between; }
+.world-location, .world-coordinates { padding: 10px 12px; color: rgba(255,246,223,.83); background: rgba(37,48,69,.74); border: 1px solid rgba(255,255,255,.14); font: 10px ui-monospace, monospace; letter-spacing: .08em; }
+.world-coordinates { color: #f5d985; }
+.island-screen .interaction-toast { bottom: 30px; z-index: 3; min-width: 260px; border-color: rgba(245,217,133,.42); background: rgba(37,48,69,.92); }
+.island-screen .interaction-toast small { color: rgba(255,246,223,.58); }
+.island-screen .toast-key { color: #2e3851; background: #f5d985; }
+
+@media (max-width: 700px) {
+  .world-hud-top { top: 12px; left: 12px; right: 12px; align-items: start; }
+  .world-controls { max-width: 158px; flex-wrap: wrap; justify-content: flex-end; }
+  .world-brand b { font-size: 10px; }
+  .world-brand small { font-size: 7px; }
+  .world-hud-bottom { right: 12px; bottom: 12px; left: 12px; }
+  .world-location, .world-coordinates { padding: 8px; font-size: 8px; }
+}
+
 .exhibit-materials { margin-top: 74px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,.12); }.materials-heading { display: flex; align-items: end; justify-content: space-between; gap: 20px; }.materials-kicker { display: block; margin-bottom: 10px; color: #f7c66b; font: 9px ui-monospace, monospace; letter-spacing: .14em; }.materials-heading h2 { margin: 0; color: #fff9ec; font-size: clamp(28px, 4vw, 48px); letter-spacing: -.06em; }.materials-status { color: rgba(255,255,255,.38); font: 9px ui-monospace, monospace; letter-spacing: .1em; }.materials-intro { max-width: 580px; margin: 15px 0 22px; color: rgba(255,255,255,.5); font-size: 12px; line-height: 1.65; }.materials-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }.material-card { min-width: 0; padding: 11px; background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.11); }.material-art { position: relative; height: 112px; margin-bottom: 14px; overflow: hidden; color: rgba(255,255,255,.56); background: #1d2c42; border: 1px solid rgba(255,255,255,.1); }.material-art::before { position: absolute; inset: 14px; content: ''; border: 1px dashed rgba(255,255,255,.2); }.material-art::after { position: absolute; left: 22%; top: 33%; width: 56%; height: 32%; content: ''; border: 1px solid rgba(255,255,255,.24); background: rgba(255,255,255,.06); transform: rotate(-5deg); }.material-art > span { position: absolute; z-index: 1; top: 9px; left: 10px; font: 8px ui-monospace, monospace; letter-spacing: .11em; }.material-art > b { position: absolute; z-index: 2; right: 10px; bottom: 9px; color: #f7c66b; font: 700 7px ui-monospace, monospace; letter-spacing: .07em; }.material-art > i { position: absolute; z-index: 1; left: 40%; top: 43%; width: 20%; height: 14%; border: 1px solid rgba(247,198,107,.65); background: rgba(247,198,107,.16); transform: rotate(12deg); }.material-screen .material-art { background: linear-gradient(145deg, #334b67, #1b293d); }.material-system .material-art { background: linear-gradient(145deg, #284c50, #1b293d); }.material-role .material-art { background: linear-gradient(145deg, #5b4b69, #1b293d); }.material-evidence .material-art { background: linear-gradient(145deg, #68543c, #1b293d); }.material-card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: #f7c66b; font: 8px ui-monospace, monospace; letter-spacing: .1em; }.material-card-head em { padding: 3px 5px; color: #17253a; background: #f7c66b; font-style: normal; font-weight: 800; }.material-card h3 { margin: 10px 0 7px; color: rgba(255,255,255,.85); font-size: 13px; line-height: 1.3; }.material-card p { min-height: 52px; margin: 0 0 12px; color: rgba(255,255,255,.48); font-size: 10px; line-height: 1.55; }.material-card small { color: rgba(255,255,255,.3); font: 8px ui-monospace, monospace; letter-spacing: .08em; }
 .material-portfolio .material-art { background: linear-gradient(145deg, #69526d, #1b293d); }.material-selfintro .material-art { background: linear-gradient(145deg, #496276, #1b293d); }.material-project .material-art { background: linear-gradient(145deg, #766044, #1b293d); }.material-other .material-art { background: linear-gradient(145deg, #53614a, #1b293d); }
 

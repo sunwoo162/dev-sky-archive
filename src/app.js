@@ -6,7 +6,17 @@ import {
   openProject,
 } from './game-state.js';
 import { findIsland, findProject, islands } from './content.js?map=etched-v21';
-import { assetCatalog, assetUrl } from './asset-catalog.js';
+import { assetCatalog, assetUrl } from './asset-catalog.js?map=etched-v23';
+import {
+  HARBOR_START,
+  MUSEUM_DOOR,
+  WORLD_SIZE,
+  createIslandWorld,
+  createMuseumLayout,
+  findNearestExhibit,
+  getCamera,
+  isAtMuseumDoor,
+} from './island-world.js';
 import { createMuseumGuide } from './museum.js';
 import { renderTreasureMap } from './treasure-map.js?map=etched-v18';
 import { findShortestPath, getTravelDuration, getTravelTip } from './travel.js';
@@ -30,8 +40,6 @@ const travelProgressFill = document.querySelector('#travel-progress-fill');
 const travelProgressLabel = document.querySelector('#travel-progress-label');
 const travelProgressPercent = document.querySelector('#travel-progress-percent');
 const travelTip = document.querySelector('#travel-tip');
-const projectMarkers = document.querySelector('#project-markers');
-const projectIndex = document.querySelector('#project-index');
 const interactionToast = document.querySelector('#interaction-toast');
 const interactionText = document.querySelector('#interaction-text');
 const archiveModal = document.querySelector('#archive-index-modal');
@@ -56,7 +64,11 @@ let activeMuseumProjectId = null;
 let lastProjectFocusProjectId = null;
 let lastProjectFocusSource = 'marker';
 let lastMaterialFocus = null;
-let player = { x: 480, y: 350 };
+let islandWorld = null;
+let museumInterior = false;
+let museumExhibits = [];
+let camera = { x: 0, y: 0 };
+let player = { ...HARBOR_START };
 const pressedKeys = new Set();
 let lastFrame = performance.now();
 const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -72,15 +84,6 @@ reducedMotionQuery.addEventListener?.('change', (event) => {
   prefersReducedMotion = event.matches;
   treasureMapApi?.setReducedMotion(prefersReducedMotion);
 });
-
-const markerPositions = [
-  { x: 286, y: 246, left: 30, top: 46 },
-  { x: 676, y: 326, left: 70, top: 61 },
-  { x: 470, y: 170, left: 49, top: 31 },
-  { x: 190, y: 420, left: 20, top: 78 },
-  { x: 790, y: 430, left: 82, top: 80 },
-  { x: 520, y: 350, left: 54, top: 65 },
-];
 
 function preloadAssets() {
   Object.entries(assetCatalog).forEach(([id, entry]) => {
@@ -286,7 +289,8 @@ function closeProjectToIsland() {
   setScreen(closeProject(state));
   const projectFocusTarget = [...document.querySelectorAll('[data-project-id]')]
     .find((element) => element.dataset.projectId === lastProjectFocusProjectId && element.dataset.projectSource === lastProjectFocusSource);
-  projectFocusTarget?.focus();
+  if (projectFocusTarget) projectFocusTarget.focus();
+  else canvas.focus();
 }
 
 function renderTravel(plan) {
@@ -332,7 +336,10 @@ function finishTravel() {
   activeTravel = null;
   travelScreen.setAttribute('aria-busy', 'false');
   currentMapLocationId = destinationId;
-  player = { x: 480, y: 365 };
+  islandWorld = null;
+  player = { ...HARBOR_START };
+  museumInterior = false;
+  museumExhibits = [];
   setScreen(enterIsland(state, destinationId));
   requestAnimationFrame(() => document.querySelector('#back-to-sky')?.focus());
 }
@@ -358,7 +365,10 @@ function enterSelectedIsland(islandId) {
   const path = currentMapLocationId ? findShortestPath(currentMapLocationId, islandId) : [islandId];
   if (path.length <= 1) {
     currentMapLocationId = islandId;
-    player = { x: 480, y: 365 };
+    islandWorld = null;
+    player = { ...HARBOR_START };
+    museumInterior = false;
+    museumExhibits = [];
     setScreen(enterIsland(state, islandId));
     requestAnimationFrame(() => document.querySelector('#back-to-sky')?.focus());
     return;
@@ -383,41 +393,19 @@ function returnToSky() {
   requestAnimationFrame(() => previousIslandId && treasureMapApi?.focusLandmark(previousIslandId));
 }
 
-function getMarkerPosition(index) {
-  return markerPositions[index % markerPositions.length];
-}
-
 function renderIsland() {
   currentIsland = findIsland(state.islandId);
+  if (!islandWorld || islandWorld.id !== currentIsland.id) {
+    islandWorld = createIslandWorld(currentIsland);
+    player = { ...islandWorld.start };
+    museumInterior = false;
+    museumExhibits = [];
+  }
   document.querySelector('#island-eyebrow').textContent = `${currentIsland.index} / ${currentIsland.title}`;
-  document.querySelector('#island-title').textContent = currentIsland.title;
-  document.querySelector('#island-subtitle').textContent = currentIsland.subtitle;
-  document.querySelector('#island-description').textContent = currentIsland.description;
-  document.querySelector('#island-count').textContent = `프로젝트 전시 ${currentIsland.projects.length}개`;
+  const islandTitle = document.querySelector('#island-title');
+  if (islandTitle) islandTitle.textContent = currentIsland.title;
   document.querySelector('#island-screen').style.setProperty('--island-accent', currentIsland.color);
-
-  projectMarkers.innerHTML = currentIsland.projects.map((project, index) => {
-    const marker = getMarkerPosition(index);
-    return `<button class="project-marker" type="button" data-project-id="${project.id}" data-project-source="marker" data-museum-project-id="${project.id}" style="--marker-left:${marker.left}%;--marker-top:${marker.top}%;--marker-color:${project.color}" aria-label="${project.title} 박물관 설명 열기">
-      <span class="marker-pulse" aria-hidden="true"></span><span class="marker-pin" aria-hidden="true"><img src="${assetUrl('cursor-open')}" alt="" /></span><span class="marker-label">${project.title}</span>
-    </button>`;
-  }).join('');
-
-  projectIndex.innerHTML = currentIsland.projects.map((project, index) => `
-    <button class="project-index-item" type="button" data-project-id="${project.id}" data-project-source="index">
-      <span class="index-number">0${index + 1}</span><span><strong>${project.title}</strong><small>${project.summary}</small></span><span class="index-arrow">↗</span>
-    </button>
-  `).join('');
-
-  document.querySelectorAll('[data-project-id]').forEach((button) => {
-    button.addEventListener('click', () => {
-      if (button.dataset.projectSource === 'marker') {
-        openMuseumGuide(button.dataset.projectId, button);
-        return;
-      }
-      openProjectFromControl(button.dataset.projectId, button.dataset.projectSource);
-    });
-  });
+  updateWorldHud();
   updateInteraction();
 }
 
@@ -623,84 +611,257 @@ function renderProject() {
   });
 }
 
-function drawRoundedRect(x, y, width, height, radius, fill, stroke) {
+function drawCanvasLabel(label, x, y, color = '#f5d985', size = 18) {
+  context.font = `700 ${size}px ui-monospace, SFMono-Regular, Consolas, monospace`;
+  const width = context.measureText(label).width + 28;
+  context.fillStyle = 'rgba(35, 43, 61, .88)';
+  context.fillRect(x - width / 2, y - size - 12, width, size + 22);
+  context.strokeStyle = color;
+  context.lineWidth = 2;
+  context.strokeRect(x - width / 2, y - size - 12, width, size + 22);
+  context.fillStyle = color;
+  context.textAlign = 'center';
+  context.textBaseline = 'middle';
+  context.fillText(label, x, y - size / 2 - 1);
+  context.textAlign = 'start';
+  context.textBaseline = 'alphabetic';
+}
+
+function drawWindingRoad() {
   context.beginPath();
-  context.roundRect(x, y, width, height, radius);
-  context.fillStyle = fill;
-  context.fill();
-  if (stroke) {
-    context.strokeStyle = stroke;
+  context.moveTo(1200, 1400);
+  context.bezierCurveTo(1050, 1220, 1450, 1100, 1220, 940);
+  context.bezierCurveTo(930, 740, 1100, 620, 1200, 450);
+  const pathPattern = assetPatterns.get('path');
+  context.lineCap = 'square';
+  context.lineWidth = 178;
+  context.strokeStyle = pathPattern ?? '#dbc18b';
+  context.stroke();
+  context.lineWidth = 146;
+  context.strokeStyle = '#ead6a2';
+  context.stroke();
+  context.lineCap = 'butt';
+}
+
+function drawExteriorWorld() {
+  const grassPattern = assetPatterns.get('grass');
+  context.fillStyle = grassPattern ?? '#9acb82';
+  context.fillRect(0, 0, WORLD_SIZE.width, WORLD_SIZE.height);
+
+  context.fillStyle = '#86b873';
+  context.fillRect(0, 0, WORLD_SIZE.width, 54);
+  drawWindingRoad();
+
+  const waterPattern = assetPatterns.get('water');
+  context.fillStyle = waterPattern ?? '#6ca7bd';
+  context.fillRect(0, 1280, WORLD_SIZE.width, 320);
+  context.fillStyle = 'rgba(185, 224, 211, .55)';
+  for (let y = 1310; y < 1590; y += 48) {
+    for (let x = (y / 48) % 2 ? 40 : 160; x < WORLD_SIZE.width; x += 300) context.fillRect(x, y, 84, 5);
+  }
+
+  drawAsset('harbor-dock', 1020, 1235, 360, 150);
+  drawAsset('harbor-boat', 540, 1245, 190, 120);
+  drawAsset('harbor-boat', 1650, 1280, 190, 120);
+  drawCanvasLabel('항구 · START', 1200, 1480, '#f5d985', 19);
+
+  drawAsset('museum-grand', 990, 70, 420, 300);
+  drawCanvasLabel('PROJECT MUSEUM', 1200, 420, '#f5d985', 22);
+  drawAsset('sky-tree', 470, 390, 84, 116);
+  drawAsset('sky-tree', 1845, 390, 84, 116);
+  drawAsset('sky-tree', 660, 570, 63, 87);
+  drawAsset('sky-tree', 1730, 570, 63, 87);
+  drawAsset('sky-lamp', 840, 445, 48, 84);
+  drawAsset('sky-lamp', 1565, 445, 48, 84);
+  drawAsset('sky-lamp', 930, 710, 48, 84);
+  drawAsset('sky-lamp', 1470, 710, 48, 84);
+  drawAsset('archive-npc', 1124, 500, 72, 96);
+  drawCanvasLabel('안내 데스크', 1160, 618, '#f7e6a4', 14);
+
+  context.fillStyle = 'rgba(55, 76, 74, .25)';
+  context.fillRect(1150, 1244, 100, 7);
+}
+
+function drawMuseumInterior() {
+  context.fillStyle = '#20283a';
+  context.fillRect(0, 0, WORLD_SIZE.width, WORLD_SIZE.height);
+  const wallPattern = assetPatterns.get('wall');
+  context.fillStyle = wallPattern ?? '#536070';
+  context.fillRect(70, 70, WORLD_SIZE.width - 140, WORLD_SIZE.height - 140);
+  context.fillStyle = '#b7976b';
+  context.fillRect(150, 150, WORLD_SIZE.width - 300, WORLD_SIZE.height - 300);
+  context.fillStyle = '#d9c48b';
+  context.fillRect(190, 190, WORLD_SIZE.width - 380, WORLD_SIZE.height - 380);
+  for (let y = 210; y < 1390; y += 80) {
+    for (let x = 210; x < 2190; x += 80) {
+      context.fillStyle = ((x + y) / 80) % 2 ? 'rgba(112, 82, 73, .07)' : 'rgba(255, 244, 186, .1)';
+      context.fillRect(x, y, 78, 78);
+    }
+  }
+  context.strokeStyle = 'rgba(107, 78, 69, .25)';
+  context.lineWidth = 2;
+  for (let y = 210; y < 1390; y += 80) {
+    context.beginPath();
+    context.moveTo(210, y);
+    context.lineTo(2190, y);
     context.stroke();
+  }
+  for (let x = 210; x < 2190; x += 80) {
+    context.beginPath();
+    context.moveTo(x, 210);
+    context.lineTo(x, 1390);
+    context.stroke();
+  }
+  context.strokeStyle = '#876b59';
+  context.lineWidth = 10;
+  context.strokeRect(190, 190, WORLD_SIZE.width - 380, WORLD_SIZE.height - 380);
+
+  context.fillStyle = 'rgba(71, 52, 64, .24)';
+  context.fillRect(1010, 260, 380, 1060);
+  context.fillStyle = '#f1dda0';
+  context.fillRect(1110, 260, 180, 1060);
+  context.fillStyle = '#c56763';
+  context.fillRect(1190, 260, 20, 1060);
+  context.fillStyle = '#eacb7b';
+  for (let y = 280; y < 1300; y += 94) {
+    context.fillRect(1160, y, 80, 5);
+    context.fillRect(1178, y + 13, 44, 5);
+  }
+
+  drawAsset('museum-banner', 1020, 42, 360, 168);
+  drawCanvasLabel('PROJECT MUSEUM · COLLECTION HALL', 1200, 238, '#5d4662', 20);
+  drawAsset('museum-pillar', 250, 190, 92, 232);
+  drawAsset('museum-pillar', 2058, 190, 92, 232);
+  drawAsset('museum-pillar', 250, 1160, 92, 232);
+  drawAsset('museum-pillar', 2058, 1160, 92, 232);
+  drawAsset('museum-lamp', 540, 240, 96, 132);
+  drawAsset('museum-lamp', 1764, 240, 96, 132);
+  drawAsset('museum-lamp', 540, 970, 96, 132);
+  drawAsset('museum-lamp', 1764, 970, 96, 132);
+
+  const wallFrames = [
+    [390, 270, '#c15f5c'], [710, 270, '#5f7890'], [1490, 270, '#c49459'], [1810, 270, '#706184'],
+    [390, 1010, '#5f7890'], [1810, 1010, '#c15f5c'],
+  ];
+  wallFrames.forEach(([x, y, accent]) => {
+    context.fillStyle = '#55445a';
+    context.fillRect(x, y, 170, 132);
+    context.fillStyle = '#e7d49a';
+    context.fillRect(x + 10, y + 10, 150, 112);
+    context.fillStyle = accent;
+    context.fillRect(x + 25, y + 25, 120, 82);
+    context.fillStyle = 'rgba(255, 243, 187, .65)';
+    context.fillRect(x + 42, y + 44, 86, 8);
+    context.fillRect(x + 57, y + 61, 56, 8);
+  });
+
+  context.fillStyle = '#b65558';
+  context.fillRect(1160, 1428, 80, 32);
+  context.fillStyle = '#e6c879';
+  context.fillRect(1140, 1460, 120, 12);
+  context.fillStyle = '#fff1b6';
+  context.fillRect(1180, 1440, 40, 8);
+  museumExhibits.forEach((exhibit) => {
+    drawAsset('museum-exhibit', exhibit.x - 65, exhibit.y - 58, 130, 116);
+    drawCanvasLabel(exhibit.title, exhibit.x, exhibit.y + 100, exhibit.color ?? '#5d4662', 16);
+  });
+  drawCanvasLabel('↓ 항구로 돌아가기', 1200, 1510, '#5d4662', 15);
+
+  const near = getNearestProject();
+  if (near) {
+    context.globalAlpha = prefersReducedMotion ? 0.45 : 0.38 + Math.sin(performance.now() / 220) * 0.14;
+    context.strokeStyle = near.project.color ?? currentIsland?.color ?? '#7234e0';
+    context.lineWidth = 6;
+    context.beginPath();
+    context.arc(near.exhibit.x, near.exhibit.y + 16, 84, 0, Math.PI * 2);
+    context.stroke();
+    context.globalAlpha = 1;
   }
 }
 
 function drawMap() {
-  const islandColor = currentIsland?.color ?? '#8aa8ff';
+  if (!islandWorld) return;
+  const viewport = { width: canvas.width, height: canvas.height };
+  camera = getCamera(player, viewport, WORLD_SIZE);
   context.clearRect(0, 0, canvas.width, canvas.height);
-  const grassPattern = assetPatterns.get('grass');
-  context.fillStyle = grassPattern ?? '#9acb82';
-  context.fillRect(0, 0, canvas.width, canvas.height);
-
-  context.beginPath();
-  context.moveTo(0, 390); context.bezierCurveTo(180, 300, 230, 420, 355, 345); context.bezierCurveTo(500, 260, 610, 382, 960, 250);
-  const pathPattern = assetPatterns.get('path');
-  context.lineWidth = 62; context.strokeStyle = pathPattern ?? '#dbc18b'; context.stroke();
-  context.lineWidth = 44; context.strokeStyle = '#ead6a2'; context.stroke();
-
-  drawAsset('archive-hall', 52, 45, 196, 171);
-  drawAsset('archive-npc', 274, 118, 48, 64);
-  drawAsset('signpost', 408, 120, 56, 72);
-  drawAsset('project-kiosk', 770, 102, 72, 88);
-  drawAsset('project-kiosk', 116, 396, 72, 88);
-
-  markerPositions.slice(0, currentIsland?.projects.length ?? 1).forEach((marker, index) => {
-    const project = currentIsland?.projects[index];
-    if (!project) return;
-    drawAsset('project-kiosk', marker.x - 36, marker.y - 44, 72, 88);
-    drawAsset(project.assetId, marker.x - 23, marker.y - 34, 46, 28);
-    context.fillStyle = project.color;
-    context.fillRect(marker.x - 26, marker.y - 30, 52, 5);
-  });
-
-  const near = getNearestProject();
-  if (near) {
-        context.globalAlpha = prefersReducedMotion ? 0.35 : 0.35 + Math.sin(performance.now() / 240) * 0.12;
-    context.strokeStyle = islandColor; context.lineWidth = 4; context.beginPath(); context.arc(near.marker.x, near.marker.y, 50, 0, Math.PI * 2); context.stroke(); context.globalAlpha = 1;
-  }
-
+  context.save();
+  context.translate(-camera.x, -camera.y);
+  if (museumInterior) drawMuseumInterior();
+  else drawExteriorWorld();
   const px = Math.round(player.x); const py = Math.round(player.y);
-  drawAsset('player', px - 24, py - 31, 48, 64);
+  drawAsset('player', px - 32, py - 43, 64, 85);
+  context.restore();
 }
 
 function getNearestProject() {
-  if (!currentIsland) return null;
-  let closest = null;
-  currentIsland.projects.forEach((project, index) => {
-    const marker = getMarkerPosition(index);
-    const distance = Math.hypot(player.x - marker.x, player.y - marker.y);
-    if (distance < 92 && (!closest || distance < closest.distance)) closest = { project, marker, distance };
-  });
-  return closest;
+  if (!museumInterior || !currentIsland) return null;
+  const exhibit = findNearestExhibit(player, museumExhibits, 150);
+  return exhibit ? { project: exhibit, exhibit, distance: exhibit.distance } : null;
+}
+
+function updateWorldHud() {
+  const location = document.querySelector('#world-location');
+  const coordinates = document.querySelector('#mini-coords');
+  if (location) location.textContent = museumInterior ? '박물관 · COLLECTION HALL' : '항구 · 선착장';
+  if (coordinates) coordinates.textContent = `X ${Math.round(player.x / 10)} / Y ${Math.round(player.y / 10)}`;
 }
 
 function updateInteraction() {
   const nearest = getNearestProject();
-  interactionToast.classList.toggle('is-visible', Boolean(nearest));
-  if (nearest) interactionText.textContent = `${nearest.project.title} 설명 듣기`;
-  document.querySelector('#mini-coords').textContent = `X ${Math.round(player.x / 10)} / Y ${Math.round(player.y / 10)}`;
+  const visible = Boolean(nearest);
+  interactionToast.classList.toggle('is-visible', visible);
+  if (nearest) interactionText.textContent = `${nearest.project.title} 문서 확인`;
+  updateWorldHud();
+}
+
+function enterMuseum() {
+  if (museumInterior || !currentIsland) return;
+  museumInterior = true;
+  museumExhibits = createMuseumLayout(currentIsland.projects);
+  player = { x: 1200, y: 1280 };
+  updateInteraction();
+}
+
+function exitMuseum() {
+  if (!museumInterior) return;
+  museumInterior = false;
+  museumExhibits = [];
+  player = { x: MUSEUM_DOOR.x, y: MUSEUM_DOOR.y + 92 };
+  updateInteraction();
+}
+
+function worldPointFromEvent(event) {
+  const rect = canvas.getBoundingClientRect();
+  return {
+    x: camera.x + ((event.clientX - rect.left) / rect.width) * canvas.width,
+    y: camera.y + ((event.clientY - rect.top) / rect.height) * canvas.height,
+  };
+}
+
+function handleWorldClick(event) {
+  if (!museumInterior || !museumExhibits.length) return;
+  const point = worldPointFromEvent(event);
+  const exhibit = findNearestExhibit(point, museumExhibits, 125);
+  if (exhibit) openMuseumGuide(exhibit.id, canvas);
 }
 
 function movePlayer(delta) {
-  if (state.screen !== 'island') return;
+  if (state.screen !== 'island' || !islandWorld || (museumModal && !museumModal.classList.contains('is-hidden'))) return;
   const direction = { x: 0, y: 0 };
   if (pressedKeys.has('w') || pressedKeys.has('arrowup')) direction.y -= 1;
   if (pressedKeys.has('s') || pressedKeys.has('arrowdown')) direction.y += 1;
   if (pressedKeys.has('a') || pressedKeys.has('arrowleft')) direction.x -= 1;
   if (pressedKeys.has('d') || pressedKeys.has('arrowright')) direction.x += 1;
   const magnitude = Math.hypot(direction.x, direction.y) || 1;
-  const speed = 170;
-  player.x = Math.max(36, Math.min(canvas.width - 36, player.x + (direction.x / magnitude) * speed * delta));
-  player.y = Math.max(36, Math.min(canvas.height - 36, player.y + (direction.y / magnitude) * speed * delta));
+  const speed = 260;
+  player.x = Math.max(80, Math.min(WORLD_SIZE.width - 80, player.x + (direction.x / magnitude) * speed * delta));
+  player.y = Math.max(80, Math.min(WORLD_SIZE.height - 80, player.y + (direction.y / magnitude) * speed * delta));
+  if (!museumInterior && isAtMuseumDoor(player)) {
+    enterMuseum();
+    updateInteraction();
+    return;
+  }
+  if (museumInterior && player.y > 1470 && Math.abs(player.x - MUSEUM_DOOR.x) < 150) exitMuseum();
   updateInteraction();
 }
 
@@ -713,7 +874,7 @@ function animate(timestamp) {
   requestAnimationFrame(animate);
 }
 
-document.querySelector('#back-to-sky').addEventListener('click', returnToSky);
+document.querySelector('#back-to-sky')?.addEventListener('click', returnToSky);
 document.querySelector('#brand-button').addEventListener('click', returnToSky);
 document.querySelector('#back-to-island').addEventListener('click', closeProjectToIsland);
 document.querySelector('#close-project').addEventListener('click', closeProjectToIsland);
@@ -728,6 +889,7 @@ museumOpenProject?.addEventListener('click', openProjectFromMuseum);
 museumModal?.addEventListener('click', (event) => {
   if (event.target === museumModal) closeMuseumGuide();
 });
+canvas.addEventListener('click', handleWorldClick);
 
 window.addEventListener('keydown', (event) => {
   const key = event.key.toLowerCase();

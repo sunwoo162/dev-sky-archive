@@ -32,14 +32,20 @@ test('runtime rendering imports the catalog and uses asset-backed world hooks', 
   const html = readFileSync(path.join(root, 'index.html'), 'utf8');
   const preview = readFileSync(path.join(root, 'asset-preview.html'), 'utf8');
 
-  assert.match(app, /from ['"]\.\/asset-catalog\.js['"]/);
+  assert.match(app, /from ['"]\.\/asset-catalog\.js(?:\?[^'"]+)?['"]/);
   assert.match(app, /from ['"]\.\/treasure-map\.js(?:\?[^'"]+)?['"]/);
   assert.match(app, /renderTreasureMap\(/);
   assert.doesNotMatch(app, /sky-3d/);
   assert.match(app, /assetUrl\(/);
   assert.match(content, /map:\s*\{/);
   assert.match(content, /landmark:/);
-  assert.match(html, /asset-palette|data-asset-id/);
+  assert.match(html, /id="game-canvas"/);
+  assert.match(app, /museum-grand/);
+  assert.match(app, /harbor-dock/);
+  assert.match(app, /museum-exhibit/);
+  assert.match(app, /museum-banner/);
+  assert.match(app, /museum-pillar/);
+  assert.match(app, /museum-lamp/);
   assert.match(html, /id="treasure-map"/);
   assert.doesNotMatch(html, /sky-3d-canvas/);
   assert.match(treasureMap, /treasure-map-svg/);

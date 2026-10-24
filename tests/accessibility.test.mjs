@@ -11,7 +11,7 @@ const app = readFileSync(join(here, '..', 'src', 'app.js'), 'utf8');
 
 test('the playable world exposes live interaction feedback to assistive technology', () => {
   assert.match(html, /id="interaction-text"[^>]*aria-live="polite"/);
-  assert.match(html, /id="island-count"[^>]*aria-live="polite"/);
+  assert.match(html, /id="game-canvas"[^>]*aria-label="항구에서 박물관까지 이동하는 2D 탑다운 프로젝트 월드"/);
 });
 
 test('the archive disables decorative motion when the user prefers reduced motion', () => {
@@ -28,8 +28,9 @@ test('keyboard controls preserve native activation for focused controls', () => 
 test('archive and exhibit navigation manage focus', () => {
   assert.match(app, /archiveModal.*querySelectorAll/s);
   assert.match(app, /lastProjectFocusProjectId/);
-  assert.match(app, /projectFocusTarget\?\.focus\(\)/);
-  assert.match(app, /document\.querySelector\(['"]#back-to-sky['"]\)\?\.focus\(\)/);
+  assert.match(app, /if \(projectFocusTarget\) projectFocusTarget\.focus\(\)/);
+  assert.match(app, /else canvas\.focus\(\)/);
+  assert.match(app, /else if \(state\.screen === ['"]island['"]\) returnToSky\(\)/);
   assert.match(app, /treasureMapApi\?\.focusLandmark\(previousIslandId\)/);
 });
 
@@ -48,7 +49,7 @@ test('the archive declares its adapted design-system layers', () => {
   assert.match(html, /data-ui-system="nc-portal-play-adapted"/);
   assert.match(html, /data-ui-layer="navigation"/);
   assert.match(html, /data-ui-layer="status-surface"/);
-  assert.match(html, /data-ui-layer="index"/);
+  assert.match(html, /class="world-hud world-hud-top"/);
   assert.match(html, /data-ui-layer="dossier"/);
   assert.match(css, /--ui-canvas/);
   assert.match(css, /--ui-primary/);
@@ -69,9 +70,10 @@ test('project museum guides expose both keyboard and pointer entry points', () =
   assert.match(html, /id="museum-modal"[^>]*role="dialog"/);
   assert.match(html, /id="museum-modal-content"/);
   assert.match(html, /id="museum-open-project"/);
-  assert.match(html, /<span class="keycap">J<\/span>/);
+  assert.match(html, /<kbd>J<\/kbd>/);
   assert.match(app, /openMuseumGuide/);
-  assert.match(app, /data-museum-project-id/);
+  assert.match(app, /handleWorldClick/);
+  assert.match(app, /findNearestExhibit/);
   assert.match(app, /key === ['"]j['"]/);
   assert.match(app, /trapMuseumFocus/);
   assert.match(css, /\.museum-modal\s*\{/);
