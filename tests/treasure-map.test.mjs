@@ -47,6 +47,17 @@ test('category landmarks use island or ship art as the primary hover target', ()
   assert.match(css, /\.treasure-map-landmark__label::after/);
 });
 
+test('landmark nameplates attach above the island or ship and flags anchor into the art', () => {
+  const source = readFileSync(resolve('src/treasure-map.js'), 'utf8');
+  const css = readFileSync(resolve('src/styles.css'), 'utf8');
+
+  assert.match(source, /<span class="treasure-map-landmark__label">[\s\S]*<span class="treasure-map-landmark__art"/);
+  assert.match(source, /landmark-flagpole/);
+  assert.match(source, /landmark-flag/);
+  assert.match(css, /\.treasure-map-landmark__label[^}]*margin-bottom:\s*-\d+px/);
+  assert.match(css, /\.treasure-map-landmark__label::before[^}]*bottom:/);
+});
+
 test('the treasure map is composed as a dense hand-drawn illustration', () => {
   const source = readFileSync(resolve('src/treasure-map.js'), 'utf8');
 

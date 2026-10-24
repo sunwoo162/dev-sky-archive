@@ -353,7 +353,7 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 .treasure-map-landmark__art .landmark-island .landmark-water { fill: #d5bb82; stroke: #8d704c; opacity: .62; }
 .treasure-map-landmark__art .landmark-island .landmark-base { fill: #6d563e; }
 .treasure-map-landmark__art .landmark-island .landmark-top { fill: #9da067; }
-.treasure-map-landmark__art .landmark-shore, .treasure-map-landmark__art .landmark-line, .treasure-map-landmark__art .landmark-tree, .treasure-map-landmark__art .landmark-mast { fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.treasure-map-landmark__art .landmark-shore, .treasure-map-landmark__art .landmark-line, .treasure-map-landmark__art .landmark-tree, .treasure-map-landmark__art .landmark-mast, .treasure-map-landmark__art .landmark-flagpole, .treasure-map-landmark__art .landmark-flag-base { fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 .treasure-map-landmark__art .landmark-tree { stroke-width: 2.2; }
 .treasure-map-landmark__art .landmark-building { fill: #e5c98c; stroke: currentColor; stroke-width: 2.3; stroke-linejoin: round; }
 .treasure-map-landmark__art .landmark-roof { fill: #76523a; stroke: currentColor; stroke-width: 2.3; stroke-linejoin: round; }
@@ -362,10 +362,11 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 .treasure-map-landmark__art .landmark-sail { fill: #e5c98c; stroke: currentColor; stroke-width: 2.2; stroke-linejoin: round; }
 .treasure-map-landmark__art .landmark-sail--secondary { fill: #c39c67; }
 .treasure-map-landmark__art .landmark-flag, .treasure-map-landmark__art .landmark-accent { fill: #aa5847; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; }
+.treasure-map-landmark__art .landmark-flag-base { stroke-width: 3.2; }
 .treasure-map-landmark__art .landmark-cargo { fill: #c3975b; stroke: currentColor; stroke-width: 1.8; }
-.treasure-map-landmark__label { position: relative; display: inline-block; max-width: 100%; margin-top: -1px; padding: 4px 9px 3px; color: #4d3424; background: rgba(231, 201, 141, .96); border: 1px solid #76523a; border-radius: 2px; box-shadow: 2px 3px 0 rgba(77, 52, 36, .18); font: 800 clamp(9px, .84vw, 12px)/1.1 "Malgun Gothic", sans-serif; letter-spacing: -.08em; white-space: nowrap; transform: rotate(-1deg); }
-.treasure-map-landmark__label::before { content: ""; position: absolute; left: 50%; top: -11px; width: 1px; height: 11px; background: currentColor; opacity: .7; }
-.treasure-map-landmark__label::after { content: ""; position: absolute; left: calc(50% - 3px); top: -15px; width: 6px; height: 6px; border: 1px solid currentColor; border-radius: 50%; background: #e5c98c; }
+.treasure-map-landmark__label { position: relative; z-index: 3; display: inline-block; max-width: 100%; margin-bottom: -15px; padding: 4px 9px 3px; color: #4d3424; background: rgba(231, 201, 141, .96); border: 1px solid #76523a; border-radius: 2px; box-shadow: 2px 3px 0 rgba(77, 52, 36, .18); font: 800 clamp(9px, .84vw, 12px)/1.1 "Malgun Gothic", sans-serif; letter-spacing: -.08em; white-space: nowrap; transform: rotate(-1deg); }
+.treasure-map-landmark__label::before { content: ""; position: absolute; left: 50%; bottom: -11px; width: 1px; height: 11px; background: currentColor; opacity: .7; }
+.treasure-map-landmark__label::after { content: ""; position: absolute; left: calc(50% - 3px); bottom: -15px; width: 6px; height: 6px; border: 1px solid currentColor; border-radius: 50%; background: #e5c98c; }
 .treasure-map-landmark--profile .treasure-map-landmark__label { color: #e9cf92; background: #67442e; }
 .treasure-map-hint { display: none; }
 .treasure-map.is-reduced-motion .treasure-map-landmark { transition: none; }

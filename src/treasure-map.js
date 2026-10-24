@@ -20,11 +20,13 @@ function landmarkArt(landmark) {
         <ellipse class="landmark-water" cx="0" cy="29" rx="62" ry="10" />
         <path class="landmark-hull" d="M-58 4h116l-13 23c-23 12-67 12-90 0Z" />
         <path class="landmark-mast" d="M0 5V-53M-43 7H45" />
+        <path class="landmark-flagpole" d="M0 5V-53" />
         <path class="landmark-sail" d="M-2-48-37 1H-2Z" />
         <path class="landmark-sail landmark-sail--secondary" d="M4-39 34-2H4Z" />
         <path class="landmark-line" d="M-43 7-28 25m71-18L28 25M-28 12h56M-20 21h40" />
         <path class="landmark-accent" d="M-10-53h20l-10-9Z" />
-        ${landmark === 'materials' ? '<path class="landmark-cargo" d="M-32 2h14v10h-14zm19 0h14v10h-14z" />' : '<path class="landmark-flag" d="M1-53h25l-25 10Z" />'}
+        <path class="landmark-flag" d="M2-52h26L2-41Z" />
+        ${landmark === 'materials' ? '<path class="landmark-cargo" d="M-32 2h14v10h-14zm19 0h14v10h-14z" />' : '<path class="landmark-accent" d="M-28-53h15l-15 8Z" />'}
       </g>`;
   }
 
@@ -43,6 +45,9 @@ function landmarkArt(landmark) {
       <path class="landmark-top" d="M-60 0c16-18 37-22 58-16 21-7 45-1 62 16-17 15-37 19-59 13-21 7-43 3-61-13Z" />
       <path class="landmark-shore" d="M-43 7c13 6 27 8 42 3 17 5 31 3 44-4M-37 18c11 3 21 3 31 0m12 0c10 3 20 2 30-1" />
       <path class="landmark-tree" d="M-39 9v-26M-39-13c-12-11-22-9-30-4 11 2 21 8 30 15M-39-8c11-13 21-13 30-7-11 4-21 10-30 18M-27 12V-2M-27 1c-7-7-13-6-18-3 7 2 12 5 18 9M-27 3c7-8 13-8 18-4-7 2-12 6-18 11" />
+      <path class="landmark-flagpole" d="M36 5V-48" />
+      <path class="landmark-flag" d="M38-47h25L38-36Z" />
+      <path class="landmark-flag-base" d="M30 6h12" />
       ${islandDetail}
     </g>`;
 }
@@ -262,10 +267,10 @@ function createLandmarks(islands) {
       const title = escapeText(label);
       return `
         <button class="treasure-map-landmark treasure-map-landmark--${escapeText(landmark)}" type="button" data-island-id="${escapeText(island.id)}" style="--map-x: ${x}%; --map-y: ${y}%" aria-label="${title} 섬 열기">
-          <span class="treasure-map-landmark__art" aria-hidden="true">
-            <svg viewBox="-82 -70 164 122" focusable="false">${landmarkArt(landmark)}</svg>
-          </span>
           <span class="treasure-map-landmark__label">${title}</span>
+              <span class="treasure-map-landmark__art" aria-hidden="true">
+                <svg viewBox="-82 -70 164 122" focusable="false">${landmarkArt(landmark)}</svg>
+              </span>
         </button>
       `;
     })
