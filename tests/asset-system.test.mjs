@@ -54,6 +54,17 @@ test('runtime rendering imports the catalog and uses asset-backed world hooks', 
   assert.match(preview, /ASSET LIBRARY/);
 });
 
+test('runtime world labels use the shared open-atlas palette helper', () => {
+  const app = readFileSync(path.join(root, 'src', 'app.js'), 'utf8');
+  const css = readFileSync(path.join(root, 'src', 'styles.css'), 'utf8');
+
+  assert.match(app, /const ATLAS_WORLD_PALETTE =/);
+  assert.match(app, /drawAtlasLabel\(/);
+  assert.match(css, /\.island-screen[^}]*--atlas-paper/);
+  assert.match(css, /\.world-controls[^}]*rgba\(91, 59, 39/);
+  assert.match(css, /\.interaction-toast[^}]*rgba\(91, 59, 39/);
+});
+
 test('the landing screen includes the high-fidelity etched map asset', () => {
   const mapAsset = path.join(root, 'assets', 'maps', 'treasure-map-etched.png');
   const source = readFileSync(path.join(root, 'src', 'treasure-map.js'), 'utf8');

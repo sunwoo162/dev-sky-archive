@@ -294,6 +294,17 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 .island-screen .interaction-toast small { color: rgba(255,246,223,.58); }
 .island-screen .toast-key { color: #2e3851; background: #f5d985; }
 
+/* The playable world inherits the open-atlas ink, paper, rust, and gold language. */
+.island-screen { --atlas-paper: #e2c98b; --atlas-ink: #5a3d2b; --atlas-rust: #a94737; --atlas-gold: #f5d985; }
+.island-screen .world-hud { color: #fff3d1; text-shadow: 0 2px 0 rgba(77, 52, 36, .56); }
+.island-screen .world-brand, .island-screen .world-controls, .island-screen .world-location, .island-screen .world-coordinates { background: rgba(91, 59, 39, .76); border-color: rgba(226, 201, 139, .38); }
+.island-screen .world-brand-mark, .island-screen .world-coordinates { color: var(--atlas-gold); }
+.island-screen .world-controls { color: rgba(255, 243, 209, .82); }
+.island-screen .world-controls kbd, .island-screen .toast-key { color: var(--atlas-ink); background: var(--atlas-gold); border-bottom-color: #b38a5e; }
+.island-screen .world-location { color: rgba(255, 243, 209, .88); }
+.island-screen .interaction-toast { color: #fff3d1; background: rgba(91, 59, 39, .92); border-color: rgba(226, 201, 139, .52); }
+.island-screen .interaction-toast small { color: rgba(255, 243, 209, .66); }
+
 @media (max-width: 700px) {
   .world-hud-top { top: 12px; left: 12px; right: 12px; align-items: start; }
   .world-controls { max-width: 158px; flex-wrap: wrap; justify-content: flex-end; }

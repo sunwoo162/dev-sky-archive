@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import test from 'node:test';
 
 import {
@@ -59,4 +61,17 @@ test('camera follows the player without exposing space outside the world', () =>
 test('walking into the museum door changes the exterior into an interior entry', () => {
   assert.equal(isAtMuseumDoor({ x: MUSEUM_DOOR.x, y: MUSEUM_DOOR.y + 18 }), true);
   assert.equal(isAtMuseumDoor({ x: MUSEUM_DOOR.x - 100, y: MUSEUM_DOOR.y }), false);
+});
+
+test('the museum world reuses atlas labels and keeps controls scoped to exploration', () => {
+  const app = readFileSync(resolve('src/app.js'), 'utf8');
+  const html = readFileSync(resolve('index.html'), 'utf8');
+
+  assert.match(app, /ATLAS_WORLD_PALETTE/);
+  assert.match(app, /function drawAtlasLabel/);
+  assert.match(app, /drawAtlasLabel\('항구 · START'/);
+  assert.match(app, /drawAtlasLabel\('PROJECT MUSEUM'/);
+  assert.match(app, /drawAtlasLabel\(exhibit\.title/);
+  assert.match(app, /interactionText\.textContent = `\$\{nearest\.project\.title\} 문서 확인`/);
+  assert.match(html, /class="world-controls"[\s\S]*WASD[\s\S]*문서 확인[\s\S]*지도/);
 });

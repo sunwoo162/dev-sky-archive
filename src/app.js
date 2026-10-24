@@ -81,6 +81,15 @@ let activeTravel = null;
 let travelStartedAt = 0;
 let selectionTransitionLocked = false;
 
+const ATLAS_WORLD_PALETTE = Object.freeze({
+  ink: '#5a3d2b',
+  deepInk: '#4d3424',
+  paper: '#e2c98b',
+  gold: '#f5d985',
+  rust: '#a94737',
+  labelBackground: 'rgba(77, 52, 36, .88)',
+});
+
 reducedMotionQuery.addEventListener?.('change', (event) => {
   prefersReducedMotion = event.matches;
   treasureMapApi?.setReducedMotion(prefersReducedMotion);
@@ -618,10 +627,10 @@ function renderProject() {
   });
 }
 
-function drawCanvasLabel(label, x, y, color = '#f5d985', size = 18) {
+function drawAtlasLabel(label, x, y, color = ATLAS_WORLD_PALETTE.gold, size = 18) {
   context.font = `700 ${size}px ui-monospace, SFMono-Regular, Consolas, monospace`;
   const width = context.measureText(label).width + 28;
-  context.fillStyle = 'rgba(35, 43, 61, .88)';
+  context.fillStyle = ATLAS_WORLD_PALETTE.labelBackground;
   context.fillRect(x - width / 2, y - size - 12, width, size + 22);
   context.strokeStyle = color;
   context.lineWidth = 2;
@@ -670,10 +679,10 @@ function drawExteriorWorld() {
   drawAsset('harbor-dock', 1020, 1235, 360, 150);
   drawAsset('harbor-boat', 540, 1245, 190, 120);
   drawAsset('harbor-boat', 1650, 1280, 190, 120);
-  drawCanvasLabel('항구 · START', 1200, 1480, '#f5d985', 19);
+  drawAtlasLabel('항구 · START', 1200, 1480, ATLAS_WORLD_PALETTE.gold, 19);
 
   drawAsset('museum-grand', 990, 70, 420, 300);
-  drawCanvasLabel('PROJECT MUSEUM', 1200, 420, '#f5d985', 22);
+  drawAtlasLabel('PROJECT MUSEUM', 1200, 420, ATLAS_WORLD_PALETTE.gold, 22);
   drawAsset('sky-tree', 470, 390, 84, 116);
   drawAsset('sky-tree', 1845, 390, 84, 116);
   drawAsset('sky-tree', 660, 570, 63, 87);
@@ -683,7 +692,7 @@ function drawExteriorWorld() {
   drawAsset('sky-lamp', 930, 710, 48, 84);
   drawAsset('sky-lamp', 1470, 710, 48, 84);
   drawAsset('archive-npc', 1124, 500, 72, 96);
-  drawCanvasLabel('안내 데스크', 1160, 618, '#f7e6a4', 14);
+  drawAtlasLabel('안내 데스크', 1160, 618, ATLAS_WORLD_PALETTE.paper, 14);
 
   context.fillStyle = 'rgba(55, 76, 74, .25)';
   context.fillRect(1150, 1244, 100, 7);
@@ -736,7 +745,7 @@ function drawMuseumInterior() {
   }
 
   drawAsset('museum-banner', 1020, 42, 360, 168);
-  drawCanvasLabel('PROJECT MUSEUM · COLLECTION HALL', 1200, 238, '#5d4662', 20);
+  drawAtlasLabel('PROJECT MUSEUM · COLLECTION HALL', 1200, 238, ATLAS_WORLD_PALETTE.ink, 20);
   drawAsset('museum-pillar', 250, 190, 92, 232);
   drawAsset('museum-pillar', 2058, 190, 92, 232);
   drawAsset('museum-pillar', 250, 1160, 92, 232);
@@ -770,9 +779,9 @@ function drawMuseumInterior() {
   context.fillRect(1180, 1440, 40, 8);
   museumExhibits.forEach((exhibit) => {
     drawAsset('museum-exhibit', exhibit.x - 65, exhibit.y - 58, 130, 116);
-    drawCanvasLabel(exhibit.title, exhibit.x, exhibit.y + 100, exhibit.color ?? '#5d4662', 16);
+        drawAtlasLabel(exhibit.title, exhibit.x, exhibit.y + 100, exhibit.color ?? ATLAS_WORLD_PALETTE.ink, 16);
   });
-  drawCanvasLabel('↓ 항구로 돌아가기', 1200, 1510, '#5d4662', 15);
+      drawAtlasLabel('↓ 항구로 돌아가기', 1200, 1510, ATLAS_WORLD_PALETTE.ink, 15);
 
   const near = getNearestProject();
   if (near) {
