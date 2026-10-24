@@ -210,7 +210,7 @@ function routeArt() {
 function createSvg() {
   return `
     <svg class="treasure-map-svg" viewBox="0 0 1792 1024" preserveAspectRatio="xMidYMid slice" role="img" aria-label="프로젝트 보물지도 일러스트">
-      <image class="treasure-map-raster" href="./assets/maps/treasure-map-etched.png" x="0" y="0" width="1792" height="1024" preserveAspectRatio="none" />
+      <image class="treasure-map-raster" href="./assets/maps/treasure-map-etched.png" x="0" y="0" width="1792" height="1024" preserveAspectRatio="xMidYMid slice" />
       <g class="treasure-map-interaction-ink" transform="scale(1.493333 1.347368)">
         ${routeArt()}
       </g>

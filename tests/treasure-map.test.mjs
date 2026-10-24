@@ -108,3 +108,17 @@ test('landmark selection exposes a deterministic zoom handoff', () => {
   assert.match(source, /setTimeout\(/);
   assert.match(source, /reducedMotion/);
 });
+
+test('the open atlas keeps the map full-bleed and the zoom language restrained', () => {
+  const css = readFileSync(resolve('src/styles.css'), 'utf8');
+
+  assert.match(css, /\.sky-screen[^}]*min-height:\s*100dvh/);
+  assert.match(css, /\.sky-map-wrap[^}]*inset:\s*0/);
+  assert.match(css, /\.sky-stage[^}]*width:\s*100%[^}]*height:\s*100%/);
+  assert.match(css, /\.treasure-map-canvas[^}]*border:\s*0[^}]*box-shadow:\s*none/);
+  assert.match(css, /\.treasure-map-raster[^}]*object-fit:\s*cover/);
+  assert.match(css, /\.treasure-map\.is-zooming[^}]*transform:/);
+  assert.match(css, /\.treasure-map\.is-zooming[^}]*transition:/);
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\)[\s\S]*\.treasure-map\.is-reduced-motion/);
+  assert.match(css, /\.sky-map-wrap \{ position:\s*absolute; inset:\s*0; min-height:\s*0; padding:\s*0;/);
+});
