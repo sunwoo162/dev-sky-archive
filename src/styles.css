@@ -334,26 +334,44 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 .treasure-map-compass--small { stroke-width: 3.4; }
 .treasure-map-compass--small text { display: none; }
 .treasure-map-landmarks { position: absolute; inset: 0; z-index: 2; }
-.treasure-map-landmark { position: absolute; left: var(--map-x); top: var(--map-y); display: grid; justify-items: center; gap: 0; width: clamp(88px, 10vw, 124px); padding: 0; color: #4d3424; border: 0; background: transparent; cursor: pointer; transform: translate(-50%, -50%); transition: transform .18s ease, filter .18s ease; }
-.treasure-map-landmark:hover, .treasure-map-landmark:focus-visible { z-index: 3; filter: drop-shadow(0 5px 0 rgba(77, 52, 36, .26)); transform: translate(-50%, -50%) scale(1.14) rotate(-1deg); }
+.treasure-map-landmark { position: absolute; left: var(--map-x); top: var(--map-y); display: grid; justify-items: center; gap: 0; width: clamp(132px, 13vw, 190px); padding: 0; color: #4d3424; border: 0; background: transparent; cursor: pointer; transform: translate(-50%, -50%); transition: transform .18s ease, filter .18s ease; }
+.treasure-map-landmark:hover, .treasure-map-landmark:focus-visible { z-index: 3; filter: drop-shadow(0 8px 5px rgba(77, 52, 36, .34)); transform: translate(-50%, -50%) scale(1.12) rotate(-1deg); }
 .treasure-map-landmark:hover .treasure-map-landmark__art, .treasure-map-landmark:focus-visible .treasure-map-landmark__art { color: #8d3528; }
-.treasure-map-landmark:hover .landmark-sign, .treasure-map-landmark:focus-visible .landmark-sign { fill: #b35d45; }
-.treasure-map-landmark:hover .landmark-symbol, .treasure-map-landmark:focus-visible .landmark-symbol { fill: #f7e3ae; }
+.treasure-map-landmark:hover .landmark-top, .treasure-map-landmark:focus-visible .landmark-top { fill: #d5b978; }
+.treasure-map-landmark:hover .landmark-building, .treasure-map-landmark:focus-visible .landmark-building { fill: #f1d59a; }
+.treasure-map-landmark:hover .landmark-sail, .treasure-map-landmark:focus-visible .landmark-sail { fill: #f1d59a; }
+.treasure-map-landmark:hover .landmark-hull, .treasure-map-landmark:focus-visible .landmark-hull { fill: #945739; }
+.treasure-map-landmark:hover .landmark-accent, .treasure-map-landmark:focus-visible .landmark-accent { fill: #b84f42; }
 .treasure-map-landmark:hover .treasure-map-landmark__label, .treasure-map-landmark:focus-visible .treasure-map-landmark__label { color: #f7e3ae; background: #6b3e2c; border-color: #3e281e; }
 .treasure-map-landmark:focus-visible { outline: 3px solid #a94737; outline-offset: 7px; border-radius: 4px; }
-.treasure-map-landmark__art { display: block; width: clamp(48px, 5vw, 66px); height: clamp(42px, 4.8vw, 60px); color: #4d3424; }
+.treasure-map-landmark__art { display: block; width: clamp(96px, 9vw, 142px); height: clamp(78px, 8vw, 112px); color: #4d3424; }
 .treasure-map-landmark__art svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .treasure-map-landmark__art .landmark-ink { fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
-.treasure-map-landmark__art svg .art-detail { fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
-.treasure-map-landmark__art .landmark-sign { fill: #e5c98c; stroke: currentColor; stroke-width: 2.2; }
-.treasure-map-landmark__art .landmark-symbol { fill: currentColor; stroke: none; text-anchor: middle; font: 700 9px Georgia, serif; }
-.treasure-map-landmark__label { display: inline-block; max-width: 100%; padding: 3px 6px 2px; color: #4d3424; background: rgba(231, 201, 141, .94); border: 1px solid #76523a; border-radius: 0; box-shadow: 1px 1px 0 rgba(77, 52, 36, .12); font: 800 clamp(8px, .78vw, 11px)/1.1 "Malgun Gothic", sans-serif; letter-spacing: -.08em; white-space: nowrap; transform: rotate(-1deg); }
+.treasure-map-landmark__art .landmark-water { fill: #d4ba7f; stroke: currentColor; stroke-width: 2; opacity: .9; }
+.treasure-map-landmark__art .landmark-base { fill: #7b5038; stroke: currentColor; stroke-width: 2.4; }
+.treasure-map-landmark__art .landmark-top { fill: #b9a069; stroke: currentColor; stroke-width: 2.4; }
+.treasure-map-landmark__art .landmark-island .landmark-water { fill: #d5bb82; stroke: #8d704c; opacity: .62; }
+.treasure-map-landmark__art .landmark-island .landmark-base { fill: #6d563e; }
+.treasure-map-landmark__art .landmark-island .landmark-top { fill: #9da067; }
+.treasure-map-landmark__art .landmark-shore, .treasure-map-landmark__art .landmark-line, .treasure-map-landmark__art .landmark-tree, .treasure-map-landmark__art .landmark-mast { fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.treasure-map-landmark__art .landmark-tree { stroke-width: 2.2; }
+.treasure-map-landmark__art .landmark-building { fill: #e5c98c; stroke: currentColor; stroke-width: 2.3; stroke-linejoin: round; }
+.treasure-map-landmark__art .landmark-roof { fill: #76523a; stroke: currentColor; stroke-width: 2.3; stroke-linejoin: round; }
+.treasure-map-landmark__art .landmark-window { fill: #f7e3ae; stroke: currentColor; stroke-width: 1.6; }
+.treasure-map-landmark__art .landmark-hull { fill: #7b4c35; stroke: currentColor; stroke-width: 2.5; stroke-linejoin: round; }
+.treasure-map-landmark__art .landmark-sail { fill: #e5c98c; stroke: currentColor; stroke-width: 2.2; stroke-linejoin: round; }
+.treasure-map-landmark__art .landmark-sail--secondary { fill: #c39c67; }
+.treasure-map-landmark__art .landmark-flag, .treasure-map-landmark__art .landmark-accent { fill: #aa5847; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; }
+.treasure-map-landmark__art .landmark-cargo { fill: #c3975b; stroke: currentColor; stroke-width: 1.8; }
+.treasure-map-landmark__label { position: relative; display: inline-block; max-width: 100%; margin-top: -1px; padding: 4px 9px 3px; color: #4d3424; background: rgba(231, 201, 141, .96); border: 1px solid #76523a; border-radius: 2px; box-shadow: 2px 3px 0 rgba(77, 52, 36, .18); font: 800 clamp(9px, .84vw, 12px)/1.1 "Malgun Gothic", sans-serif; letter-spacing: -.08em; white-space: nowrap; transform: rotate(-1deg); }
+.treasure-map-landmark__label::before { content: ""; position: absolute; left: 50%; top: -11px; width: 1px; height: 11px; background: currentColor; opacity: .7; }
+.treasure-map-landmark__label::after { content: ""; position: absolute; left: calc(50% - 3px); top: -15px; width: 6px; height: 6px; border: 1px solid currentColor; border-radius: 50%; background: #e5c98c; }
 .treasure-map-landmark--profile .treasure-map-landmark__label { color: #e9cf92; background: #67442e; }
 .treasure-map-hint { display: none; }
 .treasure-map.is-reduced-motion .treasure-map-landmark { transition: none; }
 
 @media (max-width: 760px) {
-  .sky-map-wrap { padding: 12px; }
+      .sky-map-wrap { padding: 0; }
   .treasure-map-landmark { width: 84px; }
   .treasure-map-landmark__label { padding: 5px 7px 4px; font-size: 10px; }
   .treasure-map-landmark__art { width: 58px; height: 54px; }

@@ -34,6 +34,19 @@ test('the treasure map renderer is an accessible inline SVG composition', () => 
   assert.match(source, /ship/);
 });
 
+test('category landmarks use island or ship art as the primary hover target', () => {
+  const source = readFileSync(resolve('src/treasure-map.js'), 'utf8');
+  const css = readFileSync(resolve('src/styles.css'), 'utf8');
+
+  assert.match(source, /landmark === 'team' \|\| landmark === 'materials'/);
+  assert.match(source, /landmark-island/);
+  assert.match(source, /landmark-ship/);
+  assert.match(source, /treasure-map-landmark__label/);
+  assert.match(css, /\.treasure-map-landmark:hover/);
+  assert.match(css, /\.treasure-map-landmark__label::before/);
+  assert.match(css, /\.treasure-map-landmark__label::after/);
+});
+
 test('the treasure map is composed as a dense hand-drawn illustration', () => {
   const source = readFileSync(resolve('src/treasure-map.js'), 'utf8');
 

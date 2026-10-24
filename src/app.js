@@ -7,7 +7,7 @@ import {
 } from './game-state.js';
 import { findIsland, findProject, islands } from './content.js';
 import { assetCatalog, assetUrl } from './asset-catalog.js';
-import { renderTreasureMap } from './treasure-map.js?map=etched-v5';
+import { renderTreasureMap } from './treasure-map.js?map=etched-v8';
 
 const screens = {
   sky: document.querySelector('#sky-screen'),
