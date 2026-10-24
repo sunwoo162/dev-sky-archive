@@ -33,3 +33,16 @@ test('the treasure map renderer is an accessible inline SVG composition', () => 
   assert.match(source, /lighthouse/);
   assert.match(source, /ship/);
 });
+
+test('the treasure map is composed as a dense hand-drawn illustration', () => {
+  const source = readFileSync(resolve('src/treasure-map.js'), 'utf8');
+
+  assert.match(source, /treasure-map-illustration/);
+  assert.match(source, /treasure-map-cartography/);
+  assert.match(source, /treasure-map-island/);
+  assert.match(source, /treasure-map-route-label/);
+  assert.match(source, /hot-air-balloon/);
+  assert.match(source, /mountain-range/);
+  assert.match(source, /palm-grove/);
+  assert.match(source, /treasure-map-compass/);
+});

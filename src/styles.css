@@ -279,13 +279,32 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 .treasure-map-grid { fill: url(#treasure-map-grid); }
 .treasure-map-frame { fill: none; stroke: #4d3424; stroke-width: 4; }
 .treasure-map-frame-inner { fill: none; stroke: #76523a; stroke-width: 3; }
+.treasure-map-illustration { fill: none; stroke: #76523a; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.treasure-map-cartography { stroke: #a88662; stroke-width: 1.3; opacity: .36; stroke-dasharray: 5 9; }
+.treasure-map-cartography .cartography-faint { stroke-dasharray: 2 10; opacity: .62; }
+.treasure-map-island { fill: #efdca8; stroke: #76523a; stroke-width: 3; stroke-linejoin: round; opacity: .92; }
+.treasure-map-island-details { fill: none; stroke: #a17c55; stroke-width: 1.9; opacity: .7; }
+.treasure-map-island-details .island-detail-faint { stroke-dasharray: 3 8; opacity: .58; }
+.treasure-map-illustration .illustration-fill { fill: #ead39c; stroke: #76523a; stroke-width: 2.7; }
+.treasure-map-illustration .illustration-fill--red { fill: #b4554b; stroke: #76523a; }
+.treasure-map-illustration .art-detail { fill: none; stroke: currentColor; stroke-width: 2.7; stroke-linecap: round; stroke-linejoin: round; }
+.treasure-map-illustration .hot-air-balloon { stroke-width: 2.6; }
+.treasure-map-illustration .mountain-range { stroke-width: 3; }
+.treasure-map-illustration .palm-grove { stroke-width: 2.8; }
+.treasure-map-illustration .map-cloud { stroke-width: 2; opacity: .65; }
+.treasure-map-illustration .signpost { stroke-width: 2.5; opacity: .82; }
+.treasure-map-illustration .treasure-gem { stroke-width: 2.3; }
 .treasure-map-coast { fill: #efdca8; stroke: #76523a; stroke-width: 3; stroke-linejoin: round; opacity: .78; }
 .treasure-map-coast-detail { fill: none; stroke: #9d7652; stroke-width: 2; stroke-linecap: round; opacity: .76; }
 .treasure-map-treasure { fill: #b84f42; stroke: #4d3424; stroke-width: 2; }
 .treasure-map-treasure circle { fill: #efdca8; stroke: none; }
 .treasure-map-routes { fill: none; stroke-linecap: round; stroke-linejoin: round; }
-.treasure-map-route { stroke: #9d6252; stroke-width: 5; stroke-dasharray: 2 16; opacity: .9; }
-.route-stop { fill: #9d6252; stroke: #e1c98c; stroke-width: 4; }
+.treasure-map-route { stroke: #a55e55; stroke-width: 4; stroke-dasharray: 2 15; opacity: .88; }
+.treasure-map-route--lower { opacity: .72; }
+.treasure-map-route--short { opacity: .62; }
+.route-stop { fill: #a55e55; stroke: #e1c98c; stroke-width: 4; }
+.treasure-map-route-label { fill: #e8d09a; stroke: #76523a; stroke-width: 1.8; opacity: .9; text-anchor: middle; }
+.treasure-map-route-label text { fill: #76523a; stroke: none; font: 700 13px "Malgun Gothic", sans-serif; }
 .treasure-map-decoration { fill: none; stroke: #76523a; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; opacity: .78; }
 .treasure-map-decoration--clouds { stroke-width: 3; opacity: .55; }
 .treasure-map-decoration--waves { stroke-width: 3; opacity: .58; }
@@ -307,6 +326,8 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 .treasure-map-landmark__art { display: block; width: clamp(64px, 7vw, 92px); height: clamp(60px, 6.5vw, 86px); color: #4d3424; }
 .treasure-map-landmark__art svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .treasure-map-landmark__art svg > path:first-child { fill: #efdca8; stroke: currentColor; stroke-width: 4; stroke-linejoin: round; }
+.treasure-map-landmark__art .landmark-fill { fill: #ead39c; stroke: currentColor; stroke-width: 3.2; stroke-linejoin: round; }
+.treasure-map-landmark__art .landmark-ink { fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
 .treasure-map-landmark__art svg .art-detail { fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
 .treasure-map-landmark--profile .treasure-map-landmark__art svg > path:first-child { fill: #d9b869; }
 .treasure-map-landmark--team .treasure-map-landmark__art svg > path:first-child { fill: #d5bb81; }
@@ -314,10 +335,10 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 .treasure-map-landmark--study .treasure-map-landmark__art svg > path:first-child { fill: #e5c98f; }
 .treasure-map-landmark--materials .treasure-map-landmark__art svg > path:first-child { fill: #d6ae6e; }
 .treasure-map-landmark--work .treasure-map-landmark__art svg > path:first-child { fill: #8eb7c4; }
-.treasure-map-landmark__label { display: inline-block; max-width: 100%; padding: 6px 10px 5px; color: #4d3424; background: rgba(239, 220, 168, .92); border: 2px solid #4d3424; border-radius: 2px; box-shadow: 3px 3px 0 rgba(77, 52, 36, .17); font: 800 clamp(11px, 1.2vw, 16px)/1.1 "Malgun Gothic", sans-serif; letter-spacing: -.04em; white-space: nowrap; }
+.treasure-map-landmark__label { display: inline-block; max-width: 100%; padding: 5px 9px 4px; color: #4d3424; background: rgba(239, 220, 168, .94); border: 1.5px solid #76523a; border-radius: 1px; box-shadow: 2px 2px 0 rgba(77, 52, 36, .16); font: 800 clamp(10px, 1.12vw, 15px)/1.1 "Malgun Gothic", sans-serif; letter-spacing: -.06em; white-space: nowrap; transform: rotate(-1deg); }
 .treasure-map-landmark--profile .treasure-map-landmark__label { color: #f4e4b6; background: #6e4632; }
 .treasure-map-landmark--materials .treasure-map-landmark__label { background: #d6ae6e; }
-.treasure-map-landmark--work .treasure-map-landmark__label { background: #8eb7c4; }
+.treasure-map-landmark--work .treasure-map-landmark__label { color: #4d3424; background: rgba(239, 220, 168, .94); }
 .treasure-map-hint { position: absolute; z-index: 4; left: 50%; bottom: clamp(12px, 2vw, 28px); margin: 0; padding: 7px 12px; color: #76523a; background: rgba(239, 220, 168, .8); border: 1px solid rgba(77, 52, 36, .34); font: 700 10px/1 ui-monospace, monospace; letter-spacing: .08em; transform: translateX(-50%); }
 .treasure-map.is-reduced-motion .treasure-map-landmark { transition: none; }
 
