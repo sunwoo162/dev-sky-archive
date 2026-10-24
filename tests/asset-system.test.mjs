@@ -47,3 +47,17 @@ test('runtime rendering imports the catalog and uses asset-backed world hooks', 
   assert.match(preview, /DESIGN ASSET BREAKDOWN/);
   assert.match(preview, /ASSET LIBRARY/);
 });
+
+test('treasure map asset board separates illustration parts before composition', () => {
+  const mapAssets = readFileSync(path.join(root, 'treasure-map-assets.html'), 'utf8');
+
+  assert.match(mapAssets, /TREASURE MAP ASSET BOARD/);
+  assert.match(mapAssets, /PAPER \/ FRAME/);
+  assert.match(mapAssets, /CONTINENT \/ TERRAIN/);
+  assert.match(mapAssets, /ROUTE \/ SIGNPOST/);
+  assert.match(mapAssets, /LANDMARK INK/);
+  assert.match(mapAssets, /COMPASS \/ TREASURE/);
+  assert.match(mapAssets, /COMPOSITION PREVIEW/);
+  assert.match(mapAssets, /hot-air-balloon/);
+  assert.match(mapAssets, /mountain-range/);
+});

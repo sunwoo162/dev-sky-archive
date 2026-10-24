@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Treasure Map Asset Board</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --ink: #5b3826;
+        --ink-soft: #89664a;
+        --paper: #e6cc91;
+        --paper-light: #f1dda9;
+        --red: #a74f45;
+        --night: #211813;
+        font-family: "Malgun Gothic", "Noto Sans KR", sans-serif;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-width: 320px; color: #f3e4bc; background: var(--night); }
+      main { width: min(1240px, calc(100% - 36px)); margin: 0 auto; padding: 38px 0 64px; }
+      header { display: flex; justify-content: space-between; align-items: end; gap: 32px; padding-bottom: 24px; border-bottom: 1px solid rgba(241, 221, 169, .22); }
+      .eyebrow { margin: 0 0 12px; color: #c8965e; font: 700 11px/1 ui-monospace, monospace; letter-spacing: .18em; }
+      h1 { margin: 0; color: #f1dda9; font: 800 clamp(32px, 6vw, 68px)/.94 Georgia, serif; letter-spacing: -.07em; }
+      header p { max-width: 390px; margin: 0; color: #c8ad7d; font-size: 12px; line-height: 1.7; }
+      .notice { margin: 22px 0 34px; padding: 14px 16px; color: #5b3826; background: #d5b677; border-left: 5px solid var(--red); font-size: 12px; line-height: 1.6; }
+      .section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin: 32px 0 12px; }
+      h2 { margin: 0; color: #e6cc91; font: 800 14px/1 ui-monospace, monospace; letter-spacing: .13em; }
+      .section-head span { color: #8d6a4c; font: 10px/1 ui-monospace, monospace; }
+      .asset-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+      .asset-card { min-height: 260px; padding: 16px; background: #332219; border: 1px solid rgba(230, 204, 145, .22); }
+      .asset-card h3 { margin: 0 0 12px; color: #edd59e; font: 700 12px/1.2 ui-monospace, monospace; letter-spacing: .08em; }
+      .asset-card p { margin: 12px 0 0; color: #a98a63; font-size: 11px; line-height: 1.55; }
+      .asset-stage { display: grid; place-items: center; height: 178px; overflow: hidden; background: #ead29a; border: 1px solid #8a6042; }
+      .asset-stage svg { width: 100%; height: 100%; }
+      .ink { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+      .thin { stroke-width: 1.6; }
+      .faint { opacity: .35; stroke-dasharray: 4 8; }
+      .fill { fill: var(--paper-light); stroke: var(--ink); stroke-width: 3; stroke-linejoin: round; }
+      .fill-red { fill: var(--red); stroke: var(--ink); stroke-width: 2; }
+      .composition { padding: 12px; background: #332219; border: 1px solid rgba(230, 204, 145, .22); }
+      .composition iframe { display: block; width: 100%; height: min(64vw, 650px); min-height: 360px; border: 0; background: var(--night); }
+      .legend { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 12px; }
+      .legend span { padding: 8px 5px; color: #c7a875; background: #2b1d16; text-align: center; font: 10px/1.3 ui-monospace, monospace; }
+      @media (max-width: 820px) { .asset-grid { grid-template-columns: repeat(2, 1fr); } header { display: block; } header p { margin-top: 18px; } }
+      @media (max-width: 520px) { main { width: min(100% - 22px, 1240px); padding-top: 24px; } .asset-grid { grid-template-columns: 1fr; } .legend { grid-template-columns: repeat(2, 1fr); } .composition iframe { min-height: 260px; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <p class="eyebrow">TREASURE MAP ASSET BOARD / 01</p>
+          <h1>먼저 나누고,<br />그 다음에 조합한다.</h1>
+        </div>
+        <p>지금 보는 건 2D 섬 월드가 아니다. 첫 화면 보물지도에 들어갈 그림 에셋만 따로 분해한 보드다. 네가 방향을 확인한 뒤에만 최종 지도에 조합한다.</p>
+      </header>
+
+      <p class="notice">현재 범위: 보물지도 첫 화면만 · 제외: 2D 섬 내부, 작업 캐릭터, AI 진행 화면 · 기준: 네가 보낸 오래된 보물지도의 갈색 선화와 밀도</p>
+
+      <section>
+        <div class="section-head"><h2>PAPER / FRAME</h2><span>BASE LAYER</span></div>
+        <div class="asset-grid">
+          <article class="asset-card">
+            <h3>01 / PAPER + BORDER</h3>
+            <div class="asset-stage">
+              <svg viewBox="0 0 360 180" aria-label="양피지와 테두리 에셋">
+                <rect x="12" y="12" width="336" height="156" rx="2" fill="#e6cc91" stroke="#5b3826" stroke-width="6" />
+                <rect x="26" y="26" width="308" height="128" fill="none" stroke="#89664a" stroke-width="2" />
+                <path class="ink thin" d="M40 60V40h20M300 40h20v20M40 120v20h20M300 140h20v-20" />
+                <path class="ink faint" d="M44 90h272M130 31v118M230 31v118" />
+              </svg>
+            </div>
+            <p>화면 전체를 감싸는 종이·프레임. UI 카드처럼 보이지 않게 먼저 깐다.</p>
+          </article>
+          <article class="asset-card">
+            <h3>02 / PAPER GRAIN</h3>
+            <div class="asset-stage">
+              <svg viewBox="0 0 360 180" aria-label="지도 질감 에셋">
+                <rect width="360" height="180" fill="#ead29a" />
+                <g class="ink thin" opacity=".45">
+                  <path d="M18 31c26-11 48 12 72-2s45 10 66-1m38 13c25-9 46 9 68-3s42 4 75-4M22 99c29-12 53 8 82-5s56 13 86-2m32 17c25-9 50 7 76-5s46 5 63-2M42 152c19-8 37 5 55-2m82-4c25-10 46 4 72-5" />
+                  <path d="M40 55l8 3m13-7 11 5m84-10 12 4m79 8 10 3M93 126l11 4m90-5 13 3m87 6 11 3" />
+                </g>
+              </svg>
+            </div>
+            <p>거친 필터가 아니라 얇은 선과 얼룩만 넣어서 그림이 살아있는 종이처럼 보이게 한다.</p>
+          </article>
+          <article class="asset-card">
+            <h3>03 / CARTOGRAPHY</h3>
+            <div class="asset-stage">
+              <svg viewBox="0 0 360 180" aria-label="지도 격자와 방위선 에셋">
+                <g class="ink thin faint">
+                  <path d="M25 25H335M25 70H335M25 115H335M25 160H335M45 12V168M125 12V168M205 12V168M285 12V168" />
+                  <path d="M36 22 324 158M324 22 36 158" />
+                </g>
+                <circle cx="180" cy="90" r="52" class="ink thin" opacity=".45" />
+                <path d="M180 34v112M124 90h112" class="ink thin faint" />
+              </svg>
+            </div>
+            <p>대륙 뒤에 얇게 깔리는 지도선. 장식은 되지만 내용보다 앞에 나오지 않는다.</p>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head"><h2>CONTINENT / TERRAIN</h2><span>ORGANIC SHAPES</span></div>
+        <div class="asset-grid">
+          <article class="asset-card">
+            <h3>04 / CONTINENT SILHOUETTE</h3>
+            <div class="asset-stage">
+              <svg viewBox="0 0 360 180" aria-label="불규칙한 대륙 에셋">
+                <path class="fill" d="M32 54c18-19 41-13 60-24 23-13 43 1 59 18 17 17 38 8 51 29 12 20-3 39-27 39-24 1-38-10-57 4-23 16-46 4-66 12-25 10-46-9-43-30 2-18 5-37 23-48Z" />
+                <path class="fill" d="M200 95c15-18 42-13 54-28 17-18 39-1 52 13 14 14 32 11 43 30 11 19-3 40-26 40-20 0-34-11-52 0-21 13-41-2-57 5-22 9-38-11-35-30 2-11 10-23 21-30Z" />
+                <path class="ink thin" opacity=".6" d="M52 73c25-13 39 4 63-8m-39 27c24-11 42 2 63-6m75 27c25-11 42 5 63-6m13 23c18-8 31 2 47-5" />
+                <path class="ink thin faint" d="M81 48c21 18 28 31 28 55m117-19c20 7 34 20 38 43" />
+              </svg>
+            </div>
+            <p>카테고리 건물을 얹기 전에 지도 몸체가 먼저 보이도록 만든다.</p>
+          </article>
+          <article class="asset-card">
+            <h3>05 / MOUNTAIN RANGE</h3>
+            <div class="asset-stage">
+              <svg viewBox="0 0 360 180" aria-label="산맥 선화 에셋">
+                <g class="mountain-range">
+                  <path class="ink" d="M42 142 104 54l35 51 47-74 82 111z" />
+                  <path class="ink thin" d="m77 93 27-39 12 23 22-5 26-41 25 42 23-7 37 46M47 142h223" />
+                  <path class="ink thin faint" d="m104 54 17 16m65-39 17 22m-82 49 20-7m71-14 21-7" />
+                </g>
+              </svg>
+            </div>
+            <p>기본 삼각형 아이콘이 아니라 능선·눈선·겹선을 가진 지도용 산맥.</p>
+          </article>
+          <article class="asset-card">
+            <h3>06 / WATER + COAST</h3>
+            <div class="asset-stage">
+              <svg viewBox="0 0 360 180" aria-label="해안선 에셋">
+                <path class="fill" d="M44 40c28-18 58 4 83-12 26-17 47 1 62 23 16 23 44 20 59 45 15 26-5 51-33 49-26-2-43-16-67-4-30 15-55-5-81 5-28 11-52-8-54-35-2-24 7-55 31-71Z" />
+                <path class="ink thin" d="M56 75c24-12 41 5 62-7m-35 31c24-12 44 2 62-6m69 5c21-11 36 6 54-5" />
+                <path class="ink thin faint" d="M38 128c16-12 31 12 47 0s31 12 47 0 31 12 47 0m39 16c17-12 33 12 49 0s31 12 47 0" />
+              </svg>
+            </div>
+            <p>대륙 외곽의 해안선과 바깥 파도. 땅과 바다의 밀도를 같이 만든다.</p>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head"><h2>ROUTE / SIGNPOST</h2><span>EXPLORATION LAYER</span></div>
+        <div class="asset-grid">
+          <article class="asset-card">
+            <h3>07 / DOTTED ROUTE</h3>
+            <div class="asset-stage">
+              <svg viewBox="0 0 360 180" aria-label="점선 루트 에셋">
+                <path class="ink" stroke="#a74f45" stroke-width="4" stroke-dasharray="2 15" d="M34 128C80 83 113 137 151 91s65-53 101-15 53 18 74-33" />
+                <circle cx="34" cy="128" r="8" fill="#a74f45" stroke="#e6cc91" stroke-width="4" />
+                <circle cx="326" cy="43" r="8" fill="#a74f45" stroke="#e6cc91" stroke-width="4" />
+                <path class="ink thin" d="M58 151h72m118-10h69" opacity=".45" />
+              </svg>
+            </div>
+            <p>카테고리를 기계적으로 연결하지 않고, 지도를 가로지르는 탐험 동선으로 그린다.</p>
+          </article>
+          <article class="asset-card">
+            <h3>08 / SIGNPOST</h3>
+            <div class="asset-stage">
+              <svg viewBox="0 0 360 180" aria-label="표지판 에셋">
+                <g class="ink">
+                  <path d="M180 160V53M122 55h116l-18-24H140zM139 85h82M160 113h40" />
+                  <path d="M101 155h158" class="thin" />
+                </g>
+              </svg>
+            </div>
+            <p>이름을 박스에 띄우는 대신 실제 지도 표식처럼 보이게 하는 방향 표지판.</p>
+          </article>
+          <article class="asset-card">
+            <h3>09 / TREASURE MARK</h3>
+            <div class="asset-stage">
+              <svg viewBox="0 0 360 180" aria-label="보물 표시 에셋">
+                <g transform="translate(180 84)">
+                  <path class="fill-red" d="m0-42 13 28 30 4-22 20 6 30-27-15-27 15 6-30-22-20 30-4z" />
+                  <circle r="13" fill="#e6cc91" stroke="#5b3826" stroke-width="3" />
+                </g>
+                <path class="ink thin faint" d="M80 141h200" />
+              </svg>
+            </div>
+            <p>빨간 보물 표시는 적게 사용해서 루트의 목적지를 강조한다.</p>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head"><h2>LANDMARK INK</h2><span>HAND-DRAWN DECORATION</span></div>
+        <div class="asset-grid">
+          <article class="asset-card">
+            <h3>10 / HOT-AIR-BALLOON</h3>
+            <div class="asset-stage">
+              <svg viewBox="0 0 360 180" aria-label="열기구 선화 에셋">
+                <g class="hot-air-balloon" transform="translate(180 82)">
+                  <path class="fill" d="M0-56c-35-4-54 29-42 61 7 21 22 36 42 56 20-20 35-35 42-56 12-32-7-65-42-61Z" />
+                  <path class="ink thin" d="M-35-19c23 17 47 17 70 0M-40 4c26 16 54 16 80 0M0-54V61M-19-48c12 15 26 15 38 0M-12 61 0 72l12-11M-12 72h24" />
+                </g>
+              </svg>
+            </div>
+            <p>지도 위 빈 공간을 채우는 큰 장식. 카테고리 UI와 분리된 배경 그림이다.</p>
+          </article>
+          <article class="asset-card">
+            <h3>11 / LIGHTHOUSE + CASTLE</h3>
+            <div class="asset-stage">
+              <svg viewBox="0 0 360 180" aria-label="등대와 성 선화 에셋">
+                <g class="ink">
+                  <path d="M76 145h48L116 57H84zM84 57h32V35H84zM72 35h56M91 27h18M86 88h28M82 116h40" />
+                  <path d="M205 145h112v-39h-112zM212 106V55h21v22h20V44h27v33h20V55h21v51" />
+                  <path d="M247 145v-26h28v26M222 121h12M289 121h12" />
+                </g>
+              </svg>
+            </div>
+            <p>오른쪽 끝 랜드마크와 중앙 섬의 상징물. 건물 UI가 아니라 지도 삽화로 사용한다.</p>
+          </article>
+          <article class="asset-card">
+            <h3>12 / SHIP + PALM</h3>
+            <div class="asset-stage">
+              <svg viewBox="0 0 360 180" aria-label="배와 야자수 선화 에셋">
+                <g class="ink">
+                  <path d="M42 122h143l-24 24H67zM113 122V41M113 49 69 86h44M122 58l46 34h-46M82 111h70" />
+                  <path d="M272 151V62M272 68c-31-19-49-11-61 3 27 1 42 11 61 22M272 76c29-27 47-21 62-8-27 7-42 18-62 30M272 67c-8-34 2-48 19-58 4 26-3 42-19 58" />
+                </g>
+              </svg>
+            </div>
+            <p>하단 여백을 채우는 배와 야자수. 지도 전체를 여행지처럼 묶어주는 에셋이다.</p>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head"><h2>COMPASS / TREASURE</h2><span>FINISHING MARKS</span></div>
+        <div class="asset-grid">
+          <article class="asset-card">
+            <h3>13 / COMPASS ROSE</h3>
+            <div class="asset-stage">
+              <svg viewBox="0 0 360 180" aria-label="나침반 에셋">
+                <g transform="translate(180 91)" class="ink">
+                  <circle r="63" /><circle r="52" class="thin" stroke-dasharray="2 8" />
+                  <path d="m0-45 12 45-12 45-12-45z" fill="#a74f45" />
+                  <path d="m-45 0 45-12 45 12-45 12z" fill="#e6cc91" />
+                  <text x="0" y="-73" fill="#5b3826" stroke="none" text-anchor="middle" font="700 18px Georgia">N</text>
+                  <text x="0" y="91" fill="#5b3826" stroke="none" text-anchor="middle" font="700 18px Georgia">S</text>
+                </g>
+              </svg>
+            </div>
+            <p>작은 방향 UI가 아니라 지도 일러스트의 한 부분으로 그린다.</p>
+          </article>
+          <article class="asset-card">
+            <h3>14 / CLOUD + WAVE</h3>
+            <div class="asset-stage">
+              <svg viewBox="0 0 360 180" aria-label="구름과 파도 에셋">
+                <path class="ink" d="M25 62c13-22 39-25 58-10 18-28 58-17 62 15 27-8 51 9 51 33H0c0-21 7-32 25-38Z" />
+                <path class="ink thin" d="M26 137c17-14 34 14 51 0s34 14 51 0 34 14 51 0 34 14 51 0 34 14 51 0" />
+              </svg>
+            </div>
+            <p>구름과 파도는 화면을 채우되 대륙·랜드마크보다 얇게 둔다.</p>
+          </article>
+          <article class="asset-card">
+            <h3>15 / LABEL PLATE</h3>
+            <div class="asset-stage">
+              <svg viewBox="0 0 360 180" aria-label="한글 지도 표식 에셋">
+                <g transform="translate(180 88)">
+                  <path d="M-96-25h192v50H-96z" fill="#efdca8" stroke="#5b3826" stroke-width="3" />
+                  <path d="M-20 25 0 42l20-17" fill="#efdca8" stroke="#5b3826" stroke-width="3" />
+                  <text x="0" y="7" fill="#5b3826" stroke="none" text-anchor="middle" font="800 20px 'Malgun Gothic'">프로필</text>
+                </g>
+              </svg>
+            </div>
+            <p>현재처럼 카드가 떠 보이지 않도록 종이 표식으로 통일한다.</p>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head"><h2>COMPOSITION PREVIEW</h2><span>현재 지도에 조합한 상태</span></div>
+        <div class="composition"><iframe src="./" title="현재 보물지도 조합 미리보기"></iframe></div>
+        <div class="legend">
+          <span>종이·프레임</span><span>대륙·지형</span><span>루트·표지판</span><span>랜드마크 잉크</span><span>나침반·보물</span>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
