@@ -33,7 +33,6 @@ py -m http.server 4173
 
 - `index.html`: 세 화면의 기본 구조
 - `asset-preview.html`: 기존 픽셀 에셋 파츠와 전체 에셋 라이브러리를 확인하는 디자인 분해 보드
-- `treasure-map-assets.html`: 첫 화면 보물지도를 종이·대륙·루트·랜드마크·장식 에셋으로 나눠 확인하는 디자인 보드와 현재 조합 미리보기
 - `src/game-state.js`: 화면 전환 상태와 순수 함수
 - `src/content.js`: 실제 레포 기반 섬·프로젝트 전시 데이터
 - `src/app.js`: 렌더링, 입력, Canvas 맵, 상호작용
@@ -41,6 +40,7 @@ py -m http.server 4173
 - `src/asset-catalog.js`: 에셋 ID, 경로, 대체 이미지, 접근성 텍스트를 관리하는 단일 카탈로그
 - `src/styles.css`: 하늘맵, 2D 맵, 프로젝트 전시 스타일
 - `assets/world/`: 상세 2D 월드와 레거시 하늘섬 조합에서 사용하는 그래픽
+- `assets/maps/treasure-map-etched.png`: 첫 화면에 사용하는 고밀도 잉크 보물지도 원본 에셋
 - `assets/tiles/`: 잔디·길·벽·물 패턴
 - `assets/characters/`: 플레이어와 NPC 스프라이트
 - `assets/props/`: 2D 탐방 월드의 아카이브 홀·키오스크·표지판

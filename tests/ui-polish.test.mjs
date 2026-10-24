@@ -19,7 +19,7 @@ test('sky landing screen keeps Korean title lines intact and exposes the treasur
   assert.match(css, /\.sky-title-line[^}]*overflow-wrap:\s*normal/);
   assert.match(html, /id="treasure-map"/);
   assert.match(css, /\.treasure-map-canvas\s*\{/);
-  assert.match(css, /\.treasure-map-canvas[^}]*aspect-ratio:\s*1200\s*\/\s*760/);
+  assert.match(css, /\.treasure-map-canvas[^}]*aspect-ratio:\s*1792\s*\/\s*1024/);
   assert.match(css, /\.treasure-map-landmark:focus-visible/);
   assert.match(css, /\.treasure-map-route\s*\{/);
   assert.match(css, /\.archive-index-trigger:focus-visible/);

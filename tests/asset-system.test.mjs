@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import { assetCatalog, assetIds, assetUrl } from '../src/asset-catalog.js';
@@ -33,7 +33,7 @@ test('runtime rendering imports the catalog and uses asset-backed world hooks', 
   const preview = readFileSync(path.join(root, 'asset-preview.html'), 'utf8');
 
   assert.match(app, /from ['"]\.\/asset-catalog\.js['"]/);
-  assert.match(app, /from ['"]\.\/treasure-map\.js['"]/);
+  assert.match(app, /from ['"]\.\/treasure-map\.js(?:\?[^'"]+)?['"]/);
   assert.match(app, /renderTreasureMap\(/);
   assert.doesNotMatch(app, /sky-3d/);
   assert.match(app, /assetUrl\(/);
@@ -48,16 +48,11 @@ test('runtime rendering imports the catalog and uses asset-backed world hooks', 
   assert.match(preview, /ASSET LIBRARY/);
 });
 
-test('treasure map asset board separates illustration parts before composition', () => {
-  const mapAssets = readFileSync(path.join(root, 'treasure-map-assets.html'), 'utf8');
+test('the landing screen includes the high-fidelity etched map asset', () => {
+  const mapAsset = path.join(root, 'assets', 'maps', 'treasure-map-etched.png');
+  const source = readFileSync(path.join(root, 'src', 'treasure-map.js'), 'utf8');
 
-  assert.match(mapAssets, /TREASURE MAP ASSET BOARD/);
-  assert.match(mapAssets, /PAPER \/ FRAME/);
-  assert.match(mapAssets, /CONTINENT \/ TERRAIN/);
-  assert.match(mapAssets, /ROUTE \/ SIGNPOST/);
-  assert.match(mapAssets, /LANDMARK INK/);
-  assert.match(mapAssets, /COMPASS \/ TREASURE/);
-  assert.match(mapAssets, /COMPOSITION PREVIEW/);
-  assert.match(mapAssets, /hot-air-balloon/);
-  assert.match(mapAssets, /mountain-range/);
+  assert.ok(existsSync(mapAsset));
+  assert.ok(statSync(mapAsset).size > 100_000);
+  assert.match(source, /assets\/maps\/treasure-map-etched\.png/);
 });
