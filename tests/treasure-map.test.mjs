@@ -58,6 +58,17 @@ test('landmark nameplates attach above the island or ship and flags anchor into 
   assert.match(css, /\.treasure-map-landmark__label::before[^}]*bottom:/);
 });
 
+test('landmark art uses the same etched sepia language as the map background', () => {
+  const source = readFileSync(resolve('src/treasure-map.js'), 'utf8');
+  const css = readFileSync(resolve('src/styles.css'), 'utf8');
+
+  assert.match(source, /landmark-hatch/);
+  assert.match(css, /\.treasure-map-landmark__art[^}]*mix-blend-mode:\s*multiply/);
+  assert.match(css, /\.treasure-map-landmark__art[^}]*opacity:\s*\.8[0-9]?/);
+  assert.match(css, /\.treasure-map-landmark__label[^}]*background:\s*rgba\(/);
+  assert.match(css, /\.treasure-map-landmark__label[^}]*box-shadow:\s*none/);
+});
+
 test('the treasure map is composed as a dense hand-drawn illustration', () => {
   const source = readFileSync(resolve('src/treasure-map.js'), 'utf8');
 

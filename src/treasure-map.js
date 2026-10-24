@@ -19,6 +19,7 @@ function landmarkArt(landmark) {
       <g class="landmark-ink landmark-ship landmark-${landmarkKind}--${landmark}" aria-hidden="true">
         <ellipse class="landmark-water" cx="0" cy="29" rx="62" ry="10" />
         <path class="landmark-hull" d="M-58 4h116l-13 23c-23 12-67 12-90 0Z" />
+        <path class="landmark-hatch" d="M-43 14l10 8m3-8 10 8m3-8 10 8m3-8 10 8m3-8 10 8m3-8 10 8" />
         <path class="landmark-mast" d="M0 5V-53M-43 7H45" />
         <path class="landmark-flagpole" d="M0 5V-53" />
         <path class="landmark-sail" d="M-2-48-37 1H-2Z" />
@@ -42,6 +43,7 @@ function landmarkArt(landmark) {
     <g class="landmark-ink landmark-island landmark-${landmarkKind}--${landmark}" aria-hidden="true">
       <ellipse class="landmark-water" cx="0" cy="42" rx="64" ry="8" />
       <path class="landmark-base" d="M-55 1c12-13 31-18 51-14 18-6 39-1 57 13l-7 18-12 7-8 14-15-7-12 14-15-12-17 8-8-14-14-5Z" />
+      <path class="landmark-hatch" d="M-42 25l11 8m2-12 11 8m3-12 11 8m3-12 11 8m3-12 11 8m3-12 11 8" />
       <path class="landmark-top" d="M-60 0c16-18 37-22 58-16 21-7 45-1 62 16-17 15-37 19-59 13-21 7-43 3-61-13Z" />
       <path class="landmark-shore" d="M-43 7c13 6 27 8 42 3 17 5 31 3 44-4M-37 18c11 3 21 3 31 0m12 0c10 3 20 2 30-1" />
       <path class="landmark-tree" d="M-39 9v-26M-39-13c-12-11-22-9-30-4 11 2 21 8 30 15M-39-8c11-13 21-13 30-7-11 4-21 10-30 18M-27 12V-2M-27 1c-7-7-13-6-18-3 7 2 12 5 18 9M-27 3c7-8 13-8 18-4-7 2-12 6-18 11" />
