@@ -4,6 +4,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import { islands } from '../src/content.js';
+import { assetCatalog } from '../src/asset-catalog.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const readJson = (fileName) => JSON.parse(readFileSync(join(here, '..', 'data', fileName), 'utf8'));
@@ -19,6 +20,25 @@ test('the current portfolio game is represented as a first-class project record'
   assert.equal(project.category, 'personal');
   assert.ok(project.stack.includes('Canvas'));
   assert.ok(project.developmentTimeline.length >= 3);
+});
+
+test('the playable world uses five portfolio hubs and two operations hubs', () => {
+  assert.deepEqual(islands.map((island) => island.id), ['profile', 'personal', 'team', 'external', 'study', 'materials', 'work']);
+  assert.deepEqual(islands.map((island) => island.shortTitle), ['프로필', '개인', '팀', '대외활동', '스터디', '자료', '작업']);
+  assert.equal(islands.find((island) => island.id === 'profile').projects[0].id, 'profile-core');
+});
+
+test('operations hubs reserve future document and AI progress surfaces', () => {
+  const materials = islands.find((island) => island.id === 'materials');
+  const work = islands.find((island) => island.id === 'work');
+
+  assert.equal(materials.kind, 'materials');
+  assert.equal(work.kind, 'work');
+  assert.match(materials.description, /문서|자료/);
+  assert.match(work.description, /AI|작업|연결/);
+  assert.ok(materials.projects.some((project) => project.id === 'materials-index'));
+  assert.ok(work.projects.some((project) => project.id === 'work-queue'));
+  assert.ok(work.projects.every((project) => project.status === 'awaiting-connection'));
 });
 
 test('every curated project has the fields needed by the game exhibit', () => {
@@ -87,6 +107,16 @@ test('every playable exhibit exposes repository and role certainty metadata', ()
   }
 });
 
+test('every island and exhibit is connected to the pixel asset catalog', () => {
+  for (const island of islands) {
+    assert.ok(island.map?.landmark, `${island.id} needs a treasure-map landmark`);
+    assert.ok(island.map?.label, `${island.id} needs a Korean treasure-map label`);
+    for (const project of island.projects) {
+      assert.ok(assetCatalog[project.assetId], `${project.id} needs a project asset`);
+    }
+  }
+});
+
 test('every playable exhibit exposes temporary portfolio material slots', () => {
   const projects = islands.flatMap((island) => island.projects);
 
@@ -106,7 +136,10 @@ test('every playable exhibit exposes temporary portfolio material slots', () => 
   }
 
   assert.match(appSource, /exhibit-materials/);
-  assert.match(appSource, /REPLACE WITH REAL MATERIAL/);
+  assert.match(appSource, /실제 자료로 교체/);
+  assert.match(appSource, /data-material-kind/);
+  assert.match(appSource, /materials-reader/);
+  assert.match(appSource, /material-reader-close/);
 });
 
 test('playable exhibit metadata stays aligned with the records source of truth', () => {

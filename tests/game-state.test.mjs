@@ -7,6 +7,8 @@ import {
   exitToSky,
   openProject,
 } from '../src/game-state.js';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
 test('selecting an island moves from the sky map into its 2D world', () => {
   const next = enterIsland(createInitialState(), 'team');
@@ -57,4 +59,18 @@ test('exiting an island returns to the sky map', () => {
     islandId: null,
     projectId: null,
   });
+});
+
+test('map selection has a single transition lock around the existing route handoff', () => {
+  const app = readFileSync(resolve('src/app.js'), 'utf8');
+
+  assert.match(app, /let selectionTransitionLocked = false/);
+  assert.match(app, /if \(selectionTransitionLocked \|\| activeTravel\) return/);
+  assert.match(app, /selectionTransitionLocked = true/);
+  assert.match(app, /selectionTransitionLocked = false/);
+  assert.match(app, /let currentMapLocationId = ['"]profile['"]/);
+  assert.match(app, /findShortestPath\(currentMapLocationId, islandId\)/);
+  assert.match(app, /getTravelDuration\(path\)/);
+  assert.match(app, /requestAnimationFrame\(\(\) => canvas\.focus\(\)\)/);
+  assert.match(app, /activeTravel = null;\s*travelScreen\.setAttribute\(['"]aria-busy['"], ['"]false['"]\);\s*selectionTransitionLocked = false;\s*const previousIslandId/s);
 });

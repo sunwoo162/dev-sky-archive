@@ -25,3 +25,4 @@ jobs:
           node --check src/app.js
           node --check src/content.js
           node --check src/game-state.js
+          node --check src/treasure-map.js
