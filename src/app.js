@@ -5,9 +5,9 @@ import {
   exitToSky,
   openProject,
 } from './game-state.js';
-import { findIsland, findProject, islands } from './content.js?map=etched-v17';
+import { findIsland, findProject, islands } from './content.js?map=etched-v18';
 import { assetCatalog, assetUrl } from './asset-catalog.js';
-import { renderTreasureMap } from './treasure-map.js?map=etched-v17';
+import { renderTreasureMap } from './treasure-map.js?map=etched-v18';
 import { findShortestPath, getTravelDuration, getTravelTip } from './travel.js';
 
 const screens = {
@@ -20,7 +20,10 @@ const screens = {
 const topbarMode = document.querySelector('#topbar-mode');
 const treasureMap = document.querySelector('#treasure-map');
 const travelScreen = document.querySelector('#travel-screen');
+const travelAtlasRoute = document.querySelector('#travel-atlas-route');
+const travelAtlasStamps = document.querySelector('#travel-atlas-stamps');
 const travelRoute = document.querySelector('#travel-route');
+const travelKicker = document.querySelector('#travel-kicker');
 const travelProgress = document.querySelector('.travel-progress');
 const travelProgressFill = document.querySelector('#travel-progress-fill');
 const travelProgressLabel = document.querySelector('#travel-progress-label');
@@ -212,12 +215,32 @@ function closeProjectToIsland() {
 function renderTravel(plan) {
   const routeIslands = plan.path.map((id) => findIsland(id)).filter(Boolean);
   const hopCount = Math.max(0, plan.path.length - 1);
+  const destination = routeIslands.at(-1);
+  const routePoints = routeIslands.map((island) => `${island.map.x},${island.map.y}`).join(' ');
+  const routeMode = destination?.map?.target === 'ship'
+    ? '해상 항로'
+    : destination?.map?.target === 'castle'
+      ? '육상 항로'
+      : destination?.map?.target === 'settlement'
+        ? '정착지 항로'
+        : '중심 항로';
+  travelScreen.classList.remove('travel-screen--ship', 'travel-screen--castle', 'travel-screen--settlement', 'travel-screen--island');
+  travelScreen.classList.add(`travel-screen--${destination?.map?.target ?? 'island'}`);
+  travelAtlasRoute.setAttribute('points', routePoints);
+  travelAtlasStamps.innerHTML = routeIslands.map((island, index) => `
+    <g class="travel-atlas-stamp ${index === 0 ? 'is-origin' : ''} ${index === routeIslands.length - 1 ? 'is-destination' : ''}" transform="translate(${island.map.x} ${island.map.y})">
+      <circle class="travel-atlas-stamp-ring" r="2.7"></circle>
+      <circle class="travel-atlas-stamp-dot" r=".9"></circle>
+      <text x="0" y="-4.4">${index === 0 ? 'FROM' : index === routeIslands.length - 1 ? 'TO' : String(index).padStart(2, '0')}</text>
+    </g>
+  `).join('');
   travelRoute.innerHTML = routeIslands.map((island, index) => `
     ${index ? '<span class="travel-route-arrow" aria-hidden="true">→</span>' : ''}
-    <span class="travel-route-node ${index === 0 ? 'is-origin' : ''} ${index === routeIslands.length - 1 ? 'is-destination' : ''}">${escapeHtml(island.shortTitle ?? island.title)}</span>
+    <span class="travel-route-node travel-route-node--${escapeHtml(island.map.target)} ${index === 0 ? 'is-origin' : ''} ${index === routeIslands.length - 1 ? 'is-destination' : ''}"><i aria-hidden="true"></i>${escapeHtml(island.title)}</span>
   `).join('');
-  travelScreen.querySelector('#travel-title').textContent = `${routeIslands.at(-1)?.title ?? '목적지'}로 항해 중`;
-  travelScreen.querySelector('#travel-status').textContent = `${hopCount.toString().padStart(2, '0')}칸 이동`;
+  travelScreen.querySelector('#travel-title').innerHTML = `<span>${escapeHtml(destination?.title ?? '목적지')}</span><em>로 이동 중</em>`;
+  travelScreen.querySelector('#travel-status').textContent = `${routeMode} · ${(plan.duration / 1000).toFixed(1)}초`;
+  travelKicker.textContent = `${routeMode} · 지도 위 최단 경로를 따라 이동하는 중`;
   travelProgressLabel.textContent = `최단 경로 ${hopCount.toString().padStart(2, '0')} / ${hopCount.toString().padStart(2, '0')}`;
   travelProgressPercent.textContent = '0%';
   travelProgressFill.style.width = '0%';
@@ -230,6 +253,7 @@ function finishTravel() {
   if (!activeTravel) return;
   const destinationId = activeTravel.destinationId;
   activeTravel = null;
+  travelScreen.setAttribute('aria-busy', 'false');
   currentMapLocationId = destinationId;
   player = { x: 480, y: 365 };
   setScreen(enterIsland(state, destinationId));

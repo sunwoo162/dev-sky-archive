@@ -349,38 +349,52 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 .treasure-map-hint { display: none; }
 .treasure-map.is-reduced-motion .treasure-map-landmark { transition: none; }
 
-/* Shortest-path travel screen. Keep it in the same paper-and-ink world as the map. */
-.travel-screen { position: relative; display: grid; place-items: center; min-height: 100dvh; padding: 116px 5vw 48px; overflow: hidden; background: #18283b; }
-.travel-screen::before { position: absolute; inset: -30%; content: ''; opacity: .22; background: repeating-linear-gradient(118deg, transparent 0 42px, rgba(229, 198, 137, .18) 43px 44px, transparent 45px 84px); transform: rotate(-7deg); pointer-events: none; }
-.travel-screen::after { position: absolute; inset: 0; content: ''; opacity: .36; background: radial-gradient(circle at 50% 40%, rgba(247, 209, 137, .2), transparent 42%), linear-gradient(90deg, rgba(5, 14, 25, .24), transparent 48%, rgba(5, 14, 25, .26)); pointer-events: none; }
-.travel-panel { position: relative; z-index: 1; width: min(760px, 100%); padding: clamp(28px, 5vw, 58px) clamp(24px, 7vw, 86px) 42px; color: #553a28; background: #ddc386; border: 1px solid #765034; box-shadow: 16px 18px 0 rgba(4, 12, 23, .28), 0 0 0 8px rgba(221, 195, 134, .08); transform: rotate(-.5deg); }
+/* Shortest-path travel screen. The real etched map stays visible beneath the voyage log. */
+.travel-screen { --travel-accent: #a24438; --travel-deep: #684730; position: relative; display: grid; place-items: center; min-height: 100dvh; padding: 116px 5vw 48px; overflow: hidden; background: #9f7a4e; }
+.travel-screen--ship { --travel-accent: #3d7774; --travel-deep: #3d5c58; }.travel-screen--castle { --travel-accent: #8f4b43; --travel-deep: #604038; }.travel-screen--settlement { --travel-accent: #b65a3f; --travel-deep: #684730; }.travel-screen--island { --travel-accent: #a24438; --travel-deep: #684730; }
+.travel-screen::before { position: absolute; inset: 0; content: ''; z-index: 1; background: linear-gradient(90deg, rgba(28, 21, 20, .58), rgba(28, 21, 20, .08) 45%, rgba(28, 21, 20, .55)), linear-gradient(0deg, rgba(16, 21, 33, .38), transparent 38%, rgba(16, 21, 33, .25)); pointer-events: none; }
+.travel-screen::after { position: absolute; inset: 0; content: ''; z-index: 1; opacity: .32; background: radial-gradient(ellipse at center, transparent 34%, rgba(22, 20, 18, .55) 100%); pointer-events: none; }
+.travel-atlas { position: absolute; z-index: 0; inset: 0; overflow: hidden; background: #c8ad73; }
+.travel-atlas img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; opacity: .74; filter: saturate(.76) sepia(.12) contrast(.96); transform: scale(1.04); }
+.travel-atlas svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.travel-atlas polyline { fill: none; stroke: var(--travel-accent); stroke-width: .62; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: .7 1.35; opacity: .94; filter: drop-shadow(0 1px 0 rgba(248, 220, 157, .58)); animation: voyage-route-drift 2.2s linear infinite; }
+.travel-atlas-stamp { color: #583b29; opacity: .88; }
+.travel-atlas-stamp-ring { fill: rgba(235, 207, 147, .82); stroke: #71452e; stroke-width: .34; stroke-dasharray: .34 .4; }
+.travel-atlas-stamp-dot { fill: var(--travel-accent); stroke: #5d3027; stroke-width: .18; }
+.travel-atlas-stamp text { fill: #5d3928; stroke: #e8cc8f; stroke-width: .15; paint-order: stroke; text-anchor: middle; font: 800 1.65px ui-monospace, monospace; letter-spacing: .1em; }
+.travel-atlas-stamp.is-origin .travel-atlas-stamp-ring, .travel-atlas-stamp.is-destination .travel-atlas-stamp-ring { fill: #e7ca88; stroke: var(--travel-accent); stroke-width: .5; }
+.travel-atlas-stamp.is-destination .travel-atlas-stamp-dot { fill: var(--travel-accent); }
+@keyframes voyage-route-drift { to { stroke-dashoffset: -4.1; } }
+.travel-panel { position: relative; z-index: 2; width: min(690px, 100%); padding: clamp(28px, 4vw, 48px) clamp(24px, 5vw, 70px) 38px; color: #553a28; background: rgba(221, 195, 134, .96); border: 1px solid #765034; box-shadow: 16px 18px 0 rgba(4, 12, 23, .32), 0 0 0 8px rgba(221, 195, 134, .16); transform: rotate(-.5deg); }
 .travel-panel::before { position: absolute; inset: 13px; content: ''; border: 1px dashed rgba(91, 59, 39, .55); pointer-events: none; }
 .travel-panel-head { position: relative; z-index: 1; display: flex; align-items: start; justify-content: space-between; gap: 20px; border-bottom: 1px solid rgba(91, 59, 39, .24); }
 .travel-panel-head .eyebrow { margin: 0 0 15px; color: #765037; font-size: 9px; }
-.travel-status { padding: 4px 7px; color: #ead39a; background: #60422e; font: 800 9px ui-monospace, monospace; letter-spacing: .09em; }
-.travel-compass { position: absolute; z-index: 1; top: 40px; right: clamp(26px, 7vw, 88px); display: grid; place-items: center; width: 52px; height: 52px; border: 1px solid rgba(91, 59, 39, .66); border-radius: 50%; color: #6f4b32; font: 700 8px ui-monospace, monospace; }
+.travel-status { padding: 4px 7px; color: #ead39a; background: var(--travel-deep); font: 800 9px ui-monospace, monospace; letter-spacing: .09em; }
+.travel-compass { position: absolute; z-index: 1; top: 38px; right: clamp(26px, 5vw, 70px); display: grid; place-items: center; width: 52px; height: 52px; border: 1px solid rgba(91, 59, 39, .66); border-radius: 50%; color: #6f4b32; font: 700 8px ui-monospace, monospace; }
 .travel-compass::before, .travel-compass::after { position: absolute; content: ''; background: #765037; }
 .travel-compass::before { width: 1px; height: 42px; }
 .travel-compass::after { width: 42px; height: 1px; }
 .travel-compass span { position: absolute; top: -12px; }.travel-compass span:last-child { top: auto; bottom: -12px; }.travel-compass i { position: relative; z-index: 1; color: #a94b39; font-style: normal; font-size: 17px; }
 .travel-kicker { position: relative; z-index: 1; margin: 42px 0 10px; color: #956848; font: 700 10px ui-monospace, monospace; letter-spacing: .12em; }
-.travel-panel h1 { position: relative; z-index: 1; margin: 0 0 28px; color: #4e3426; font-size: clamp(34px, 6vw, 68px); line-height: .95; letter-spacing: -.08em; }
+.travel-panel h1 { position: relative; z-index: 1; display: grid; gap: 5px; margin: 0 0 28px; color: #4e3426; font-size: clamp(34px, 6vw, 68px); line-height: .95; letter-spacing: -.08em; }
+.travel-panel h1 span { display: block; }.travel-panel h1 em { display: block; color: #8d5d3e; font-size: .47em; font-style: normal; letter-spacing: -.04em; }
 .travel-route { position: relative; z-index: 1; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; min-height: 44px; padding: 13px 15px; background: rgba(248, 226, 167, .34); border-top: 1px solid rgba(91, 59, 39, .3); border-bottom: 1px solid rgba(91, 59, 39, .3); }
-.travel-route-node { padding: 5px 8px; color: #765037; border: 1px solid rgba(91, 59, 39, .5); font: 800 11px "Malgun Gothic", sans-serif; }
+.travel-route-node { display: inline-flex; align-items: center; gap: 6px; padding: 5px 8px; color: #765037; border: 1px solid rgba(91, 59, 39, .5); font: 800 11px "Malgun Gothic", sans-serif; }
+.travel-route-node i { display: inline-grid; place-items: center; width: 12px; height: 12px; color: var(--travel-accent); font-style: normal; }.travel-route-node i::after { content: '✦'; font-size: 10px; }.travel-route-node--ship i::after { content: '≈'; }.travel-route-node--castle i::after { content: '♜'; }.travel-route-node--settlement i::after { content: '⌂'; }
 .travel-route-node.is-origin, .travel-route-node.is-destination { color: #efd69d; background: #684730; border-color: #684730; }
-.travel-route-arrow { color: #a34f3f; font-size: 19px; }
+.travel-route-arrow { color: var(--travel-accent); font-size: 19px; }
 .travel-progress-wrap { position: relative; z-index: 1; margin-top: 32px; }
 .travel-progress-meta { display: flex; justify-content: space-between; margin-bottom: 9px; color: #765037; font: 800 9px ui-monospace, monospace; letter-spacing: .08em; }
 .travel-progress { height: 12px; padding: 3px; background: rgba(91, 59, 39, .15); border: 1px solid rgba(91, 59, 39, .58); }
 .travel-progress span { display: block; width: 0; height: 100%; background: repeating-linear-gradient(135deg, #a6493e 0 8px, #bf6951 8px 14px); transition: width .12s linear; }
 .travel-tip { position: relative; z-index: 1; display: grid; grid-template-columns: 43px 1fr; gap: 12px; align-items: start; margin-top: 31px; padding-top: 17px; border-top: 1px solid rgba(91, 59, 39, .24); }
-.travel-tip > span { color: #a6493e; font: 900 10px ui-monospace, monospace; letter-spacing: .14em; }
+.travel-tip > span { color: var(--travel-accent); font: 900 10px ui-monospace, monospace; letter-spacing: .14em; }
 .travel-tip p { margin: 0; overflow: hidden; color: #6f4b32; font-size: 12px; line-height: 1.55; text-overflow: ellipsis; white-space: nowrap; }
-.travel-screen[aria-busy="true"] .travel-panel { animation: travel-float 2.4s ease-in-out infinite; }
+.travel-screen[aria-busy="true"] .travel-panel { animation: travel-float 2.8s ease-in-out infinite; }
 @keyframes travel-float { 0%, 100% { transform: rotate(-.5deg) translateY(0); } 50% { transform: rotate(.3deg) translateY(-4px); } }
 
 @media (prefers-reduced-motion: reduce) {
-  .travel-screen[aria-busy="true"] .travel-panel { animation: none; }
+  .travel-screen[aria-busy="true"] .travel-panel, .travel-atlas polyline { animation: none; }
   .travel-progress span { transition: none; }
 }
 
@@ -395,5 +409,5 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
   .treasure-map-compass { transform: translate(130px, 12px) scale(.7); transform-origin: center; }
   .treasure-map-decoration--mountains { transform: scale(.8); transform-origin: center; }
   .treasure-map-hint { font-size: 8px; white-space: nowrap; }
-  .travel-screen { padding: 92px 14px 28px; }.travel-panel { padding: 28px 22px 32px; }.travel-panel::before { inset: 9px; }.travel-compass { top: 32px; right: 26px; width: 43px; height: 43px; }.travel-compass::before { height: 34px; }.travel-compass::after { width: 34px; }.travel-panel h1 { max-width: 72%; font-size: 42px; }.travel-route { gap: 6px; padding: 10px; }.travel-route-node { font-size: 10px; }.travel-tip p { white-space: normal; }
+  .travel-screen { padding: 92px 14px 28px; }.travel-panel { padding: 28px 22px 32px; }.travel-panel::before { inset: 9px; }.travel-compass { top: 32px; right: 26px; width: 43px; height: 43px; }.travel-compass::before { height: 34px; }.travel-compass::after { width: 34px; }.travel-panel h1 { max-width: 72%; font-size: 42px; }.travel-route { gap: 6px; padding: 10px; }.travel-route-node { font-size: 10px; }.travel-tip p { white-space: normal; }.travel-atlas img { object-position: 48% center; }
 }

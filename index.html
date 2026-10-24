@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#101728" />
     <meta name="description" content="보물지도를 따라 프로젝트를 탐방하는 2D 포트폴리오 게임" />
     <title>Dev Sky Archive — Portfolio World</title>
-    <link rel="stylesheet" href="./src/styles.css?map=etched-v17" />
+    <link rel="stylesheet" href="./src/styles.css?map=etched-v18" />
   </head>
   <body>
     <div class="app-shell">
@@ -39,14 +39,21 @@
         </section>
 
         <section class="screen travel-screen is-hidden" id="travel-screen" aria-labelledby="travel-title" aria-live="polite" aria-busy="true">
+          <div class="travel-atlas" aria-hidden="true">
+            <img src="./assets/maps/treasure-map-etched.png" alt="" />
+            <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+              <polyline id="travel-atlas-route" points="0,0 0,0" pathLength="1"></polyline>
+              <g id="travel-atlas-stamps"></g>
+            </svg>
+          </div>
           <div class="travel-panel">
             <div class="travel-panel-head">
-              <p class="eyebrow">ROUTE / BFS NAVIGATION</p>
+              <p class="eyebrow">VOYAGE LOG / SHORTEST ROUTE</p>
               <span class="travel-status" id="travel-status">항해 중</span>
             </div>
             <div class="travel-compass" aria-hidden="true"><span>N</span><i>✦</i><span>S</span></div>
-            <p class="travel-kicker">최단 경로를 따라 이동하는 중</p>
-            <h1 id="travel-title">목적지로 항해 중</h1>
+            <p class="travel-kicker" id="travel-kicker">지도 위 최단 항로를 따라 이동하는 중</p>
+            <h1 id="travel-title"><span>목적지</span><em>로 이동 중</em></h1>
             <div class="travel-route" id="travel-route" aria-label="현재 항해 경로"></div>
             <div class="travel-progress-wrap">
               <div class="travel-progress-meta"><span id="travel-progress-label">경로 준비 중</span><span id="travel-progress-percent">0%</span></div>
@@ -111,6 +118,6 @@
         </section>
       </main>
     </div>
-    <script type="module" src="./src/app.js?map=etched-v17"></script>
+    <script type="module" src="./src/app.js?map=etched-v18"></script>
   </body>
 </html>

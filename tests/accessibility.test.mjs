@@ -38,6 +38,7 @@ test('travel screen exposes route progress and destination tip', () => {
   assert.match(html, /id="travel-route"[^>]*aria-label="현재 항해 경로"/);
   assert.match(html, /id="travel-progress-fill"/);
   assert.match(html, /id="travel-tip"/);
+  assert.match(html, /assets\/maps\/treasure-map-etched\.png/);
   assert.match(app, /findShortestPath/);
   assert.match(app, /getTravelDuration/);
   assert.match(css, /\.travel-screen\s*\{/);

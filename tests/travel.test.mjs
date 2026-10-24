@@ -24,9 +24,10 @@ test('BFS returns an empty route for an unknown category', () => {
 
 test('travel duration grows with each additional hop and stays capped', () => {
   assert.equal(getTravelDuration(['profile']), 0);
-  assert.equal(getTravelDuration(['profile', 'personal']), 900);
-  assert.equal(getTravelDuration(['profile', 'personal', 'team']), 1250);
-  assert.equal(getTravelDuration(['profile', 'personal', 'team', 'materials', 'work', 'study', 'external']), 2600);
+  assert.equal(getTravelDuration(['profile', 'personal']), 1800);
+  assert.equal(getTravelDuration(['profile', 'personal', 'team']), 2700);
+  assert.equal(getTravelDuration(['profile', 'personal', 'team', 'materials', 'work', 'study', 'external']), 6300);
+  assert.equal(getTravelDuration(['profile', 'personal', 'team', 'materials', 'work', 'study', 'external', 'profile']), 6500);
 });
 
 test('travel tips use a project summary for a single-project island', () => {

@@ -38,7 +38,7 @@ export function findShortestPath(startId, destinationId, graph = TRAVEL_GRAPH) {
   return [];
 }
 
-export function getTravelDuration(path, { minimum = 900, perExtraHop = 350, maximum = 2600 } = {}) {
+export function getTravelDuration(path, { minimum = 1800, perExtraHop = 900, maximum = 6500 } = {}) {
   const hops = Math.max(0, path.length - 1);
   if (!hops) return 0;
   return Math.min(maximum, minimum + Math.max(0, hops - 1) * perExtraHop);
