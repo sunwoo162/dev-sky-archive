@@ -5,18 +5,27 @@ import {
   exitToSky,
   openProject,
 } from './game-state.js';
-import { findIsland, findProject, islands } from './content.js?map=etched-v16';
+import { findIsland, findProject, islands } from './content.js?map=etched-v17';
 import { assetCatalog, assetUrl } from './asset-catalog.js';
-import { renderTreasureMap } from './treasure-map.js?map=etched-v16';
+import { renderTreasureMap } from './treasure-map.js?map=etched-v17';
+import { findShortestPath, getTravelDuration, getTravelTip } from './travel.js';
 
 const screens = {
   sky: document.querySelector('#sky-screen'),
+  travel: document.querySelector('#travel-screen'),
   island: document.querySelector('#island-screen'),
   project: document.querySelector('#project-screen'),
 };
 
 const topbarMode = document.querySelector('#topbar-mode');
 const treasureMap = document.querySelector('#treasure-map');
+const travelScreen = document.querySelector('#travel-screen');
+const travelRoute = document.querySelector('#travel-route');
+const travelProgress = document.querySelector('.travel-progress');
+const travelProgressFill = document.querySelector('#travel-progress-fill');
+const travelProgressLabel = document.querySelector('#travel-progress-label');
+const travelProgressPercent = document.querySelector('#travel-progress-percent');
+const travelTip = document.querySelector('#travel-tip');
 const projectMarkers = document.querySelector('#project-markers');
 const projectIndex = document.querySelector('#project-index');
 const interactionToast = document.querySelector('#interaction-toast');
@@ -44,6 +53,9 @@ let prefersReducedMotion = reducedMotionQuery.matches;
 const assetImages = new Map();
 const assetPatterns = new Map();
 let treasureMapApi = null;
+let currentMapLocationId = null;
+let activeTravel = null;
+let travelStartedAt = 0;
 
 reducedMotionQuery.addEventListener?.('change', (event) => {
   prefersReducedMotion = event.matches;
@@ -84,7 +96,7 @@ function setScreen(nextState) {
   Object.entries(screens).forEach(([name, screen]) => {
     screen.classList.toggle('is-hidden', name !== state.screen);
   });
-  topbarMode.textContent = state.screen === 'sky' ? '하늘맵' : state.screen === 'island' ? '2D 탐방 월드' : '프로젝트 전시';
+  topbarMode.textContent = state.screen === 'sky' ? '하늘맵' : state.screen === 'travel' ? '항해 중' : state.screen === 'island' ? '2D 탐방 월드' : '프로젝트 전시';
 
   if (state.screen === 'island') renderIsland();
   if (state.screen === 'project') renderProject();
@@ -197,16 +209,77 @@ function closeProjectToIsland() {
   projectFocusTarget?.focus();
 }
 
-function enterSelectedIsland(islandId) {
+function renderTravel(plan) {
+  const routeIslands = plan.path.map((id) => findIsland(id)).filter(Boolean);
+  const hopCount = Math.max(0, plan.path.length - 1);
+  travelRoute.innerHTML = routeIslands.map((island, index) => `
+    ${index ? '<span class="travel-route-arrow" aria-hidden="true">→</span>' : ''}
+    <span class="travel-route-node ${index === 0 ? 'is-origin' : ''} ${index === routeIslands.length - 1 ? 'is-destination' : ''}">${escapeHtml(island.shortTitle ?? island.title)}</span>
+  `).join('');
+  travelScreen.querySelector('#travel-title').textContent = `${routeIslands.at(-1)?.title ?? '목적지'}로 항해 중`;
+  travelScreen.querySelector('#travel-status').textContent = `${hopCount.toString().padStart(2, '0')}칸 이동`;
+  travelProgressLabel.textContent = `최단 경로 ${hopCount.toString().padStart(2, '0')} / ${hopCount.toString().padStart(2, '0')}`;
+  travelProgressPercent.textContent = '0%';
+  travelProgressFill.style.width = '0%';
+  travelProgress.setAttribute('aria-valuenow', '0');
+  travelTip.textContent = plan.tip;
+  travelScreen.setAttribute('aria-busy', 'true');
+}
+
+function finishTravel() {
+  if (!activeTravel) return;
+  const destinationId = activeTravel.destinationId;
+  activeTravel = null;
+  currentMapLocationId = destinationId;
   player = { x: 480, y: 365 };
-  setScreen(enterIsland(state, islandId));
+  setScreen(enterIsland(state, destinationId));
   requestAnimationFrame(() => document.querySelector('#back-to-sky')?.focus());
 }
 
+function updateTravelProgress(timestamp) {
+  if (state.screen !== 'travel' || !activeTravel) return;
+  const duration = prefersReducedMotion ? 0 : activeTravel.duration;
+  const progress = duration ? Math.min(1, (timestamp - travelStartedAt) / duration) : 1;
+  const percent = Math.round(progress * 100);
+  travelProgressFill.style.width = `${percent}%`;
+  travelProgressPercent.textContent = `${percent}%`;
+  travelProgress.setAttribute('aria-valuenow', String(percent));
+  travelProgressLabel.textContent = progress >= 1
+    ? '목적지 도착'
+    : `최단 경로 ${Math.max(1, Math.ceil(progress * activeTravel.hops)).toString().padStart(2, '0')} / ${activeTravel.hops.toString().padStart(2, '0')}`;
+  if (progress >= 1) finishTravel();
+}
+
+function enterSelectedIsland(islandId) {
+  if (activeTravel) return;
+  const destination = findIsland(islandId);
+  if (!destination) return;
+  const path = currentMapLocationId ? findShortestPath(currentMapLocationId, islandId) : [islandId];
+  if (path.length <= 1) {
+    currentMapLocationId = islandId;
+    player = { x: 480, y: 365 };
+    setScreen(enterIsland(state, islandId));
+    requestAnimationFrame(() => document.querySelector('#back-to-sky')?.focus());
+    return;
+  }
+
+  activeTravel = {
+    path,
+    destinationId: islandId,
+    hops: path.length - 1,
+    duration: getTravelDuration(path),
+    tip: getTravelTip(destination),
+  };
+  setScreen({ ...state, screen: 'travel', islandId: null, projectId: null });
+  renderTravel(activeTravel);
+  travelStartedAt = performance.now();
+}
+
 function returnToSky() {
-  const previousIslandId = state.islandId;
+  const previousIslandId = state.islandId ?? currentMapLocationId;
+  if (state.islandId) currentMapLocationId = state.islandId;
   setScreen(exitToSky(state));
-  requestAnimationFrame(() => treasureMapApi?.focusLandmark(previousIslandId));
+  requestAnimationFrame(() => previousIslandId && treasureMapApi?.focusLandmark(previousIslandId));
 }
 
 function getMarkerPosition(index) {
@@ -529,6 +602,7 @@ function animate(timestamp) {
   lastFrame = timestamp;
   movePlayer(delta);
   if (state.screen === 'island') drawMap();
+  if (state.screen === 'travel') updateTravelProgress(timestamp);
   requestAnimationFrame(animate);
 }
 
@@ -566,7 +640,7 @@ window.addEventListener('keydown', (event) => {
   }
   if (key === 'escape') {
     if (state.screen === 'project') closeProjectToIsland();
-    else if (state.screen === 'island') setScreen(exitToSky(state));
+    else if (state.screen === 'island') returnToSky();
   }
   pressedKeys.add(key);
 });

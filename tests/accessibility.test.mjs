@@ -33,6 +33,16 @@ test('archive and exhibit navigation manage focus', () => {
   assert.match(app, /treasureMapApi\?\.focusLandmark\(previousIslandId\)/);
 });
 
+test('travel screen exposes route progress and destination tip', () => {
+  assert.match(html, /id="travel-screen"[^>]*aria-live="polite"/);
+  assert.match(html, /id="travel-route"[^>]*aria-label="현재 항해 경로"/);
+  assert.match(html, /id="travel-progress-fill"/);
+  assert.match(html, /id="travel-tip"/);
+  assert.match(app, /findShortestPath/);
+  assert.match(app, /getTravelDuration/);
+  assert.match(css, /\.travel-screen\s*\{/);
+});
+
 test('project material documents expose an accessible reader lifecycle', () => {
   assert.match(app, /<button class="material-card/);
   assert.match(app, /aria-live="polite"/);
