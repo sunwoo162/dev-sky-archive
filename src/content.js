@@ -124,7 +124,7 @@ export const islands = [
     color: '#f7c66b',
     accent: '#fff1b8',
     position: { x: 50, y: 50, scale: 1.15 },
-    map: { x: 50, y: 48, landmark: 'profile', label: '프로필' },
+    map: { x: 50, y: 62, landmark: 'profile', label: '프로필' },
     projects: [
       project({
         id: 'profile-core',
@@ -158,7 +158,7 @@ export const islands = [
     color: '#ff9b71',
     accent: '#ffe0a7',
     position: { x: 22, y: 69, scale: 1.05 },
-    map: { x: 22, y: 67, landmark: 'personal', label: '개인 프로젝트' },
+    map: { x: 22, y: 60, landmark: 'personal', label: '개인 프로젝트' },
     projects: [
       project({
         id: 'dev-sky-archive',
@@ -269,7 +269,7 @@ export const islands = [
     color: '#8aa8ff',
     accent: '#d5e0ff',
     position: { x: 78, y: 69, scale: 1.02 },
-    map: { x: 78, y: 64, landmark: 'team', label: '팀 프로젝트' },
+    map: { x: 62, y: 78, landmark: 'team', label: '팀 프로젝트' },
     projects: [
       project({
         id: 'washer-client-v2',
@@ -361,7 +361,7 @@ export const islands = [
     color: '#b99cff',
     accent: '#e8ddff',
     position: { x: 22, y: 29, scale: 0.94 },
-    map: { x: 24, y: 29, landmark: 'external', label: '대외활동' },
+    map: { x: 14, y: 17, landmark: 'external', label: '대외활동' },
     projects: [
       project({
         id: 'npc-platform',
@@ -490,7 +490,7 @@ export const islands = [
     color: '#72c9b5',
     accent: '#cbf2e8',
     position: { x: 78, y: 27, scale: 0.88 },
-    map: { x: 76, y: 27, landmark: 'study', label: '스터디' },
+    map: { x: 72, y: 17, landmark: 'study', label: '스터디' },
     projects: [
       project({
         id: 'til',
@@ -605,7 +605,7 @@ export const islands = [
     color: '#d6ae6e',
     accent: '#f3dfae',
     position: { x: 42, y: 20, scale: 0.92 },
-    map: { x: 40, y: 18, landmark: 'materials', label: '자료' },
+    map: { x: 70, y: 66, landmark: 'materials', label: '자료' },
     projects: [
       project({
         id: 'materials-index',
@@ -662,7 +662,7 @@ export const islands = [
     color: '#8eb7c4',
     accent: '#d8f0ec',
     position: { x: 62, y: 19, scale: 0.96 },
-    map: { x: 61, y: 18, landmark: 'work', label: '작업' },
+    map: { x: 44, y: 18, landmark: 'work', label: '작업' },
     projects: [
       project({
         id: 'work-queue',

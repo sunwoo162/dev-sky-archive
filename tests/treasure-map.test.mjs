@@ -27,46 +27,39 @@ test('the treasure map renderer is an accessible inline SVG composition', () => 
   assert.match(source, /treasure-map-route/);
   assert.match(source, /treasure-map-landmark/);
   assert.match(source, /data-island-id/);
-  assert.match(source, /work:/);
-  assert.match(source, /materials:/);
-  assert.match(source, /balloon/);
-  assert.match(source, /lighthouse/);
-  assert.match(source, /ship/);
+  assert.match(source, /treasure-map-raster/);
+  assert.match(source, /assets\/maps\/treasure-map-etched\.png/);
 });
 
-test('category landmarks use island or ship art as the primary hover target', () => {
+test('category landmarks use the natural raster map as the primary hover target', () => {
   const source = readFileSync(resolve('src/treasure-map.js'), 'utf8');
   const css = readFileSync(resolve('src/styles.css'), 'utf8');
 
-  assert.match(source, /landmark === 'team' \|\| landmark === 'materials'/);
-  assert.match(source, /landmark-island/);
-  assert.match(source, /landmark-ship/);
+  assert.match(source, /treasure-map-raster/);
   assert.match(source, /treasure-map-landmark__label/);
+  assert.doesNotMatch(source, /function landmarkArt/);
   assert.match(css, /\.treasure-map-landmark:hover/);
-  assert.match(css, /\.treasure-map-landmark__label::before/);
-  assert.match(css, /\.treasure-map-landmark__label::after/);
+  assert.match(css, /\.treasure-map-landmark__label[^}]*mix-blend-mode:\s*multiply/);
 });
 
-test('landmark nameplates attach above the island or ship and flags anchor into the art', () => {
+test('landmark nameplates attach to natural map locations without synthetic islands', () => {
   const source = readFileSync(resolve('src/treasure-map.js'), 'utf8');
   const css = readFileSync(resolve('src/styles.css'), 'utf8');
 
-  assert.match(source, /<span class="treasure-map-landmark__label">[\s\S]*<span class="treasure-map-landmark__art"/);
-  assert.match(source, /landmark-flagpole/);
-  assert.match(source, /landmark-flag/);
-  assert.match(css, /\.treasure-map-landmark__label[^}]*margin-bottom:\s*-\d+px/);
-  assert.match(css, /\.treasure-map-landmark__label::before[^}]*bottom:/);
+  assert.match(source, /<span class="treasure-map-landmark__label">/);
+  assert.doesNotMatch(source, /landmark-anchor/);
+  assert.doesNotMatch(source, /landmark-flagpole/);
+  assert.match(css, /\.treasure-map-landmark__label[^}]*top:\s*0/);
+  assert.match(css, /\.treasure-map-landmark__label[^}]*opacity:\s*\.9/);
 });
 
-test('landmark art uses the same etched sepia language as the map background', () => {
+test('landmark labels use the same etched sepia language as the map background', () => {
   const source = readFileSync(resolve('src/treasure-map.js'), 'utf8');
   const css = readFileSync(resolve('src/styles.css'), 'utf8');
 
-  assert.match(source, /landmark-hatch/);
-  assert.match(css, /\.treasure-map-landmark__art[^}]*mix-blend-mode:\s*multiply/);
-  assert.match(css, /\.treasure-map-landmark__art[^}]*opacity:\s*\.8[0-9]?/);
   assert.match(css, /\.treasure-map-landmark__label[^}]*background:\s*rgba\(/);
   assert.match(css, /\.treasure-map-landmark__label[^}]*box-shadow:\s*none/);
+  assert.match(css, /\.treasure-map-landmark__label[^}]*mix-blend-mode:\s*multiply/);
 });
 
 test('the treasure map is composed as a dense hand-drawn illustration', () => {
