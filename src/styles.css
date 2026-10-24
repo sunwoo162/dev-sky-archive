@@ -333,11 +333,17 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 .treasure-map-compass--large .compass-needle { stroke-width: 2.2; }
 .treasure-map-compass--small { stroke-width: 3.4; }
 .treasure-map-compass--small text { display: none; }
-.treasure-map-landmarks { position: absolute; inset: 0; z-index: 2; }
-.treasure-map-landmark { position: absolute; left: var(--map-x); top: var(--map-y); display: grid; justify-items: center; width: clamp(136px, 14vw, 208px); height: clamp(86px, 9vw, 132px); padding: 0; color: #4d3424; border: 0; background: transparent; cursor: pointer; transform: translate(-50%, -50%); transition: transform .18s ease, filter .18s ease; }
-.treasure-map-landmark:hover, .treasure-map-landmark:focus-visible { z-index: 3; filter: drop-shadow(0 3px 2px rgba(77, 52, 36, .2)); transform: translate(-50%, -50%) scale(1.08) rotate(-1deg); }
+.treasure-map-landmarks { position: absolute; z-index: 2; left: 50%; top: 50%; width: max(100%, calc(100dvh * 1.75)); height: max(100%, calc(100dvw / 1.75)); transform: translate(-50%, -50%); }
+.treasure-map-landmark { position: absolute; left: var(--map-x); top: var(--map-y); display: grid; justify-items: center; width: clamp(112px, 10vw, 150px); height: clamp(72px, 7vw, 100px); padding: 0; color: #4d3424; border: 0; background: transparent; cursor: pointer; transform: translate(-50%, -50%); transition: filter .18s ease; }
+.treasure-map-landmark::before { content: ""; position: absolute; z-index: 1; inset: 20% 8% 0; border: 1px dashed rgba(77, 52, 36, .68); border-radius: 47% 53% 49% 51% / 52% 46% 54% 48%; opacity: 0; mix-blend-mode: multiply; pointer-events: none; transform: rotate(-2deg); transition: opacity .18s ease, transform .18s ease; }
+.treasure-map-landmark:hover, .treasure-map-landmark:focus-visible { z-index: 3; filter: drop-shadow(0 3px 2px rgba(77, 52, 36, .2)); }
+.treasure-map-landmark:hover::before, .treasure-map-landmark:focus-visible::before { opacity: .72; transform: rotate(1deg) scale(1.03); }
 .treasure-map-landmark:hover .treasure-map-landmark__label, .treasure-map-landmark:focus-visible .treasure-map-landmark__label { color: #ead19a; background: rgba(91, 59, 42, .82); border-color: #6b4935; opacity: 1; }
 .treasure-map-landmark:focus-visible { outline: 3px solid #a94737; outline-offset: 7px; border-radius: 4px; }
+.treasure-map-landmark--island { width: clamp(160px, 15vw, 220px); height: clamp(100px, 10vw, 140px); }
+.treasure-map-landmark--settlement { width: clamp(136px, 12vw, 180px); height: clamp(82px, 8vw, 112px); }
+.treasure-map-landmark--ship { width: clamp(112px, 10vw, 150px); height: clamp(68px, 7vw, 96px); }
+.treasure-map-landmark--castle { width: clamp(116px, 10vw, 152px); height: clamp(76px, 7.5vw, 104px); }
 .treasure-map-landmark__label { position: absolute; z-index: 3; left: 50%; top: 0; display: inline-block; max-width: 100%; padding: 4px 9px 3px; color: #5a3d2b; background: rgba(218, 190, 135, .74); border: 1px solid rgba(112, 77, 51, .7); border-radius: 2px; box-shadow: none; mix-blend-mode: multiply; opacity: .9; transition: color .18s ease, background .18s ease, border-color .18s ease, opacity .18s ease; font: 800 clamp(9px, .84vw, 12px)/1.1 "Malgun Gothic", sans-serif; letter-spacing: -.08em; white-space: nowrap; transform: translateX(-50%) rotate(-1deg); }
 .treasure-map-landmark--profile .treasure-map-landmark__label { color: #e9cf92; background: rgba(103, 68, 46, .72); opacity: .9; }
 .treasure-map-hint { display: none; }
@@ -345,7 +351,11 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 
 @media (max-width: 760px) {
       .sky-map-wrap { padding: 0; }
-  .treasure-map-landmark { width: 132px; height: 88px; }
+      .treasure-map-landmark { width: 112px; height: 74px; }
+      .treasure-map-landmark--island { width: 148px; height: 96px; }
+      .treasure-map-landmark--settlement { width: 128px; height: 82px; }
+      .treasure-map-landmark--ship { width: 106px; height: 70px; }
+      .treasure-map-landmark--castle { width: 108px; height: 72px; }
   .treasure-map-landmark__label { padding: 5px 7px 4px; font-size: 10px; }
   .treasure-map-compass { transform: translate(130px, 12px) scale(.7); transform-origin: center; }
   .treasure-map-decoration--mountains { transform: scale(.8); transform-origin: center; }

@@ -221,10 +221,10 @@ function createLandmarks(islands) {
   return islands
     .filter((island) => island.map)
     .map((island) => {
-      const { x, y, landmark, label } = island.map;
+      const { x, y, landmark, target = 'island', label } = island.map;
       const title = escapeText(label);
       return `
-        <button class="treasure-map-landmark treasure-map-landmark--${escapeText(landmark)}" type="button" data-island-id="${escapeText(island.id)}" style="--map-x: ${x}%; --map-y: ${y}%" aria-label="${title} 섬 열기">
+        <button class="treasure-map-landmark treasure-map-landmark--${escapeText(landmark)} treasure-map-landmark--${escapeText(target)}" type="button" data-island-id="${escapeText(island.id)}" data-map-target="${escapeText(target)}" style="--map-x: ${x}%; --map-y: ${y}%" aria-label="${title} 섬 열기">
           <span class="treasure-map-landmark__label">${title}</span>
         </button>
       `;
