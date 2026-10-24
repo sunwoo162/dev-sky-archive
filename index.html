@@ -6,11 +6,11 @@
     <meta name="theme-color" content="#101728" />
     <meta name="description" content="보물지도를 따라 프로젝트를 탐방하는 2D 포트폴리오 게임" />
     <title>Dev Sky Archive — Portfolio World</title>
-    <link rel="stylesheet" href="./src/styles.css?map=etched-v18" />
+    <link rel="stylesheet" href="./src/styles.css?map=etched-v19" />
   </head>
   <body>
-    <div class="app-shell">
-      <header class="topbar">
+    <div class="app-shell" data-ui-system="linear-blueprint-adapted">
+      <header class="topbar" data-ui-layer="navigation">
         <button class="brand-button" id="brand-button" type="button" aria-label="하늘섬 맵으로 돌아가기">
           <span class="brand-mark" aria-hidden="true">✦</span>
           <span>
@@ -18,11 +18,11 @@
             <small>MY PROJECT WORLD / 2026</small>
           </span>
         </button>
-        <div class="topbar-status">
+        <div class="topbar-status" aria-label="현재 탐방 상태">
           <span class="status-dot"></span>
           <span id="topbar-mode">하늘맵</span>
           <span class="topbar-divider"></span>
-          <span>포트폴리오 탐방</span>
+          <span class="topbar-context">포트폴리오 탐방</span>
         </div>
       </header>
 
@@ -46,7 +46,7 @@
               <g id="travel-atlas-stamps"></g>
             </svg>
           </div>
-          <div class="travel-panel">
+          <div class="travel-panel" data-ui-layer="status-surface">
             <div class="travel-panel-head">
               <p class="eyebrow">VOYAGE LOG / SHORTEST ROUTE</p>
               <span class="travel-status" id="travel-status">항해 중</span>
@@ -99,7 +99,7 @@
                 <span class="asset-chip" data-asset-id="player"><i></i>플레이어</span>
               </div>
             </div>
-            <aside class="island-side-panel">
+            <aside class="island-side-panel" data-ui-layer="index">
               <div class="side-panel-label">섬 인덱스</div>
               <p id="island-description">팀 안에서 맡은 역할과 실제 기여를 한눈에 보여주는 섬.</p>
               <div class="project-index" id="project-index"></div>
@@ -114,7 +114,7 @@
             <span class="project-toolbar-meta" id="project-toolbar-meta">프로젝트 전시 / 01</span>
             <button class="close-project" id="close-project" type="button" aria-label="전시 닫기">ESC <span>×</span></button>
           </div>
-          <div class="project-exhibit" id="project-exhibit"></div>
+          <div class="project-exhibit" id="project-exhibit" data-ui-layer="dossier"></div>
         </section>
       </main>
     </div>

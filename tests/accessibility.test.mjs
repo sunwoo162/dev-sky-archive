@@ -44,6 +44,17 @@ test('travel screen exposes route progress and destination tip', () => {
   assert.match(css, /\.travel-screen\s*\{/);
 });
 
+test('the archive declares its adapted design-system layers', () => {
+  assert.match(html, /data-ui-layer="navigation"/);
+  assert.match(html, /data-ui-layer="status-surface"/);
+  assert.match(html, /data-ui-layer="index"/);
+  assert.match(html, /data-ui-layer="dossier"/);
+  assert.match(css, /--ui-canvas/);
+  assert.match(css, /--ui-hairline/);
+  assert.match(css, /--ui-control-radius/);
+  assert.match(css, /--ui-card-radius/);
+});
+
 test('project material documents expose an accessible reader lifecycle', () => {
   assert.match(app, /<button class="material-card/);
   assert.match(app, /aria-live="polite"/);
