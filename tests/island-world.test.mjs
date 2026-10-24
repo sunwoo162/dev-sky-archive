@@ -71,6 +71,8 @@ test('the museum world reuses atlas labels and keeps controls scoped to explorat
   assert.match(app, /function drawAtlasLabel/);
   assert.match(app, /drawAtlasLabel\('항구 · START'/);
   assert.match(app, /drawAtlasLabel\('PROJECT MUSEUM'/);
+  assert.match(app, /drawAtlasLabel\('PROJECT MUSEUM · COLLECTION HALL', 1200, 238, ATLAS_WORLD_PALETTE\.gold/);
+  assert.match(app, /drawAtlasLabel\('↓ 항구로 돌아가기', 1200, 1510, ATLAS_WORLD_PALETTE\.gold/);
   assert.match(app, /drawAtlasLabel\(exhibit\.title/);
   assert.match(app, /interactionText\.textContent = `\$\{nearest\.project\.title\} 문서 확인`/);
   assert.match(html, /class="world-controls"[\s\S]*WASD[\s\S]*문서 확인[\s\S]*지도/);

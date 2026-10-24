@@ -57,6 +57,9 @@ test('atlas travel keeps the same sepia handoff language as the map', () => {
   assert.match(css, /\.travel-screen:not\(\.is-hidden\)[^}]*animation:/);
   assert.match(css, /@keyframes atlas-travel-in/);
   assert.match(css, /\.travel-screen::before[^}]*rgba\(91, 59, 39/);
+  assert.doesNotMatch(css, /#3d7774|#3d5c58/);
+  assert.match(css, /\.travel-screen\s*\{[^}]*--travel-accent:\s*#a94737/);
+  assert.match(css, /@keyframes atlas-travel-in[\s\S]*\.travel-screen:not\(\.is-hidden\)\s*\{\s*animation:\s*none/);
 });
 
 test('the archive declares its adapted design-system layers', () => {

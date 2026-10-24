@@ -218,4 +218,3 @@
   ```
 
   Confirm the `Verify archive` workflow for the pushed commit is `completed / success` and that existing PR #2 points at the new head.
-

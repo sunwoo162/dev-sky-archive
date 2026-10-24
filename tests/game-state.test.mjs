@@ -68,6 +68,9 @@ test('map selection has a single transition lock around the existing route hando
   assert.match(app, /if \(selectionTransitionLocked \|\| activeTravel\) return/);
   assert.match(app, /selectionTransitionLocked = true/);
   assert.match(app, /selectionTransitionLocked = false/);
+  assert.match(app, /let currentMapLocationId = ['"]profile['"]/);
   assert.match(app, /findShortestPath\(currentMapLocationId, islandId\)/);
   assert.match(app, /getTravelDuration\(path\)/);
+  assert.match(app, /requestAnimationFrame\(\(\) => canvas\.focus\(\)\)/);
+  assert.match(app, /activeTravel = null;\s*travelScreen\.setAttribute\(['"]aria-busy['"], ['"]false['"]\);\s*selectionTransitionLocked = false;\s*const previousIslandId/s);
 });

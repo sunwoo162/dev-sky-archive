@@ -520,8 +520,8 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 }
 
 /* Shortest-path travel screen. The real etched map stays visible beneath the voyage log. */
-.travel-screen { --travel-accent: #a24438; --travel-deep: #684730; position: relative; display: grid; place-items: center; min-height: 100dvh; padding: 116px 5vw 48px; overflow: hidden; background: #9f7a4e; }
-.travel-screen--ship { --travel-accent: #3d7774; --travel-deep: #3d5c58; }.travel-screen--castle { --travel-accent: #8f4b43; --travel-deep: #604038; }.travel-screen--settlement { --travel-accent: #b65a3f; --travel-deep: #684730; }.travel-screen--island { --travel-accent: #a24438; --travel-deep: #684730; }
+.travel-screen { --travel-accent: #a94737; --travel-deep: #4d3424; position: relative; display: grid; place-items: center; min-height: 100dvh; padding: 116px 5vw 48px; overflow: hidden; background: #9f7a4e; }
+.travel-screen--ship, .travel-screen--castle, .travel-screen--settlement, .travel-screen--island { --travel-accent: #a94737; --travel-deep: #4d3424; }
 .travel-screen::before { position: absolute; inset: 0; content: ''; z-index: 1; background: linear-gradient(90deg, rgba(28, 21, 20, .58), rgba(28, 21, 20, .08) 45%, rgba(28, 21, 20, .55)), linear-gradient(0deg, rgba(16, 21, 33, .38), transparent 38%, rgba(16, 21, 33, .25)); pointer-events: none; }
 .travel-screen::after { position: absolute; inset: 0; content: ''; z-index: 1; opacity: .32; background: radial-gradient(ellipse at center, transparent 34%, rgba(22, 20, 18, .55) 100%); pointer-events: none; }
 .travel-atlas { position: absolute; z-index: 0; inset: 0; overflow: hidden; background: #c8ad73; }
@@ -564,7 +564,7 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 @keyframes travel-float { 0%, 100% { transform: rotate(-.5deg) translateY(0); } 50% { transform: rotate(.3deg) translateY(-4px); } }
 
 @media (prefers-reduced-motion: reduce) {
-  .travel-screen[aria-busy="true"] .travel-panel, .travel-atlas polyline { animation: none; }
+  .travel-screen[aria-busy="true"] .travel-panel, .travel-atlas polyline, .travel-screen:not(.is-hidden) { animation: none; }
   .travel-progress span { transition: none; }
 }
 
@@ -573,6 +573,10 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
 .travel-screen::before { background: linear-gradient(90deg, rgba(91, 59, 39, .42), rgba(91, 59, 39, .08) 46%, rgba(91, 59, 39, .36)), linear-gradient(0deg, rgba(74, 48, 34, .3), transparent 38%, rgba(74, 48, 34, .18)); }
 .travel-panel { box-shadow: 14px 16px 0 rgba(77, 52, 36, .26), 0 0 0 8px rgba(221, 195, 134, .16); }
 @keyframes atlas-travel-in { from { opacity: 0; filter: sepia(.18) saturate(.8); } to { opacity: 1; filter: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .travel-screen:not(.is-hidden) { animation: none; }
+}
 
 @media (max-width: 760px) {
       .sky-map-wrap { padding: 0; }
@@ -586,4 +590,27 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
   .treasure-map-decoration--mountains { transform: scale(.8); transform-origin: center; }
   .treasure-map-hint { font-size: 8px; white-space: nowrap; }
   .travel-screen { padding: 92px 14px 28px; }.travel-panel { padding: 28px 22px 32px; }.travel-panel::before { inset: 9px; }.travel-compass { top: 32px; right: 26px; width: 43px; height: 43px; }.travel-compass::before { height: 34px; }.travel-compass::after { width: 34px; }.travel-panel h1 { max-width: 72%; font-size: 42px; }.travel-route { gap: 6px; padding: 10px; }.travel-route-node { font-size: 10px; }.travel-tip p { white-space: normal; }.travel-atlas img { object-position: 48% center; }
+}
+
+/* Portrait fallback: keep the complete illustrated map visible so every landmark stays reachable. */
+@media (max-aspect-ratio: 6 / 5) {
+  .treasure-map-svg,
+  .treasure-map-landmarks {
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: calc(100vw / 1.75);
+    transform: translate(-50%, -50%);
+  }
+
+  .treasure-map-svg { position: absolute; }
+  .treasure-map-landmarks { pointer-events: none; }
+  .treasure-map-landmark { pointer-events: auto; }
+  .treasure-map[data-selected-island="profile"] .treasure-map-canvas { transform-origin: 50% calc(50% + 6.857vw); }
+  .treasure-map[data-selected-island="personal"] .treasure-map-canvas { transform-origin: 22% calc(50% + 5.714vw); }
+  .treasure-map[data-selected-island="team"] .treasure-map-canvas { transform-origin: 63% calc(50% + 16vw); }
+  .treasure-map[data-selected-island="external"] .treasure-map-canvas { transform-origin: 15% calc(50% - 14.857vw); }
+  .treasure-map[data-selected-island="study"] .treasure-map-canvas { transform-origin: 68% calc(50% - 14.857vw); }
+  .treasure-map[data-selected-island="materials"] .treasure-map-canvas { transform-origin: 69% calc(50% + 5.714vw); }
+  .treasure-map[data-selected-island="work"] .treasure-map-canvas { transform-origin: 45% calc(50% - 14.857vw); }
 }

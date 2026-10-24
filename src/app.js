@@ -76,7 +76,7 @@ let prefersReducedMotion = reducedMotionQuery.matches;
 const assetImages = new Map();
 const assetPatterns = new Map();
 let treasureMapApi = null;
-let currentMapLocationId = null;
+let currentMapLocationId = 'profile';
 let activeTravel = null;
 let travelStartedAt = 0;
 let selectionTransitionLocked = false;
@@ -351,7 +351,7 @@ function finishTravel() {
   museumInterior = false;
   museumExhibits = [];
   setScreen(enterIsland(state, destinationId));
-  requestAnimationFrame(() => document.querySelector('#back-to-sky')?.focus());
+  requestAnimationFrame(() => canvas.focus());
 }
 
 function updateTravelProgress(timestamp) {
@@ -385,7 +385,7 @@ function enterSelectedIsland(islandId) {
     museumInterior = false;
     museumExhibits = [];
     setScreen(enterIsland(state, islandId));
-    requestAnimationFrame(() => document.querySelector('#back-to-sky')?.focus());
+    requestAnimationFrame(() => canvas.focus());
     return;
   }
 
@@ -403,6 +403,9 @@ function enterSelectedIsland(islandId) {
 }
 
 function returnToSky() {
+  activeTravel = null;
+  travelScreen.setAttribute('aria-busy', 'false');
+  selectionTransitionLocked = false;
   const previousIslandId = state.islandId ?? currentMapLocationId;
   if (state.islandId) currentMapLocationId = state.islandId;
   setScreen(exitToSky(state));
@@ -745,7 +748,7 @@ function drawMuseumInterior() {
   }
 
   drawAsset('museum-banner', 1020, 42, 360, 168);
-  drawAtlasLabel('PROJECT MUSEUM · COLLECTION HALL', 1200, 238, ATLAS_WORLD_PALETTE.ink, 20);
+  drawAtlasLabel('PROJECT MUSEUM · COLLECTION HALL', 1200, 238, ATLAS_WORLD_PALETTE.gold, 20);
   drawAsset('museum-pillar', 250, 190, 92, 232);
   drawAsset('museum-pillar', 2058, 190, 92, 232);
   drawAsset('museum-pillar', 250, 1160, 92, 232);
@@ -781,7 +784,7 @@ function drawMuseumInterior() {
     drawAsset('museum-exhibit', exhibit.x - 65, exhibit.y - 58, 130, 116);
         drawAtlasLabel(exhibit.title, exhibit.x, exhibit.y + 100, exhibit.color ?? ATLAS_WORLD_PALETTE.ink, 16);
   });
-      drawAtlasLabel('↓ 항구로 돌아가기', 1200, 1510, ATLAS_WORLD_PALETTE.ink, 15);
+      drawAtlasLabel('↓ 항구로 돌아가기', 1200, 1510, ATLAS_WORLD_PALETTE.gold, 15);
 
   const near = getNearestProject();
   if (near) {
