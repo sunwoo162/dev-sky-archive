@@ -557,6 +557,12 @@ button:focus-visible { outline: 3px solid #f7c66b; outline-offset: 4px; }
   .travel-progress span { transition: none; }
 }
 
+/* The voyage is the second page of the same atlas, not a separate cold dashboard. */
+.travel-screen:not(.is-hidden) { animation: atlas-travel-in .52s ease both; }
+.travel-screen::before { background: linear-gradient(90deg, rgba(91, 59, 39, .42), rgba(91, 59, 39, .08) 46%, rgba(91, 59, 39, .36)), linear-gradient(0deg, rgba(74, 48, 34, .3), transparent 38%, rgba(74, 48, 34, .18)); }
+.travel-panel { box-shadow: 14px 16px 0 rgba(77, 52, 36, .26), 0 0 0 8px rgba(221, 195, 134, .16); }
+@keyframes atlas-travel-in { from { opacity: 0; filter: sepia(.18) saturate(.8); } to { opacity: 1; filter: none; } }
+
 @media (max-width: 760px) {
       .sky-map-wrap { padding: 0; }
       .treasure-map-landmark { width: 112px; height: 74px; }

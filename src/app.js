@@ -79,6 +79,7 @@ let treasureMapApi = null;
 let currentMapLocationId = null;
 let activeTravel = null;
 let travelStartedAt = 0;
+let selectionTransitionLocked = false;
 
 reducedMotionQuery.addEventListener?.('change', (event) => {
   prefersReducedMotion = event.matches;
@@ -359,11 +360,16 @@ function updateTravelProgress(timestamp) {
 }
 
 function enterSelectedIsland(islandId) {
-  if (activeTravel) return;
+  if (selectionTransitionLocked || activeTravel) return;
+  selectionTransitionLocked = true;
   const destination = findIsland(islandId);
-  if (!destination) return;
+  if (!destination) {
+    selectionTransitionLocked = false;
+    return;
+  }
   const path = currentMapLocationId ? findShortestPath(currentMapLocationId, islandId) : [islandId];
   if (path.length <= 1) {
+    selectionTransitionLocked = false;
     currentMapLocationId = islandId;
     islandWorld = null;
     player = { ...HARBOR_START };
@@ -384,6 +390,7 @@ function enterSelectedIsland(islandId) {
   setScreen({ ...state, screen: 'travel', islandId: null, projectId: null });
   renderTravel(activeTravel);
   travelStartedAt = performance.now();
+  selectionTransitionLocked = false;
 }
 
 function returnToSky() {

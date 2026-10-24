@@ -8,6 +8,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const html = readFileSync(join(here, '..', 'index.html'), 'utf8');
 const css = readFileSync(join(here, '..', 'src', 'styles.css'), 'utf8');
 const app = readFileSync(join(here, '..', 'src', 'app.js'), 'utf8');
+const treasureMapSource = readFileSync(join(here, '..', 'src', 'treasure-map.js'), 'utf8');
 
 test('the playable world exposes live interaction feedback to assistive technology', () => {
   assert.match(html, /id="interaction-text"[^>]*aria-live="polite"/);
@@ -43,6 +44,19 @@ test('travel screen exposes route progress and destination tip', () => {
   assert.match(app, /findShortestPath/);
   assert.match(app, /getTravelDuration/);
   assert.match(css, /\.travel-screen\s*\{/);
+});
+
+test('map landmark activation stays native and reduced motion remains immediate', () => {
+  assert.match(treasureMapSource, /<button class="treasure-map-landmark/);
+  assert.match(treasureMapSource, /type="button"/);
+  assert.match(app, /reducedMotion: prefersReducedMotion/);
+  assert.match(app, /onSelect: enterSelectedIsland/);
+});
+
+test('atlas travel keeps the same sepia handoff language as the map', () => {
+  assert.match(css, /\.travel-screen:not\(\.is-hidden\)[^}]*animation:/);
+  assert.match(css, /@keyframes atlas-travel-in/);
+  assert.match(css, /\.travel-screen::before[^}]*rgba\(91, 59, 39/);
 });
 
 test('the archive declares its adapted design-system layers', () => {
