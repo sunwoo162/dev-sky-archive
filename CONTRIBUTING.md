@@ -39,7 +39,7 @@ git diff --check
 py -m http.server 4173
 ```
 
-브라우저에서 `treasure map → island → project exhibit → ESC` 흐름, 랜드마크 keyboard focus, WASD 이동, Archive Index 35개 레포 목록, GitHub 링크를 확인합니다. 화면을 바꾼 경우 데스크톱과 좁은 화면에서 레이아웃도 확인합니다.
+브라우저에서 `treasure map → island museum → J 도슨트 → E project exhibit → ESC` 흐름, 랜드마크 keyboard focus, WASD 이동, 전시관 클릭 모달, Archive Index 35개 레포 목록, GitHub 링크를 확인합니다. 화면을 바꾼 경우 데스크톱과 좁은 화면에서 레이아웃도 확인합니다.
 
 ## Pull Request
 

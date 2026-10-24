@@ -64,3 +64,15 @@ test('project material documents expose an accessible reader lifecycle', () => {
   assert.match(app, /event\.key === ['"]Escape['"]/);
   assert.match(app, /lastMaterialFocus/);
 });
+
+test('project museum guides expose both keyboard and pointer entry points', () => {
+  assert.match(html, /id="museum-modal"[^>]*role="dialog"/);
+  assert.match(html, /id="museum-modal-content"/);
+  assert.match(html, /id="museum-open-project"/);
+  assert.match(html, /<span class="keycap">J<\/span>/);
+  assert.match(app, /openMuseumGuide/);
+  assert.match(app, /data-museum-project-id/);
+  assert.match(app, /key === ['"]j['"]/);
+  assert.match(app, /trapMuseumFocus/);
+  assert.match(css, /\.museum-modal\s*\{/);
+});

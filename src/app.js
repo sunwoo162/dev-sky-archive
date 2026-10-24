@@ -5,8 +5,9 @@ import {
   exitToSky,
   openProject,
 } from './game-state.js';
-import { findIsland, findProject, islands } from './content.js?map=etched-v18';
+import { findIsland, findProject, islands } from './content.js?map=etched-v21';
 import { assetCatalog, assetUrl } from './asset-catalog.js';
+import { createMuseumGuide } from './museum.js';
 import { renderTreasureMap } from './treasure-map.js?map=etched-v18';
 import { findShortestPath, getTravelDuration, getTravelTip } from './travel.js';
 
@@ -38,6 +39,11 @@ const archiveIndexTrigger = document.querySelector('#archive-index-trigger');
 const archiveIndexClose = document.querySelector('#archive-index-close');
 const archiveIndexMeta = document.querySelector('#archive-index-meta');
 const archiveIndexList = document.querySelector('#archive-index-list');
+const museumModal = document.querySelector('#museum-modal');
+const museumModalClose = document.querySelector('#museum-modal-close');
+const museumModalDismiss = document.querySelector('#museum-modal-dismiss');
+const museumModalContent = document.querySelector('#museum-modal-content');
+const museumOpenProject = document.querySelector('#museum-open-project');
 const canvas = document.querySelector('#game-canvas');
 const context = canvas.getContext('2d');
 
@@ -45,6 +51,8 @@ let state = createInitialState();
 let currentIsland = null;
 let repoInventory = [];
 let lastArchiveFocus = null;
+let lastMuseumFocus = null;
+let activeMuseumProjectId = null;
 let lastProjectFocusProjectId = null;
 let lastProjectFocusSource = 'marker';
 let lastMaterialFocus = null;
@@ -198,6 +206,75 @@ function trapArchiveFocus(event) {
   }
 }
 
+function renderMuseumGuide(project, island) {
+  const guide = createMuseumGuide(project);
+  return `
+    <div class="museum-guide-hero">
+      <div>
+        <span class="museum-guide-kicker">${escapeHtml(island?.shortTitle ?? 'PROJECT')} / FRONTEND FIELD NOTE</span>
+        <h3>${escapeHtml(guide.title)}</h3>
+        <p>${escapeHtml(guide.summary)}</p>
+      </div>
+      <span class="museum-guide-stamp">EXHIBIT<br />NOTE</span>
+    </div>
+    <div class="museum-guide-grid">
+      <section class="museum-guide-card"><span>사용 기술</span><strong>${escapeHtml(guide.stack)}</strong></section>
+      <section class="museum-guide-card"><span>내 역할</span><strong>${escapeHtml(guide.role)}</strong></section>
+      <section class="museum-guide-card museum-guide-card--wide"><span>프론트엔드 흐름</span><strong>${escapeHtml(guide.flow)}</strong></section>
+      <section class="museum-guide-card museum-guide-card--wide"><span>개발 기록</span><strong>${escapeHtml(guide.timeline)}</strong></section>
+    </div>
+    <p class="museum-guide-detail">${escapeHtml(guide.detail)}</p>
+    <p class="museum-guide-prompt"><span>탐방 안내</span>${escapeHtml(guide.prompt)}</p>
+  `;
+}
+
+function openMuseumGuide(projectId, trigger = document.activeElement) {
+  if (!museumModal || !museumModalContent) return;
+  const { project, island } = findProject(projectId);
+  if (!project) return;
+  lastMuseumFocus = trigger instanceof HTMLElement ? trigger : document.activeElement;
+  activeMuseumProjectId = project.id;
+  museumModalContent.innerHTML = renderMuseumGuide(project, island);
+  museumModal.classList.remove('is-hidden');
+  museumModal.setAttribute('aria-hidden', 'false');
+  museumOpenProject?.focus();
+}
+
+function closeMuseumGuide({ restoreFocus = true } = {}) {
+  if (!museumModal) return;
+  museumModal.classList.add('is-hidden');
+  museumModal.setAttribute('aria-hidden', 'true');
+  const focusTarget = lastMuseumFocus;
+  lastMuseumFocus = null;
+  activeMuseumProjectId = null;
+  if (restoreFocus && focusTarget instanceof HTMLElement) focusTarget.focus();
+}
+
+function openProjectFromMuseum() {
+  const projectId = activeMuseumProjectId;
+  closeMuseumGuide({ restoreFocus: false });
+  if (projectId) openProjectFromControl(projectId, 'marker');
+}
+
+function trapMuseumFocus(event) {
+  if (!museumModal) return;
+  const focusable = [...museumModal.querySelectorAll('button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])')];
+  if (!focusable.length) {
+    event.preventDefault();
+    return;
+  }
+
+  const first = focusable[0];
+  const last = focusable.at(-1);
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
+
 function openProjectFromControl(projectId, source = 'marker') {
   lastProjectFocusProjectId = projectId;
   lastProjectFocusSource = source;
@@ -321,7 +398,7 @@ function renderIsland() {
 
   projectMarkers.innerHTML = currentIsland.projects.map((project, index) => {
     const marker = getMarkerPosition(index);
-    return `<button class="project-marker" type="button" data-project-id="${project.id}" data-project-source="marker" style="--marker-left:${marker.left}%;--marker-top:${marker.top}%;--marker-color:${project.color}" aria-label="${project.title} 전시 열기">
+    return `<button class="project-marker" type="button" data-project-id="${project.id}" data-project-source="marker" data-museum-project-id="${project.id}" style="--marker-left:${marker.left}%;--marker-top:${marker.top}%;--marker-color:${project.color}" aria-label="${project.title} 박물관 설명 열기">
       <span class="marker-pulse" aria-hidden="true"></span><span class="marker-pin" aria-hidden="true"><img src="${assetUrl('cursor-open')}" alt="" /></span><span class="marker-label">${project.title}</span>
     </button>`;
   }).join('');
@@ -333,7 +410,13 @@ function renderIsland() {
   `).join('');
 
   document.querySelectorAll('[data-project-id]').forEach((button) => {
-    button.addEventListener('click', () => openProjectFromControl(button.dataset.projectId, button.dataset.projectSource));
+    button.addEventListener('click', () => {
+      if (button.dataset.projectSource === 'marker') {
+        openMuseumGuide(button.dataset.projectId, button);
+        return;
+      }
+      openProjectFromControl(button.dataset.projectId, button.dataset.projectSource);
+    });
   });
   updateInteraction();
 }
@@ -603,7 +686,7 @@ function getNearestProject() {
 function updateInteraction() {
   const nearest = getNearestProject();
   interactionToast.classList.toggle('is-visible', Boolean(nearest));
-  if (nearest) interactionText.textContent = `${nearest.project.title} 전시 열기`;
+  if (nearest) interactionText.textContent = `${nearest.project.title} 설명 듣기`;
   document.querySelector('#mini-coords').textContent = `X ${Math.round(player.x / 10)} / Y ${Math.round(player.y / 10)}`;
 }
 
@@ -639,6 +722,12 @@ archiveIndexClose.addEventListener('click', closeArchiveIndex);
 archiveModal.addEventListener('click', (event) => {
   if (event.target === archiveModal) closeArchiveIndex();
 });
+museumModalClose?.addEventListener('click', closeMuseumGuide);
+museumModalDismiss?.addEventListener('click', closeMuseumGuide);
+museumOpenProject?.addEventListener('click', openProjectFromMuseum);
+museumModal?.addEventListener('click', (event) => {
+  if (event.target === museumModal) closeMuseumGuide();
+});
 
 window.addEventListener('keydown', (event) => {
   const key = event.key.toLowerCase();
@@ -656,6 +745,22 @@ window.addEventListener('keydown', (event) => {
   }
   if (state.screen === 'project' && !document.querySelector('#materials-reader')?.classList.contains('is-hidden') && event.key === 'Escape') {
     closeMaterialReader();
+    return;
+  }
+  if (museumModal && !museumModal.classList.contains('is-hidden')) {
+    if (key === 'escape') {
+      closeMuseumGuide();
+      return;
+    }
+    if (key === 'tab') {
+      trapMuseumFocus(event);
+      return;
+    }
+    return;
+  }
+  if (state.screen === 'island' && key === 'j') {
+    const nearest = getNearestProject();
+    if (nearest) openMuseumGuide(nearest.project.id);
     return;
   }
   if (state.screen === 'island' && key === 'e') {

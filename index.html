@@ -79,15 +79,15 @@
           <div class="island-toolbar">
             <button class="back-button" id="back-to-sky" type="button"><span>←</span> 하늘맵</button>
             <div class="island-heading"><p class="eyebrow" id="island-eyebrow">02 / TEAM PROJECTS</p><h1 id="island-title">TEAM PROJECTS</h1></div>
-            <div class="island-help"><span class="keycap">WASD</span><span>이동</span><span class="keycap">E</span><span>열기</span></div>
+            <div class="island-help"><span class="keycap">WASD</span><span>이동</span><span class="keycap">J</span><span>도슨트</span><span class="keycap">E</span><span>전시</span></div>
           </div>
           <div class="island-content">
             <div class="game-frame">
               <div class="game-frame-top"><span id="island-subtitle">역할과 협업으로 완성한 것들</span><span class="mini-coords" id="mini-coords">X 48 / Y 32</span></div>
               <div class="game-viewport" id="game-viewport">
-                <canvas id="game-canvas" width="960" height="540" aria-label="2D 탑다운 프로젝트 탐방 맵"></canvas>
+                <canvas id="game-canvas" width="960" height="540" aria-label="프로젝트 박물관 2D 탑다운 탐방 맵"></canvas>
                 <div class="project-markers" id="project-markers"></div>
-                <div class="interaction-toast" id="interaction-toast"><span class="toast-key">E</span><span id="interaction-text" aria-live="polite">프로젝트를 열어보기</span></div>
+                <div class="interaction-toast" id="interaction-toast"><span class="toast-key">J</span><span id="interaction-text" aria-live="polite">프로젝트 설명을 듣기</span><small>E 전체 전시</small></div>
                 <div class="player-bubble" aria-hidden="true"><span></span></div>
               </div>
               <div class="game-frame-bottom"><span>2D 프로젝트 탐방 월드</span><span id="island-count" aria-live="polite">프로젝트 전시 2개</span></div>
@@ -99,12 +99,25 @@
                 <span class="asset-chip" data-asset-id="player"><i></i>플레이어</span>
               </div>
             </div>
-            <aside class="island-side-panel" data-ui-layer="index">
+              <aside class="island-side-panel" data-ui-layer="index">
               <div class="side-panel-label">섬 인덱스</div>
               <p id="island-description">팀 안에서 맡은 역할과 실제 기여를 한눈에 보여주는 섬.</p>
               <div class="project-index" id="project-index"></div>
-              <div class="side-note"><span class="note-icon">✦</span><p>프로젝트 표지판에 가까이 가거나 아래 목록을 클릭하면 전시 화면이 열립니다.</p></div>
+              <div class="side-note"><span class="note-icon">✦</span><p>프로젝트 전시관에 가까이 가면 J로 도슨트 설명을 듣고, 아래 목록에서는 전체 전시를 바로 열 수 있습니다.</p></div>
             </aside>
+          </div>
+          <div class="museum-modal is-hidden" id="museum-modal" role="dialog" aria-modal="true" aria-labelledby="museum-modal-title" aria-describedby="museum-modal-content" aria-hidden="true">
+            <div class="museum-modal-panel">
+              <div class="museum-modal-head">
+                <div><p class="eyebrow">PROJECT MUSEUM / GUIDE NOTE</p><h2 id="museum-modal-title">프로젝트 도슨트</h2></div>
+                <button class="museum-modal-close" id="museum-modal-close" type="button" aria-label="도슨트 설명 닫기">ESC <span>×</span></button>
+              </div>
+              <div id="museum-modal-content"></div>
+              <div class="museum-modal-actions">
+                <button id="museum-open-project" class="primary-action" type="button">전체 전시 보기 <span>↗</span></button>
+                <button id="museum-modal-dismiss" class="text-action" type="button">계속 탐방</button>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -118,6 +131,6 @@
         </section>
       </main>
     </div>
-    <script type="module" src="./src/app.js?map=etched-v18"></script>
+    <script type="module" src="./src/app.js?map=etched-v22"></script>
   </body>
 </html>

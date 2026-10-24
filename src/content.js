@@ -173,7 +173,7 @@ export const islands = [
         timeline: [
           { phase: '01', title: '문제 정의', detail: '내 프로젝트가 어디에 있는지 모르는 상태를 시각적 아카이브 문제로 정의했다.' },
           { phase: '02', title: '보물지도 구조', detail: '카테고리 선택은 2D 보물지도, 프로젝트 탐방은 2D 월드로 분리했다.' },
-          { phase: '03', title: '플레이 가능 프로토타입', detail: '섬 클릭, WASD 이동, E키 상호작용, 프로젝트 전시 화면을 연결했다.' },
+          { phase: '03', title: '플레이 가능 프로토타입', detail: '섬 클릭, WASD 이동, J키 도슨트 설명, E키 전체 전시를 하나의 탐방 흐름으로 연결했다.' },
           { phase: '04', title: '레포 데이터화', detail: '레포 분석 결과를 stack, role, timeline, evidence 필드로 기록한다.' },
         ],
         detailSource: 'conversation + local source',
